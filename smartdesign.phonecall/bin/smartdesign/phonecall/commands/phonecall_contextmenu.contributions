@@ -1,0 +1,29 @@
+namespace smartdesign.phonecall
+
+contributions {
+	command(menuitem_new_linked_phone_call) {
+		pointId = "contextMenu"
+		context = objecttype(ADDRESS)
+		position = rank(3010)
+	}
+	command(menuitem_open_conversation_partner) {
+		pointId = "contextMenu"
+		context = objecttype(GWPHONECALL)
+		position = rank(4020)
+	}
+	command(dial_number_context_menu) {
+		pointId = "contextMenu"
+		context = objecttype(GWPHONECALL)
+		position = rank(2010)
+	}
+	command (menuitem_new_linked_phone_call) {
+		context = objecttype(GWSLLEAD)
+		pointId = "contextMenu"
+		position = rank(4010)
+	}
+	command (menuitem_new_linked_phone_call) {
+		context = objecttype(GWOPPORTUNITY)
+		pointId = "contextMenu"
+		position = rank(4010)
+	}
+}

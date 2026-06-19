@@ -1,0 +1,14 @@
+!namespace smartdesign.ticket
+!language-extension EN
+
+PART_CAPTION = ADMIN
+GROUP_CAPTION_0 = Ticket details
+PART_CAPTION_2 = Istoric ticket
+SCRIPTEDFIELD_CAPTION_0 = Timp maxim de raspuns
+SCRIPTEDFIELD_CAPTION_1 = Rezolvat in
+GROUP_CAPTION_1 = ATENTION! The filed content is public and seen by the client!
+FIELD_CAPTION_0 = NOTES VISIBLE TO THE CLIENT
+FIELD_CAPTION_1 = Internal notes (visible to internal agents only)
+GROUP_CAPTION_2 = Notes
+SCRIPTEDFIELD_CAPTION_2 = Ticket deschis de
+GROUP_CAPTION_3 = Notes (VISIBLE TO THE CLIENT)

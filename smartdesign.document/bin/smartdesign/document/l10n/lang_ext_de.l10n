@@ -1,0 +1,4 @@
+!namespace smartdesign.document
+!default-language-extension DE
+
+CMD_LBL_NEW_FAQ = New FAQ

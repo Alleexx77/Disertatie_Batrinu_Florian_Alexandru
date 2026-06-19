@@ -1,0 +1,637 @@
+namespace smartdesign.ticket
+
+/* IMPORTANT: This is a generated file. Manual changes will disable automatic updates. */
+@Derived(sha1="8ff77dfed2130f82b291531e77d9ecbd358aa4bb")
+form Record {
+
+	context {
+		primary import do = DataObject(TASK) {
+			constraint = TICKET == true
+		}
+		dossierMD = DossierMassData() {
+			dossier {
+				types = ADDRESS, APPOINTMENT, DOCUMENT, EMAILSTORE, TASK, GWSLLEAD, GWOPPORTUNITY, GWPHONECALL, ITDPRODUSAGE,
+				BSPRODUCT, PROJECT, GWQUESTIONAIRE, TODO, ITDTIME
+			}
+		}
+		linkedL2utsksa = LinkedDataObject(do) {
+			linkedBy = SERVICEAGREEMENT_LINK
+		}
+		productLink = LinkedDataObject(do) {
+			linkedBy = GWSPRODUCT_LINK
+		}
+		istoricTickete = LinkMassData(TASK => ISTORICTICKET) {
+			attributes = "ISTORICTICKETE"
+			table {
+				columns = target.CAS_NUMAR_TICKET, target.CAS_USERNAME, target.CAS_DATA, target.CAS_DEPARTAMENT_VECHI,
+				target.CAS_DEPARTAMENT_NOU, target.CAS_RESPONSABIL_VECHI, target.CAS_RESPONSABIL_NOU
+			}
+		}
+		productUseLink = LinkedDataObject(do) {
+			linkedBy = PRODUCTUSAGE_LINK
+		}
+	}
+
+	definitions {
+		condition supportBlockedForCustomer = builtin:smartdesign.ticket.supportBlockedForCustomerCondition
+		condition supportBlockedForSubmitter = builtin:smartdesign.ticket.supportBlockedForSubmitterCondition
+		condition supportBlockedForCustomerAndSubmitter = builtin:smartdesign.ticket.supportBlockedForCustomerAndSubmitterCondition
+	}
+
+	events {
+		on change(GWSTICKETTYPE) += `export async function onChangeGwstickettype(): Promise<void> {\n    const value = $do.GWSTICKETTYPE.get();\n    if (value && value === \'Preventiva\') {\n        $do.GWSSTATUS.set(\'Planificat\');\n    }\n}`
+		on edit += `export async function onEdit(): Promise<void> {\n    if ($do.isNew()) {\n        $do.CAS_DEPARTAMENT.set(\'Level 1\');\n        $do.GWSSTATUS.set(\'Nou\');\n        $do.GWSTICKETTYPE.set(\'Corectiva (Garantie)\');\n        if ($productUseLink) {\n            $do.CAS_START_GARANTIE_PROD.set($productUseLink.CAS_START_GARANTIE_PROD.get());\n            $do.CAS_END_GARANTIE_PROD.set($productUseLink.CAS_END_GARANTIE_PROD.get());\n        }\n    } if ($productUseLink) {\n            $do.CAS_START_GARANTIE_PROD.set($productUseLink.CAS_START_GARANTIE_PROD.get());\n            $do.CAS_END_GARANTIE_PROD.set($productUseLink.CAS_END_GARANTIE_PROD.get());\n        }\n}`
+		on change(productLink) += `export async function onChangeProductLink(): Promise<void> {\n    if ($productLink) {\n        if ($do.GWSTICKETTYPE.get() === \'Preventiva\') {\n            $do.CAS_DEPARTAMENT.set($productLink.CAS_RESPDEPARTMENT.get());\n        }\n    }\n}`
+		on change(CAS_ACCEPTARE_TICKET) += `export async function onChangeCasAcceptareTicket(): Promise<void> {\n    const value = $do.CAS_ACCEPTARE_TICKET.get();\n    if (value && value === \'Da\'){\n        $do.GWSSTATUS.set(\'Acceptat\');\n    }\n}`
+		on change(CAS_DEPARTAMENT) += `export async function onChangeCasDepartament(): Promise<void> {\n    const value = $do.CAS_DEPARTAMENT.get();\n    if (value) {\n        $do.CAS_ACCEPTARE_TICKET.set(null);\n        $do.CAS_PERSOANA_RESPONSABILA.set(null);\n        if ($do.GWSSTATUS.get() != \'Nou\') {\n             $do.GWSSTATUS.set(\'In alocare\');\n        } \n    }\n}`
+		on change(CAS_PERSOANA_RESPONSABILA) += `export async function onChangeCasPersoanaResponsabila(): Promise<void> {\n    const value = $do.CAS_PERSOANA_RESPONSABILA.get();\n    if (value) {\n        $do.CAS_ACCEPTARE_TICKET.set(null);\n    }\n}`
+		on change(CAS_NECESAR_INTERVENTIE) += `export async function onChangeCasNecesarInterventie(): Promise<void> {\n    const value = $do.CAS_NECESAR_INTERVENTIE.get();\n    if (value === true) {\n        $do.CAS_DEPARTAMENT.set(\'Producator\');\n    }\n}`
+		on change(GWSSTATUS) += `export async function onChangeGwsstatus(): Promise<void> {\n    const value = $do.GWSSTATUS.get();\n    if (value && value === \'Inchis\') {\n        $do.END_DT.set(new Date);\n    }\n}`
+	}
+
+	header = DefaultHeader {
+		title = TICKET
+	}
+
+	state read {
+		width = full
+		Parts parts {
+			Part mainPart {
+				caption = GENERAL_PART_LABEL
+				enableJumpmarks = false
+				VerticalLayout contentLayout {
+					RecordSummary recordSummary {
+						showRecordTypeIcon = true
+						headline = Headline id:recordSummaryHeadline {
+							title = Field(KEYWORD)
+							FieldBadge recordSummaryHeadlineBadge {
+								ref = GWSPRIORITY
+								color = #FFD97B
+							}
+							subTitle = Field(GWSTICKETTYPE)
+							FieldBadge fieldBadgeGeneratedId1 {
+								ref = TSKNUMBER
+								color = #666666
+							}
+						}
+						HorizontalLayout horizontalLayoutGeneratedId5 {
+							LayoutColumn layoutColumnGeneratedId9 {
+								Group groupGeneratedId11 {
+									TextField(linkedL2utsksa.CAS_DETALII_SLA) {
+										iconName = "platform:field/list"
+										visibility = false
+									}
+								}
+								minWidth = 200
+							}
+							LayoutColumn layoutColumnGeneratedId10 {
+								Group groupGeneratedId12 {
+									ScriptedField scriptedFieldGeneratedId1 {
+										iconName = "platform:field/time-bold"
+										color = #FF6B11
+										caption = SCRIPTEDFIELD_CAPTION_0
+										expression = `export async function computeExpression(): Promise<string | undefined> {\n    const startDate = $do.START_DT.get();\n    const endDate = $do.TORESPONSETIME.get();\n    const hours = Dates.between(startDate,endDate,Dates.Unit.HOURS);\n    return hours+\' ore\';\n}`
+									}
+								}
+								minWidth = 200
+							}
+							LayoutColumn layoutColumnGeneratedId14 {
+								visibility = `export async function computeVisibility(): Promise<boolean> {\n    if ($do.GWSSTATUS.get() === \'Inchis\') {\n        return false;\n    }\n    return true;\n}`
+								Group groupGeneratedId14 {
+									ScriptedField scriptedFieldGeneratedId3 {
+										color = #0D98FF
+										iconName = "platform:field/time"
+										caption = SCRIPTEDFIELD_CAPTION_2
+										expression = `export async function computeExpression(): Promise<string | undefined> {\n    const startDate = $do.INSERTTIMESTAMP.get();\n    const endDate = new Date;\n    const hours = Dates.between(startDate,endDate,Dates.Unit.HOURS);\n    return hours+\' ore\';\n}`
+									}
+								}
+							}
+							LayoutColumn layoutColumnGeneratedId11 {
+								visibility = `export async function computeVisibility(): Promise<boolean> {\n    if ($do.GWSSTATUS.get() === \'Inchis\') {\n        return true;\n    }\n    return false;\n}`
+								Group groupGeneratedId13 {
+									ScriptedField scriptedFieldGeneratedId2 {
+										iconName = "platform:field/time-bold"
+										caption = SCRIPTEDFIELD_CAPTION_1
+										expression = `export async function computeExpression(): Promise<string | undefined> {\n    const startDate = $do.START_DT.get();\n    const endDate = $do.END_DT.get();\n    const hours = Dates.between(startDate,endDate,Dates.Unit.HOURS);\n    return hours+\' ore\';\n}`
+										color = `import { Color } from \"smartdesign.base/color\";\n\nexport async function computeColor(): Promise<Color> {\n    const startDate = $do.START_DT.get();\n    const respondUntil = $do.TORESPONSETIME.get();\n    const endDate = $do.TORESPONSETIME.get();\n    var hoursToRespond = Dates.between(startDate,respondUntil,Dates.Unit.HOURS);\n    var hoursResponded = Dates.between(startDate,endDate,Dates.Unit.HOURS);\n    if (respondUntil && endDate) {\n        if (hoursResponded <= hoursToRespond) {\n           return Color.hex(\"#00871E\");\n        } return Color.hex(\"#E2001A\");\n    } return Color.hex(\"#FFF\");\n}`
+									}
+								}
+								minWidth = 200
+							}
+						}
+					}
+					Message supportBlockedForCustomerMessage {
+						message = `
+							import { MESSAGE_SUPPORT_BLOCKED_FOR_CUSTOMER } from "smartdesign.ticket/translations";
+							MESSAGE_SUPPORT_BLOCKED_FOR_CUSTOMER.format($do.ITDKUNDE.tryGet());
+						`
+						visibility = supportBlockedForCustomer
+						level = WARN
+					}
+					Message supportBlockedForSubmitterMessage {
+						message = `
+							import { MESSAGE_SUPPORT_BLOCKED_FOR_ANNUNCIATOR } from "smartdesign.ticket/translations";
+							MESSAGE_SUPPORT_BLOCKED_FOR_ANNUNCIATOR.format($do.ITDMELDER.tryGet());
+						`
+						visibility = supportBlockedForSubmitter
+						level = WARN
+					}
+					Message supportBlockedForCustomerAndSubmitterMessage {
+						message = `
+							import { MESSAGE_SUPPORT_BLOCKED_FOR_CUSTOMER_AND_SUBMITTER } from "smartdesign.ticket/translations";
+							MESSAGE_SUPPORT_BLOCKED_FOR_CUSTOMER_AND_SUBMITTER.format($do.ITDKUNDE.tryGet(), $do.ITDMELDER.tryGet());
+						`
+						visibility = supportBlockedForCustomerAndSubmitter
+						level = WARN
+					}
+					HorizontalLayout horizontalLayoutGeneratedId6 {
+						LayoutColumn layoutColumnGeneratedId12 {
+							Group request {
+								caption = TI_REQUEST
+								Field(ITDPROBLEM) {
+									showCaption = false
+								}
+								autoHide = DISABLED
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId13 {
+							Group solution {
+								caption = TI_SOLUTION
+								Field(ITDSOLUTION) {
+									showCaption = false
+								}
+								autoHide = DISABLED
+							}
+						}
+					}
+					HorizontalLayout notesLayout {
+						LayoutColumn internalNotesColumn {
+							Group internalNotes {
+								caption = TI_INTNOTES
+								Field(INTNOTES) {
+									showCaption = false
+								}
+								actions = command(smartdesign.picassoai.ai_internal_notes_summary)
+								autoHide = DISABLED
+							}
+						}
+						LayoutColumn notesColumn {
+							Group notes {
+								actions = command(smartdesign.picassoai.ai_notes2_summary)
+								autoHide = DISABLED
+								caption = NOTES
+								Field(NOTES2) {
+									showCaption = false
+								}
+							}
+						}
+					}
+					ZLayout mainLayout {
+						Group general {
+							caption = TI_GENERAL_INFORMATION
+							HorizontalLayout horizontalLayoutGeneratedId1 {
+								LayoutColumn layoutColumnGeneratedId1 {
+									minWidth = 50
+									Group groupGeneratedId1 {
+										Field(GWSTICKETTYPE) {
+											color = #0E4883
+										}
+										Field(GWSPRIORITY) {
+											color = `import { Color } from \"smartdesign.base/color\";\n\nexport async function computeColor(): Promise<Color> {\n    if ($do.GWSPRIORITY.get() === \'Low\' ||\n        $do.GWSPRIORITY.get() === \'Scazut\') {\n        return Color.hex(\"#77AFE7\");\n    } if ($do.GWSPRIORITY.get() === \'Medium\' ||\n        $do.GWSPRIORITY.get() === \'Mediu\') {\n        return Color.hex(\"#FFA670\");\n    } if ($do.GWSPRIORITY.get() === \'High\' ||\n        $do.GWSPRIORITY.get() === \'Inalt\') {\n        return Color.hex(\"#CC0017\");\n    }\n    return Color.hex(\"#FFF\");\n}`
+										}
+									}
+								}
+								LayoutColumn layoutColumnGeneratedId2 {
+									minWidth = 50
+									Group groupGeneratedId2 {
+										Field(GWSSTATUS) {
+											color = #FFC434
+										}
+										Field(GWSTICKETORIGIN)
+									}
+								}
+							}
+							Field(ITDATMOSPHERE) {
+								color = `import { Color } from \"smartdesign.base/color\";\n\nexport async function computeColor(): Promise<Color> {\n    if ($do.ITDATMOSPHERE.get() === \'Friendly\' ||\n        $do.ITDATMOSPHERE.get() === \'Prietenos\') {\n            return Color.hex(\"#C41579\");\n    } if ($do.ITDATMOSPHERE.get() === \'Neutral\' ||\n        $do.ITDATMOSPHERE.get() === \'Neutru\') {\n            return Color.hex(\"#8B6747\");\n    } if ($do.ITDATMOSPHERE.get() === \'Unfriendly\' ||\n        $do.ITDATMOSPHERE.get() === \'Neprietenos\') {\n            return Color.hex(\"#9F0012\");\n    }\n    return Color.hex(\"#FFF\");\n}`
+							}
+						}
+						Group groupGeneratedId3 {
+							caption = GROUP_CAPTION_0
+							HorizontalLayout horizontalLayoutGeneratedId2 {
+								LayoutColumn layoutColumnGeneratedId3 {
+									minWidth = 50
+									Group groupGeneratedId4 {
+										Field(CAS_CANAL_RASPUNS) {
+											autoHide = DISABLED
+										}
+										Field(CAS_PERSOANA_RESPONSABILA) {
+											iconName = "platform:field/person-bold"
+											color = #FF6B11
+											autoHide = DISABLED
+										}
+									}
+								}
+								LayoutColumn layoutColumnGeneratedId4 {
+									minWidth = 50
+									Group groupGeneratedId5 {
+										Field(CAS_DEPARTAMENT) {
+											autoHide = DISABLED
+										}
+										Field(CAS_ACCEPTARE_TICKET) {
+											color = `import { Color } from \"smartdesign.base/color\";\n\nexport async function computeColor(): Promise<Color> {\n    if ($do.CAS_ACCEPTARE_TICKET.get() === \'Da\') {\n        return Color.hex(\"#00871E\");\n    } if ($do.CAS_ACCEPTARE_TICKET.get() === \'Nu\') {\n        return Color.hex(\"#EA2138\");\n    }\n    return Color.hex(\"#FFF\");\n}`
+											autoHide = DISABLED
+										}
+									}
+								}
+							}
+							Field(CAS_MODALITATE_REZOLVARE) {
+								autoHide = DISABLED
+							}
+							Field(CAS_REZOLUTIE) {
+								iconName = "platform:field/list"
+							}
+							Field(CAS_NECESAR_INTERVENTIE)
+						}
+						Group timeFrame {
+							caption = TIMEFRAME
+							HorizontalLayout horizontalLayoutGeneratedId3 {
+								LayoutColumn layoutColumnGeneratedId5 {
+									minWidth = 50
+									Group groupGeneratedId6 {
+										Field(START_DT) {
+											iconName = "platform:field/calendar"
+										}
+										Field(TORESPONSETIME) {
+											iconName = "platform:field/calendar-bold"
+											color = #E2001A
+										}
+										Field(RESPONSEDATE) {
+											autoHide = DISABLED
+										}
+									}
+								}
+								LayoutColumn layoutColumnGeneratedId6 {
+									minWidth = 50
+									Group groupGeneratedId7 {
+										Field(END_DT) {
+											iconName = "platform:field/calendar"
+										}
+										Field(RESPONSEDURATION)
+									}
+								}
+							}
+						}
+					}
+					ZLayout additionalLayout {
+						Group customer {
+							caption = TI_CUSTOMER
+							LinkField(ITDKUNDE_LINK)
+							LinkField(ITDMELDER_LINK)
+							Field(GWTICKETCOMMUNICATION)
+							TextField(CAS_LOCATIE_INTERVENTIE) {
+								iconName = "platform:field/map-pin-bold"
+							}
+						}
+						Group serviceAgreement {
+							caption = TI_SERVICEAGREEMENT
+							LinkField(SERVICEAGREEMENT_LINK) {
+								autoHide = DISABLED
+							}
+							Field(linkedL2utsksa.MAINTENANCESTATUS) {
+								color = `import { Color } from \"smartdesign.base/color\";\n\nexport async function computeColor(): Promise<Color> {\n    if ($linkedL2utsksa) {\n        if ($linkedL2utsksa.MAINTENANCESTATUS.get() === \'Activ\' ||\n            $linkedL2utsksa.MAINTENANCESTATUS.get() === \'Active\') {\n                return Color.hex(\"#00871E\");\n        } if ($linkedL2utsksa.MAINTENANCESTATUS.get() === \'Inactiv\' ||\n              $linkedL2utsksa.MAINTENANCESTATUS.get() === \'Cancelled\') {\n                return Color.hex(\"#E2001A\");\n        } return Color.hex(\"#777777\");\n    }  return Color.hex(\"#777777\");\n}`
+								autoHide = DISABLED
+							}
+							visibility = false
+						}
+						Group product {
+							caption = TI_PRODUCT
+							LinkField(PRODUCTUSAGE_LINK) {
+								autoHide = DISABLED
+							}
+							LinkField(GWSPRODUCT_LINK)
+							HorizontalLayout horizontalLayoutGeneratedId4 {
+								LayoutColumn layoutColumnGeneratedId7 {
+									minWidth = 50
+									Group groupGeneratedId9 {
+										Field(CAS_PRODUCT_FAMILY)
+									}
+								}
+								LayoutColumn layoutColumnGeneratedId8 {
+									minWidth = 50
+									Group groupGeneratedId10 {
+										Field(CAS_NUMAR_TICKET_PROD)
+									}
+								}
+							}
+							Field(CAS_ECHIPAMENT_GARANTIE)
+						}
+						EmbeddedList dossier {
+							caption = DOSSIER
+							datasource = dossierMD
+							maxItemsShown = 5
+						}
+						ExtensionPoint defaultExtension {
+							id = "record.default"
+						}
+						Group additionalInformation {
+							caption = ADDITIONAL_INFORMATION
+							ScriptedField insertInformation {
+								caption = INSERT_INFORMATION_CAPTION
+								expression = `
+									import { getInsertInformation } from "smartdesign.base/additional-information";
+									getInsertInformation($do);
+								`
+							}
+							ScriptedField updateInformation {
+								caption = UPDATE_INFORMATION_CAPTION
+								expression = `
+									import { getUpdateInformation } from "smartdesign.base/additional-information";
+									getUpdateInformation($do);
+								`
+							}
+							Permissions permissionsGeneratedId1()
+						}
+					}
+				}
+			}
+			Part partGeneratedId2 {
+				enableJumpmarks = false
+				caption = PART_CAPTION_2
+				VerticalLayout verticalLayoutGeneratedId2 {
+					Table tableGeneratedId1 {
+						datasource = istoricTickete
+					}
+				}
+			}
+			Part partGeneratedId1 {
+				enableJumpmarks = false
+				caption = PART_CAPTION
+				visibility = `export async function computeVisibility(): Promise<boolean> {\n    if (user.name === \'ADMINISTRATOR\') {\n        return true;\n    }\n    return false;\n}`
+				VerticalLayout verticalLayoutGeneratedId1 {
+					ZLayout zLayoutGeneratedId1 {
+						Group groupGeneratedId8 {
+							Field(GWSTYPE)
+							Field(GWSFEHLERURSACHE)
+							Field(REOPENINGDATE)
+							Field(VERSION)
+							Field(ITDSECTION)
+						}
+						Group processing {
+							caption = TI_PROCESSING
+							Field(STATUSCHANGEDATE)
+							Field(TICKETGROUPNAME)
+							Field(TICKETUSERNAME)
+							Field(LEVEL1GROUPNAME)
+							Field(LEVEL1USER)
+							Field(BUGREFERENCENUMBER)
+							Field(BUGREFERENCENUMBER2)
+						}
+					}
+				}
+			}
+			PartExtensionPoint defaultPartExtensionPoint {
+				id = "record.part.default"
+			}
+		}
+	}
+
+	state edit {
+		width = full
+		Parts parts {
+			Part mainPart {
+				caption = GENERAL_PART_LABEL
+				enableJumpmarks = false
+				VerticalLayout contentLayout {
+					Message supportBlockedForCustomerMessage {
+						message = `
+							import { MESSAGE_SUPPORT_BLOCKED_FOR_CUSTOMER } from "smartdesign.ticket/translations";
+							MESSAGE_SUPPORT_BLOCKED_FOR_CUSTOMER.format($do.ITDKUNDE.tryGet());
+						`
+						visibility = supportBlockedForCustomer
+						level = WARN
+					}
+					Message supportBlockedForSubmitterMessage {
+						message = `
+							import { MESSAGE_SUPPORT_BLOCKED_FOR_ANNUNCIATOR } from "smartdesign.ticket/translations";
+							MESSAGE_SUPPORT_BLOCKED_FOR_ANNUNCIATOR.format($do.ITDMELDER.tryGet());
+						`
+						visibility = supportBlockedForSubmitter
+						level = WARN
+					}
+					Message supportBlockedForCustomerAndSubmitterMessage {
+						message = `
+							import { MESSAGE_SUPPORT_BLOCKED_FOR_CUSTOMER_AND_SUBMITTER } from "smartdesign.ticket/translations";
+							MESSAGE_SUPPORT_BLOCKED_FOR_CUSTOMER_AND_SUBMITTER.format($do.ITDKUNDE.tryGet(), $do.ITDMELDER.tryGet());
+						`
+						visibility = supportBlockedForCustomerAndSubmitter
+						level = WARN
+					}
+					HorizontalLayout horizontalLayoutGeneratedId3 {
+						LayoutColumn layoutColumnGeneratedId5 {
+							Group groupGeneratedId8 {
+								caption = KEYWORD
+								Field(KEYWORD) {
+									showCaption = false
+								}
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId6 {
+							maxWidth = 400
+							visibility = `export async function computeVisibility(): Promise<boolean> {\n    if ($linkedL2utsksa) {\n        if ($linkedL2utsksa.MAINTENANCESTATUS.get() === \'Active\' ||\n            $linkedL2utsksa.MAINTENANCESTATUS.get() === \'Activ\') {\n                return true;\n            } return false;\n    } return false;\n}`
+							Message messageGeneratedId1 {
+								level = WARN
+								title = `import { FormattedNode, formatted } from \"smartdesign.base/formatted-content\";\nimport { EMPTY_STRING } from \"smartdesign.base/translations\";\n\nexport async function computeTitle(): Promise<string | FormattedNode> {\n    if ($linkedL2utsksa) {\n        if ($linkedL2utsksa.MAINTENANCESTATUS.get() === \'Active\' ||\n            $linkedL2utsksa.MAINTENANCESTATUS.get() === \'Activ\') {\n                return \'ATENTIE\'\n            }\n    }\n    return formatted(EMPTY_STRING.get());\n}`
+								message = `import { FormattedNode, formatted } from \"smartdesign.base/formatted-content\";\nimport { EMPTY_STRING } from \"smartdesign.base/translations\";\n\nexport async function computeMessage(): Promise<string | FormattedNode | undefined> {\n    if ($linkedL2utsksa) {\n        if ($linkedL2utsksa.MAINTENANCESTATUS.get() === \'Active\' ||\n            $linkedL2utsksa.MAINTENANCESTATUS.get() === \'Activ\') {\n                return \'Acest client are un contract de service ACTIV iar timpul de solutionare propus tebuie respectat\'\n            }\n    }\n    return formatted(EMPTY_STRING.get());\n}`
+								visibility = false
+							}
+						}
+					}
+					ZLayout mainLayout {
+						Group general {
+							caption = TI_GENERAL_INFORMATION
+							Field(GWSTICKETTYPE)
+							Field(GWSSTATUS)
+							HorizontalLayout horizontalLayoutGeneratedId1 {
+								LayoutColumn layoutColumnGeneratedId1 {
+									minWidth = 50
+									Group groupGeneratedId3 {
+										Field(GWSPRIORITY)
+									}
+								}
+								LayoutColumn layoutColumnGeneratedId2 {
+									minWidth = 50
+									Group groupGeneratedId4 {
+										Field(GWSTICKETORIGIN) {
+											visibility = false
+										}
+									}
+								}
+							}
+							Field(ITDATMOSPHERE) {
+								enablement = `export async function computeEnablement(): Promise<boolean> {\n    if ($do.GWSSTATUS.get() === \'Inchis\') {\n        return true;\n    }\n    return false;\n}`
+							}
+						}
+						Group groupGeneratedId1 {
+							caption = GROUP_CAPTION_0
+							HorizontalLayout horizontalLayoutGeneratedId2 {
+								LayoutColumn layoutColumnGeneratedId3 {
+									minWidth = 50
+									Group groupGeneratedId5 {
+										Field(CAS_CANAL_RASPUNS)
+										Field(CAS_PERSOANA_RESPONSABILA)
+									}
+								}
+								LayoutColumn layoutColumnGeneratedId4 {
+									minWidth = 50
+									Group groupGeneratedId6 {
+										Field(CAS_DEPARTAMENT)
+										Field(CAS_ACCEPTARE_TICKET) {
+											enablement = `export async function computeEnablement(): Promise<boolean> {\n    if (user.name === $do.CAS_PERSOANA_RESPONSABILA.get()) {\n        return true;\n    } \n    return false;\n}`
+										}
+									}
+								}
+							}
+							Field(CAS_MODALITATE_REZOLVARE) {
+								visibility = false
+							}
+							Field(CAS_REZOLUTIE) {
+								visibility = false
+							}
+							Field(CAS_NECESAR_INTERVENTIE) {
+								visibility = false
+							}
+						}
+						Group timeFrame {
+							caption = TIMEFRAME
+							Field(START_DT)
+							Field(END_DT)
+							Field(TORESPONSETIME) {
+								enablement = false
+							}
+							Field(RESPONSEDATE)
+						}
+					}
+					ZLayout additionalLayout {
+						Group customer {
+							caption = TI_CUSTOMER
+							LinkField(ITDKUNDE_LINK)
+							LinkField(ITDMELDER_LINK)
+							Field(GWTICKETCOMMUNICATION) {
+								enablement = builtin:de.cas.smartdesign.app.ticket.conditions.SubmitterDisallowsTicketCommunicationCondition
+							}
+							TextField(CAS_LOCATIE_INTERVENTIE) {
+								visibleRows = 2
+							}
+						}
+						Group serviceAgreement {
+							caption = TI_SERVICEAGREEMENT
+							LinkField(SERVICEAGREEMENT_LINK)
+							Field(linkedL2utsksa.MAINTENANCESTATUS)
+							TextField(linkedL2utsksa.CAS_DETALII_SLA)
+						}
+						Group product {
+							caption = TI_PRODUCT
+							LinkField(PRODUCTUSAGE_LINK)
+							LinkField(GWSPRODUCT_LINK)
+							Field(CAS_PRODUCT_FAMILY)
+							Field(CAS_NUMAR_TICKET_PROD) {
+								visibility = `export async function computeVisibility(): Promise<boolean> {\n    if ($do.CAS_PRODUCT_FAMILY.get() === \'Oracle\') {\n        return true;\n    }\n    return false;\n}`
+							}
+							Field(CAS_ECHIPAMENT_GARANTIE)
+						}
+						ExtensionPoint defaultExtension {
+							id = "record.default"
+						}
+					}
+					HorizontalLayout requestSolutionLayout {
+						LayoutColumn requestColumn {
+							Group request {
+								caption = TI_REQUEST
+								Field(ITDPROBLEM) {
+									showCaption = false
+								}
+							}
+						}
+						LayoutColumn solutionColumn {
+							Group solution {
+								caption = TI_SOLUTION
+								Field(ITDSOLUTION) {
+									showCaption = false
+								}
+							}
+						}
+					}
+					HorizontalLayout notesLayout {
+						LayoutColumn internalNotesColumn {
+							Group internalNotes {
+								caption = TI_INTNOTES
+								Metric metricGeneratedId1 {
+									color = #009621
+									datasource = `export async function computeValue() {\n    return \"Vizibile doar in cadrul organizatiei\"\n}`
+								}
+								actions = command(smartdesign.picassoai.ai_internal_notes_summary)
+								Field(INTNOTES) {
+									autoHide = DISABLED
+									showCaption = false
+								}
+							}
+						}
+						LayoutColumn notesColumn {
+							Group notes {
+								actions = command(smartdesign.picassoai.ai_notes2_summary)
+								autoHide = DISABLED
+								caption = GROUP_CAPTION_2
+								Metric metricGeneratedId2 {
+									color = #E2001A
+									datasource = `export async function computeValue() {\n    return \"VIZIBILE PENTRU CLIENT\"\n}`
+								}
+								Field(NOTES2) {
+									showCaption = false
+								}
+							}
+						}
+					}
+				}
+			}
+			Part partGeneratedId1 {
+				enableJumpmarks = false
+				caption = PART_CAPTION
+				VerticalLayout verticalLayoutGeneratedId1 {
+					ZLayout zLayoutGeneratedId1 {
+						Group groupGeneratedId2 {
+							Field(VERSION)
+							Field(ITDSECTION)
+							Field(TSKNUMBER)
+							Field(GWSFEHLERURSACHE) {
+								enablement = builtin:de.cas.smartdesign.app.ticket.conditions.TicketTypeAllowsErrorCauseCondition
+							}
+							Field(GWSTYPE)
+							Field(CAS_NR_TICKET_AUTOMAT)
+						}
+						Group processing {
+							caption = TI_PROCESSING
+							Field(TICKETGROUPNAME)
+							Field(TICKETUSERNAME)
+							Field(LEVEL1GROUPNAME)
+							Field(LEVEL1USER)
+							Field(BUGREFERENCENUMBER)
+							Field(BUGREFERENCENUMBER2)
+						}
+						Group groupGeneratedId7 {
+							Field(CAS_DEPARTAMENT_OLD)
+							Field(CAS_RESPONSBIL_OLD)
+							Field(CAS_START_GARANTIE_PROD)
+							Field(CAS_END_GARANTIE_PROD)
+							Field(GWSPRODUCT_LINK)
+						}
+						PrimaryLinkedParentsList primaryLinkedParentsListGeneratedId1()
+					}
+				}
+				visibility = `export async function computeVisibility(): Promise<boolean> {\n    if (user.name === \'ADMINISTRATOR\') {\n        return true;\n    }\n    return false;\n}`
+			}
+			PartExtensionPoint defaultPartExtensionPoint {
+				id = "record.part.default"
+			}
+		}
+	}
+}

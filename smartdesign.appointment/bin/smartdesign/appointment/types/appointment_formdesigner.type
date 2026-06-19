@@ -1,0 +1,6 @@
+namespace smartdesign.appointment
+
+extension smartdesign.appointment.APPOINTMENT {
+	string CAS_MAIN_OBJECTIVE
+	string CAS_FOLLOWUP_ACTION
+}

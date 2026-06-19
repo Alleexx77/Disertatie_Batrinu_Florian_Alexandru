@@ -1,0 +1,43 @@
+namespace smartdesign.emailcampaign
+
+form Search {
+	context {
+		primary searchMD = DataObjectMassData(DOCUMENT){
+			query {
+				where = TYPE = "MAILMERGE"
+			}
+		}
+		lastUsedMD = LastUsedMassData(DOCUMENT){
+			query {
+				where = TYPE = "MAILMERGE"
+			}
+		}
+		favoriteMD = DataObjectMassData(DOCUMENT){
+			query {
+				where = TYPE = "MAILMERGE"
+			}
+		}
+	}
+	header = DefaultHeader {
+		title = EMAIL_CAMPAIGNS
+		contributionPoints = { }
+	}
+	state read {
+		VerticalLayout contentLayout {
+			SearchList formEmails {
+				caption = EMAIL_CAMPAIGN
+				datasource = searchMD
+				extendedListEntryAction = ShowEmailCampaignTable
+			}
+			FavoritesList favorites {
+				caption = FAVORITES
+				datasource = favoriteMD
+			}
+			EmbeddedList recentlyUsed {
+				caption = RECENTLY_USED
+				datasource = lastUsedMD
+				extendedListEntryAction = ShowEmailCampaignTable
+			}
+		}
+	}
+}

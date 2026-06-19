@@ -1,0 +1,14 @@
+namespace custom.opportunitylineitem
+
+contributions {
+	command(newOpportunitylineitem) {
+		target = id(custom.opportunitylineitem)
+		context = MassData(OPPORTUNITYLINEITEM)
+		pointId = "newMenu"
+	}
+	command(newLinkedOpportunitylineitem) {
+		target = id(custom.opportunitylineitem)
+		context = MassData(OPPORTUNITYLINEITEM)
+		pointId = "newLinkedMenu"
+	}
+}

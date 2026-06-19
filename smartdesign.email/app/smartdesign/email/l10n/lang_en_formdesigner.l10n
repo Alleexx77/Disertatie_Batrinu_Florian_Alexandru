@@ -1,0 +1,5 @@
+!namespace smartdesign.email
+!language-extension EN
+
+!override
+APP_NAME = Archived E-mails

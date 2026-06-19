@@ -1,0 +1,79 @@
+namespace custom.projectchangehistory
+
+form Record {
+
+	context {
+		primary import do = DataObject(PROJECTCHANGEHISTORY)
+		dossierMD = DossierMassData()
+	}
+
+	header = DefaultHeader {
+		title = PROJECTCHANGEHISTORY_SINGULAR
+	}
+
+	state read {
+		VerticalLayout contentLayout {
+			Group {
+				Field(CAS_FINALENDDATE)
+				Field(CAS_INITIALENDDATE)
+				Field(CAS_FINALINVOICED)
+				Field(CAS_INITIALINVOICED)
+				Field(CAS_FINALPLANINV)
+				Field(CAS_INITIALPLANINV)
+				Field(CAS_FINALSTATUS)
+				Field(CAS_INITIALSTATUS)
+			}
+			ZLayout mainLayout {
+				Permissions permissions {
+				}
+				EmbeddedList dossier {
+					caption = DOSSIER
+					datasource = dossierMD
+				}
+				ExtensionPoint defaultExtension {
+					id = "record.default"
+				}
+				Group additionalInformation {
+					caption = ADDITIONAL_INFORMATION
+					ScriptedField insertInformation {
+						caption = INSERT_INFORMATION_CAPTION
+						expression = `
+							import { getInsertInformation } from "smartdesign.base/additional-information";
+							getInsertInformation($do);
+						`
+					}
+					ScriptedField updateInformation {
+						caption = UPDATE_INFORMATION_CAPTION
+						expression = `
+							import { getUpdateInformation } from "smartdesign.base/additional-information";
+							getUpdateInformation($do);
+						`
+					}
+				}
+			}
+		}
+	}
+
+	state edit {
+		VerticalLayout contentLayout {
+			Group {
+				Field(CAS_PROJECTNAME)
+				Field(CAS_FINALENDDATE)
+				Field(CAS_INITIALENDDATE)
+				Field(CAS_FINALINVOICED)
+				Field(CAS_INITIALINVOICED)
+				Field(CAS_FINALPLANINV)
+				Field(CAS_INITIALPLANINV)
+				Field(CAS_FINALSTATUS)
+				Field(CAS_INITIALSTATUS)
+			}
+			ZLayout mainLayout {
+				Permissions permissions {
+				}
+				ExtensionPoint defaultExtension {
+					id = "record.default"
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,4 @@
+app custom.myfirstwebapp {
+	name = APP_NAME
+	color = "#000000"
+}

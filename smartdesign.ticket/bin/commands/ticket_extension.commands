@@ -1,0 +1,14 @@
+namespace smartdesign.ticket
+
+intents {
+
+}
+
+commands {
+    command customNewLinkedIstoricTickete uses linkTo { //label = NEW_LINE
+        iconName = "platform:new"
+		style = ICON
+		linkAttribute = "ISTORICTICKETE"
+		targetType = ISTORICTICKET
+	}
+}

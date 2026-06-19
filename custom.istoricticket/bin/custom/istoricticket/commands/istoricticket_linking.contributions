@@ -1,0 +1,8 @@
+namespace custom.istoricticket
+
+contributions {
+	command(linkToIstoricticket) {
+		context = DataObject(*, read) or MassData(*)
+		pointId = "linkWithMenu"
+	}
+}

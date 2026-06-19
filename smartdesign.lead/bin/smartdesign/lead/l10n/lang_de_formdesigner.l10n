@@ -1,0 +1,20 @@
+!namespace smartdesign.lead
+!default-language-extension DE
+
+PART_CAPTION = BANT Qualification
+GROUP_CAPTION_0 = BUDGET
+GROUP_CAPTION_1 = AUTHORITY
+GROUP_CAPTION_2 = NEED
+GROUP_CAPTION_3 = TIMING
+GROUP_CAPTION_4 = Lead Importance
+GROUP_CAPTION_5 = BANT
+GROUP_CAPTION_6 = Score
+GROUP_CAPTION_7 = Win-Loss Analysis
+GROUP_CAPTION_8 = Win-Loss Analysis
+SCRIPTEDFIELD_CAPTION_0 = Web site Link CAR
+PART_CAPTION_2 = Scheduled Test Drive
+GROUP_CAPTION_9 = Scheduling
+DATAOBJECTREFERENCE_CAPTION_0 = Car
+PART_CAPTION_3 = Test Drive Review
+GROUP_CAPTION_10 = Customer Feedback
+GROUP_CAPTION_11 = Sales Qualification

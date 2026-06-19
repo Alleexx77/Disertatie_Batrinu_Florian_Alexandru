@@ -1,0 +1,43 @@
+namespace smartdesign.opportunity
+
+commands {
+	command new_opportunity uses new {
+		label = CMD_LBL_NEW
+		inGroupLabel = CMD_LBL_NEW_INGROUP
+		style = ICON
+
+		typeToCreate = GWOPPORTUNITY
+		navigateToRecordAfterCreation = true
+	}
+	command new_opportunity_position {
+		label = CMD_LBL_NEW_OPPORTUNITY_POSITION
+	}
+	command new_opportunity_position_group {
+		label = CMD_LBL_NEW_OPPORTUNITY_POSITION_GROUP
+	}
+	command take_over_template_positions {
+		label = CMD_LBL_TAKE_OVER_TEMPLATE_POSITIONS
+	}
+	command new_linked uses smartdesign.base.new_linked {
+		label = CMD_LBL_NEW
+		inGroupLabel = CMD_LBL_NEW_INGROUP
+		newCommand = new_opportunity
+		navigateToRecordAfterCreation = true
+	}
+		command new_opportunitylineitem_generated uses new {
+    typeToCreate = OPPORTUNITYLINEITEM
+}
+	
+	command new_linked_OPPORTUNITYLINEITEM uses smartdesign.base.new_linked {
+	linkAttribute = "CAS_OPP_LINK"
+    newCommand = new_opportunitylineitem_generated
+}
+command new_linked_ContractDocument uses smartdesign.base.new_linked {
+    linkAttribute = "CAS_OPPDOC"
+    newCommand = new_contract_document_generated
+}
+
+command new_contract_document_generated uses new {
+    typeToCreate = DOCUMENT
+}
+}

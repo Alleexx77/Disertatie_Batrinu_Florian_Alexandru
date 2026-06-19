@@ -1,0 +1,5 @@
+!namespace smartdesign.emailcampaign
+!language-extension EN
+
+!override
+EMAIL_CAMPAIGNS = CAS Outgoing E-mails

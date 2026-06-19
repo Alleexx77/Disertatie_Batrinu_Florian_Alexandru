@@ -1,0 +1,10 @@
+!namespace custom.opportunitylineitem
+!language EN
+
+APP_NAME = OpportunityLineItem
+OPPORTUNITYLINEITEM_SINGULAR = OpportunityLineItem
+OPPORTUNITYLINEITEM_PLURAL = OpportunityLineItem
+LINK_WITH_OPPORTUNITYLINEITEM = Link with OpportunityLineItem
+GROUP_CAPTION_0 = Product
+GROUP_CAPTION_1 = Quote
+GROUP_CAPTION_2 = Admin

@@ -1,0 +1,16 @@
+namespace custom.projectchangehistory
+
+intents {
+	intent OpenLinkProjectchangehistorySearch {
+		type = overlay
+		pagesToKeep = 0
+	}
+}
+
+commands {
+	command linkToProjectchangehistory uses linkTo {
+		label = PROJECTCHANGEHISTORY_SINGULAR
+		targetType = PROJECTCHANGEHISTORY
+		searchIntent = OpenLinkProjectchangehistorySearch
+	}
+}

@@ -1,0 +1,24 @@
+namespace smartdesign.document
+
+commands {
+	command document_overwrite{
+		label = CMD_LBL_OVERWRITE_DOCUMENT
+		iconName = "overwrite-document"
+	}
+		command neww uses new_archive_document {
+		label = CMD_LBL_NEW_ARCHIVE_DOCUMENT
+		typeToCreate = DOCUMENT
+	}
+
+	command new_linkedd uses smartdesign.base.new_linked {
+		label = CMD_LBL_NEW_ARCHIVE_DOCUMENT
+		newCommand = neww
+	}
+   command new_doc uses  new_linked_archive_document{
+		label = CMD_LBL_NEW_ARCHIVE_DOCUMENT
+		inGroupLabel = CMD_LBL_NEW_INGROUP
+		iconName = "document"
+		linkAttribute = "CAS_DOCOPP"
+		newCommand = neww
+	}
+}

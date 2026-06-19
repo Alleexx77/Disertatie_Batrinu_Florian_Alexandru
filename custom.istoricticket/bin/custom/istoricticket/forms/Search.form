@@ -1,0 +1,35 @@
+namespace custom.istoricticket
+
+form Search {
+
+	context {
+		primary searchMD = DataObjectMassData(ISTORICTICKET)
+		lastUsedMD = LastUsedMassData(ISTORICTICKET)
+		favoriteMD = DataObjectMassData(ISTORICTICKET)
+	}
+
+	header = DefaultHeader {
+		title = ISTORICTICKET_PLURAL
+		contributionPoints = { }
+	}
+
+	state read {
+		VerticalLayout contentLayout {
+			SearchList searchList {
+				caption = ISTORICTICKET_PLURAL
+				datasource = searchMD
+			}
+			FavoritesList favorites {
+				caption = FAVORITES
+				datasource = favoriteMD
+			}
+			EmbeddedList recentlyUsed {
+				caption = RECENTLY_USED
+				datasource = lastUsedMD
+			}
+			ViewsList viewsList {
+				objectTypeViews = ISTORICTICKET
+			}
+		}
+	}
+}

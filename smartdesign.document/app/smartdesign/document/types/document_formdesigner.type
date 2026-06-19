@@ -1,0 +1,30 @@
+namespace smartdesign.document
+
+extension smartdesign.document.DOCUMENT {
+	string CAS_CONTRACTOBJECT
+	string CAS_CONTRACTTYPOLOGY
+	string CAS_SALESRESPONSIBLE {
+		suggestions =
+		`export async function suggestPresals(): Promise<string[]> {\n    const group = await Permission.Owner.fromName(\"Sales\", \"GROUP\");\n\n    if (group) {\n        const members = await group.members(\"USER\");\n        return members.map(m => m.name ?? m.toString());\n    } else {\n        const allUsers = await Permission.Owner.all(\"USER\");\n        return allUsers.map(u => u.name ?? u.toString());\n    }\n}`
+	}
+	string CAS_PMRESPONSIBLE {
+		suggestions =
+		`export async function suggestPresals(): Promise<string[]> {\n    const group = await Permission.Owner.fromName(\"Project Management\", \"GROUP\");\n\n    if (group) {\n        const members = await group.members(\"USER\");\n        return members.map(m => m.name ?? m.toString());\n    } else {\n        const allUsers = await Permission.Owner.all(\"USER\");\n        return allUsers.map(u => u.name ?? u.toString());\n    }\n}`
+	}
+	string CAS_BRIEFOUTCOME
+	string CAS_SPECIALCLAUSES
+	int CAS_OFFEREDPRICE
+	int CAS_NETMARGIN
+	int CAS_INDIRECTCOSTS
+	string CAS_COMMERCIALTERMS
+	boolean CAS_CONTCLASSIFIIEDINFO
+	string CAS_CONTRACTCATEGORY
+	link CAS_DOCOPP_LINK {
+		targetObjectType = GWOPPORTUNITY
+		linkAttribute = "CAS_DOCOPP"
+	}
+	link FAQDOC_LINK {
+		targetObjectType = TASK
+		linkAttribute = "FAQDOC"
+	}
+}

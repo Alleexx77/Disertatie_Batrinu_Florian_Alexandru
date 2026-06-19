@@ -1,0 +1,5 @@
+!namespace smartdesign.email
+!language-extension RO
+
+!override
+APP_NAME = E-mailuri arhivate

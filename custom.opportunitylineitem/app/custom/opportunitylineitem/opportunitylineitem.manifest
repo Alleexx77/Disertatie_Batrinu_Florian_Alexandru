@@ -1,0 +1,8 @@
+app custom.opportunitylineitem {
+	name = APP_NAME
+	color = "#000000"
+
+	requirements {
+		objecttypes { OPPORTUNITYLINEITEM }
+	}
+}

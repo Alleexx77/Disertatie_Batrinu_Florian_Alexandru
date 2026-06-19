@@ -1,0 +1,10 @@
+namespace custom.myfirstwebwidget
+
+contributions {
+
+    extension(custom.myfirstwebwidget.AddressExtension) {
+        context = DataObject(ADDRESS)
+        pointId = "record.default"
+    }
+}
+

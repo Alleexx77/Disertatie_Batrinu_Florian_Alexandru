@@ -1,0 +1,7 @@
+!namespace custom.projectchangehistory
+!language RO
+
+APP_NAME = Istoric Modificari Proiect
+PROJECTCHANGEHISTORY_SINGULAR = ProjectChangeHistory
+PROJECTCHANGEHISTORY_PLURAL = ProjectChangeHistory
+LINK_WITH_PROJECTCHANGEHISTORY = Conectează cu ProjectChangeHistory

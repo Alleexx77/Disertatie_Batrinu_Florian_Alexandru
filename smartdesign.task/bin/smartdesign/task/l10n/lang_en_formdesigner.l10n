@@ -1,0 +1,11 @@
+!namespace smartdesign.task
+!language-extension EN
+
+FIELD_CAPTION_0 = Project
+PART_CAPTION = Project History Change
+GROUP_CAPTION_0 = Project History
+FIELD_CAPTION_1 = Job Number
+PART_CAPTION_2 = ADMIN
+GROUP_CAPTION_1 = PV Interventie
+GROUP_CAPTION_2 = Observatii client
+SCRIPTEDFIELD_CAPTION_0 = Durata interventie

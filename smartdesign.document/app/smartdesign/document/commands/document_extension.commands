@@ -1,0 +1,16 @@
+namespace smartdesign.document
+
+intents {
+
+}
+
+commands {
+    command new_linked_faq_document uses new_linked {
+		label = CMD_LBL_NEW_FAQ
+		inGroupLabel = MEMO
+		iconName = "document"
+		linkAttribute = "FAQDOC"
+		newCommand = new_memo_document
+		navigateToRecordAfterCreation = true
+	}
+}

@@ -1,0 +1,243 @@
+namespace smartdesign.phonecall
+
+/* IMPORTANT: This is a generated file. Manual changes will disable automatic updates. */
+@Derived(sha1="dbb65f7f54470871b65b955781f618969437f833")
+overlay form Record {
+
+	overlay state ^read {
+		.Group details {
+			.Field(DIALLEDTOPIC) {
+				autoHide = DISABLED
+			}
+			delete .Field(URGENCY)
+			ScriptedField scriptedFieldGeneratedId1 {
+				outputType = URL
+				expression =
+				`var y = $do.START_DT.get().getFullYear();\nvar m = $do.START_DT.get().getMonth() + 1; // month 1–12\nvar d = $do.START_DT.get().getDate();      // day of month 1–31\n\n// date\nvar date1=d+\".\"+m+\".\"+y\nvar date2=\"0\"+d+\".\"+m+\".\"+y\nvar date3=\"0\"+d+\".0\"+m+\".\"+y\nvar date4= d+\".0\"+m+\".\"+y\n\nif (m >= 10)\n  if (d >= 10)\n    var date = date1\n    else {var date = date2}\n  else \n    {if (d >= 10)\n    var date = date4\n    else {var date = date3}}\n\n// time\nvar h = $do.START_DT.get().getHours();\nvar mi = $do.START_DT.get().getMinutes();\nvar sec = $do.START_DT.get().getSeconds();\n\nif (h>=10) \n\n    if (mi>=10)\n    \n        if (sec>=10)\n             var time =  h + \":\"+mi+\":\"+sec\n              else var time =  h + \":\"+mi+\":0\"+sec\n            \n\n    else\n         if (sec>=10)\n            var time =  h + \":0\"+mi+\":\"+sec\n             else var time =  h + \":0\"+mi+\":0\"+sec\n           \n         \n    \n    else \n    if (mi>=10) \n    \n     if (sec>=10)\n             var time =  \"0\"+h+\":\"+mi+\":\"+sec\n              else var time = \"0\"+ h+\":\"+mi+\":0\"+sec\n            \n    \n     else \n        if (sec>=10)\n            var time =  \"0\"+h+\":0\"+mi+\":\"+sec\n            else var time = \"0\"+ h +\":0\"+mi+\":0\"+sec\n            \n    \n\n// final URL\n\"http://172.30.0.202/basic-crm-get-audiofile?callerID=\" +  $do.DIALLEDNUMBER.get() +  \"&date=\" + date +   \"&time=\" + time;`
+				visibility = false
+			} last
+			Field(CAS_MAIN_OBJECTIVE) {
+				autoHide = DISABLED
+			} last
+			Field(CAS_FOLLOWUP_ACTION) {
+				autoHide = DISABLED
+			} last
+		}
+		.Group typeStatus {
+			Field(URGENCY) first
+		}
+		.Group additionalInformation {
+			move .Permissions permissions first
+		}
+	}
+
+	overlay state ^edit {
+		.Group details {
+			after .Field(URGENCY) {
+				Field(CAS_AUDIOFILELINK)
+			}
+			Field(CAS_MAIN_OBJECTIVE) last
+			Field(CAS_FOLLOWUP_ACTION) last
+		}
+	}
+}
+// ORIGINAL FORM GENERATED CONTENT START
+//namespace smartdesign.phonecall
+//
+//form Record {
+//
+//	context {
+//		primary import do = DataObject(GWPHONECALL)
+//		dossierMD = DossierMassData()
+//	}
+//
+//	header = DefaultHeader {
+//		title = CALL
+//	}
+//
+//	state read {
+//
+//		fixedContent = ComponentSwitcher id:componentSwitcher {
+//			^content = RecordSummary id:recordSummary {
+//				showRecordTypeIcon = true
+//				headline = Headline id:recordSummaryHeadline {
+//					title = Field(KEYWORD)
+//					subTitle = Field(DIALLEDTOPIC)
+//				}
+//				HorizontalLayout recordSummaryMainLayout {
+//					LayoutColumn recordSummaryMainLayoutCustomerInfoColumn {
+//						minWidth = 200
+//						maxWidth = 320
+//						Group recordSummaryMainLayoutCustomerInfoGroup {
+//							Field(CUSTOMERSHORTINFO_LINK) {
+//								caption = CALLPARTNER
+//							}
+//							PhoneField(DIALLEDNUMBER)
+//						}
+//					}
+//					LayoutColumn recordSummaryMainLayoutTimeColumn {
+//						minWidth = 200
+//						maxWidth = 320
+//						Group recordSummaryMainLayoutTimeGroup {
+//							Field(START_DT)
+//							Field(END_DT)
+//							Field(GW_ALARMRELATIVE_EFFECTIVE)
+//						}
+//					}
+//					LayoutColumn recordSummaryMainLayoutInformationColumn {
+//						minWidth = 200
+//						Group recordSummaryMainLayoutInformationGroup {
+//							Field(DURATION)
+//							Field(STATE) {
+//								color = #D3E6FA
+//							}
+//						}
+//					}
+//				}
+//			}
+//			smallContent = RecordSummary id:reducedRecordSummary {
+//				showRecordTypeIcon = true
+//				headline = Headline id:reducedRecordSummaryHeadline {
+//					subTitle = Field(DIALLEDTOPIC)
+//					title = Field(KEYWORD)
+//				}
+//				HorizontalLayout recordSummarySmallContentLayout {
+//					LayoutColumn recordSummarySmallContentLayoutColumn {
+//						minWidth = 200
+//						maxWidth = 320
+//						Group recordSummarySmallContentCustomerInfoGroup {
+//							Field(CUSTOMERSHORTINFO_LINK) {
+//								caption = CALLPARTNER
+//							}
+//						}
+//					}
+//					LayoutColumn recordSummarySmallContentLayoutStateColumn {
+//						minWidth = 200
+//						Group recordSummarySmallContentLayoutStateGroup {
+//							Field(STATE) {
+//								color = #D3E6FA
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+//		Parts parts {
+//			Part mainPart {
+//				caption = GENERAL_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout contentLayout {
+//					Group notes {
+//						caption = NOTES
+//						Field(NOTES2) {
+//							showCaption = false
+//						}
+//					}
+//					ZLayout mainLayout {
+//						Group details {
+//							caption = DETAILS
+//							Field(DIALLEDTOPIC)
+//							Field(URGENCY)
+//							Field(CATEGORY)
+//						}
+//						TagSelector tags {
+//						}
+//						PrimaryLinkedParentsList primaryLinks()
+//						Group typeStatus {
+//							caption = TYPE_STATUS
+//							Field(GWSTYPE)
+//							Field(GWSSTATUS)
+//						}
+//						Permissions permissions()
+//						EmbeddedList dossier {
+//							caption = DOSSIER
+//							datasource = dossierMD
+//						}
+//						ExtensionPoint defaultExtension {
+//							id = "record.default"
+//						}
+//						Group additionalInformation {
+//							caption = ADDITIONAL_INFORMATION
+//							ScriptedField insertInformation {
+//								caption = INSERT_INFORMATION_CAPTION
+//								expression = `
+//									import { getInsertInformation } from "smartdesign.base/additional-information";
+//									getInsertInformation($do);
+//								`
+//							}
+//							ScriptedField updateInformation {
+//								caption = UPDATE_INFORMATION_CAPTION
+//								expression = `
+//									import { getUpdateInformation } from "smartdesign.base/additional-information";
+//									getUpdateInformation($do);
+//								`
+//							}
+//						}
+//					}
+//				}
+//			}
+//			PartExtensionPoint defaultPartExtensionPoint {
+//				id = "record.part.default"
+//			}
+//		}
+//	}
+//
+//	state edit {
+//		Parts parts {
+//			Part mainPart {
+//				caption = GENERAL_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout contentLayout {
+//					Group keyword {
+//						caption = KEYWORD_GW
+//						Field(KEYWORD) {
+//							showCaption = false
+//						}
+//					}
+//					ZLayout mainLayout {
+//						Group callpartner {
+//							caption = CALLPARTNER
+//							LinkField(CUSTOMERSHORTINFO_LINK)
+//							Field(DIALLEDNUMBER)
+//						}
+//						Group pointInTime {
+//							caption = POINT_IN_TIME
+//							Field(START_DT)
+//							Field(END_DT)
+//							Field(GW_ALARMRELATIVE_EFFECTIVE)
+//						}
+//						Group details {
+//							caption = DETAILS
+//							Field(DIALLEDTOPIC)
+//							Field(URGENCY)
+//							Field(STATE)
+//							Field(CATEGORY)
+//						}
+//						TagSelector tags {
+//						}
+//						Group typeStatus {
+//							caption = TYPE_STATUS
+//							Field(GWSTYPE)
+//							Field(GWSSTATUS)
+//						}
+//						Permissions permissions()
+//						PrimaryLinkedParentsList primaryLinks()
+//						ExtensionPoint defaultExtension {
+//							id = "record.default"
+//						}
+//					}
+//					Group notes {
+//						caption = NOTES
+//						Field(NOTES2) {
+//							showCaption = false
+//						}
+//					}
+//				}
+//			}
+//			PartExtensionPoint defaultPartExtensionPoint {
+//				id = "record.part.default"
+//			}
+//		}
+//	}
+//}
+// ORIGINAL FORM GENERATED CONTENT END

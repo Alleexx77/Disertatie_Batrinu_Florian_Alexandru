@@ -1,0 +1,68 @@
+namespace smartdesign.lead
+
+extension smartdesign.lead.GWSLLEAD {
+	int CAS_BANT_B
+	int CAS_BANT_A
+	int CAS_BANT_N
+	int CAS_BANT_T
+	int CAS_LEAD_SCORE =
+	`($do.CAS_BANT_A.tryGet() + $do.CAS_BANT_B.tryGet() + $do.CAS_BANT_N.tryGet() + $do.CAS_BANT_T.tryGet())/4`
+	string CAS_STATUS {
+		validation +=
+		`export async function validateCasStatus(): Promise<Validation.Result> {\n    const value = $do.CAS_STATUS.get();\n    const bantB = $do.CAS_BANT_B.get();\n    const bantA = $do.CAS_BANT_A.get();\n    const bantN = $do.CAS_BANT_N.get();\n    const bantT = $do.CAS_BANT_T.get();\n    const strategicDecision = $do.CAS_STRATEGIC_DECISION.get();\n    const Motiv = $do.CAS_REASON.get();\n    const Detalii = $do.CAS_ADDITIONAL_DETAILS.get();\n    \n        if (value == \"Respins\") {\n            if (!Motiv) {\n        return Validation.error(\"Trebuie să introduceți un motiv pentru pierdere.\");\n                        }\n \n            if (!Detalii) {\n        return Validation.error(\"Trebuie să completați detaliile motivului pentru pierdere.\");\n                          }\n}\n\n        if (value === \"Convertit\"){\n         const allPositive = bantB > 50 && bantA > 50 && bantN > 50 && bantT > 50\n\n        if (!allPositive  && !strategicDecision) {\n            return Validation.error(\n                \"Statusul poate fi setat pe \'convertit\' doar dacă toate câmpurile BANT sunt > 50 sau dacă decizia strategică este bifată.\"\n            );\n        }\n        }\n\n        \n\n            return Validation.ok();\n}`
+	}
+	boolean CAS_STRATEGIC_DECISION
+	datetime CAS_FOLLOWUP_DATE
+	decimal CAS_TURNOVER
+	string CAS_PRIORITY
+	decimal CAS_BUDGET
+	string CAS_EMAIL
+	string CAS_INDUSTRY
+	string CAS_PHONE_NUMBER
+	datetime CAS_ESTIMATED_CONTRACT_DATE
+	string CAS_SOLUTION_OF_INTEREST
+	string CAS_ADDITIONAL_DETAILS
+	string CAS_REASON
+	string OWNERNAME
+	datetime CAS_CONVERSIONDATE
+	link CAR_LINK_LINK {
+		targetObjectType = BSPRODUCT
+		linkAttribute = "CAR_LINK"
+	}
+	string CAS_ESTIMATED_BUDGET_RANGE
+	string CAS_FINANCING_TYPE
+	string CAS_DOWN_PAYMENT
+	decimal CAS_MONTYHLY_RATE_ACCEPTED
+	string CAS_TRADE_IN_INTERESTED
+	string CAS_TRADE_IN_VEHICLE
+	decimal CAS_TRADE_IN_ESTIMATED_VALUE
+	string CURRENCYNAT as currency
+	string CAS_DECISION_MAKER
+	string CAS_BUYING_FOR
+	string CAS_COMPANY_PURCHASE
+	string CAS_COOWNER_APPROVAL_NEED
+	string CAS_PURCHASE_APPROVED
+	string CAS_REASON_FOR_PURCHASE
+	string CAS_MAIN_USAGE
+	string CAS_LEAD_TEMPERATURE
+	string CAS_PURCHASE_TIMELINE
+	string CAS_URGENCY
+	string CAS_TEST_DRIVE_INTERESTED
+	string CAS_SALES_RESPONSIBLE {
+		suggestions =
+		`export async function suggestBID(): Promise<string[]> {\n    const group = await Permission.Owner.fromName(\"Sales\", \"GROUP\");\n\n    if (group) {\n        const members = await group.members(\"USER\");\n        return members.map(m => m.name ?? m.toString());\n    } else {\n        const allUsers = await Permission.Owner.all(\"USER\");\n        return allUsers.map(u => u.name ?? u.toString());\n    }\n}`
+	}
+	datetime CAS_TEST_DRIVE_DATE
+	string CAS_TEST_DRIVE_ASSIGNED_TO =
+	`export async function computeCasTestDriveAssignedTo(): Promise<string |User> {\n    return $do.CAS_SALES_RESPONSIBLE.get();\n}`
+	boolean CAS_TEST_DRIVE_CONFIRMED
+	text CAS_TEST_DRIVE_NOTES
+	boolean CAS_TEST_DRIVE_REMINDER_CLIENT
+	boolean CAS_TEST_DRIVE_COMPLETED
+	string CAS_TEST_DRIVE_INTEREST_LEVEL
+	string CAS_TEST_DRIVE_PURCHASE_INT
+	text CAS_TEST_DRIVE_CUSTOMER_FB
+	text CAS_TEST_DRIVE_LIKED_MOST
+	text CAS_TEST_DRIVE_DISLIKED_MOST
+	decimal CAS_TEST_DRIVE_CONVERSION_PROB
+}

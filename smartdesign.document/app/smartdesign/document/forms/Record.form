@@ -1,0 +1,269 @@
+namespace smartdesign.document
+
+/* IMPORTANT: This is a generated file. Manual changes will disable automatic updates. */
+@Derived(sha1="cdaf5833c8f6dc3cb839ca7c94522fcb59e94f21")
+form Record {
+
+	context {
+		primary import do = DataObject(DOCUMENT) {
+			constraint = TYPE == "ARCHIVE"
+		}
+		docLink = LinkedDataObject(do) {
+			linkedBy = CAS_DOCOPP_LINK
+		}
+		dossierMD = DossierMassData()
+		recipientsMD = LinkMassData(DOCUMENT => ADDRESS)
+	}
+
+	events {
+		on edit += `export async function onEdit(): Promise<void> {\n    if ($do.isNew()) {\n        if ($docLink) {\n            $do.CAS_PMRESPONSIBLE.set($docLink.CAS_PMRESPONSIBLE.get());\n            const netMargin = $docLink.CAS_OFFERNETMARGIN.get();\n            $do.CAS_NETMARGIN.set(netMargin ? netMargin.toNumber() : 0);\n            const totalPrice = $docLink.CAS_OFFERTOTALPRICE.get();\n            $do.CAS_OFFEREDPRICE.set(totalPrice ? totalPrice.toNumber() : 0);\n        }\n    }\n}\n`
+	}
+
+	header = DefaultHeader {
+		title = DOCUMENT
+		actions = document_overwrite
+	}
+
+	state read {
+		Parts parts {
+			Part mainPart {
+				caption = GENERAL_PART_LABEL
+				enableJumpmarks = false
+				VerticalLayout contentLayout {
+					RecordSummary documentActionGroup {
+						showRecordTypeIcon = false
+						headline = Headline id:headlineDocumentActionGroup {
+							title = Field(KEYWORD)
+							subTitle = Field(DOCUMENTTYPEWITHSIZE)
+						}
+						Group wrappingDocumentActionGroup {
+							HorizontalLayout documentActionGroupMainLayout {
+								LayoutColumn documentActionGroupMainLayoutDocDateColumn {
+									minWidth = 200
+									maxWidth = 320
+									Group documentActionGroupMainGroup {
+										Field(GWSTYPE) {
+											color = #3F2915
+										}
+										Field(CAS_CONTRACTTYPOLOGY) {
+											color = #6E970A
+										}
+									}
+								}
+								LayoutColumn documentActionGroupMainLayoutValidateStartDateColumn {
+									minWidth = 200
+									maxWidth = 320
+									Group documentActionGroupMainLayoutValidateStartDateGroup {
+										Field(GWVALIDATESTARTDATE) {
+											color = #D6EEFF
+											autoHide = DISABLED
+										}
+										Field(CAS_SALESRESPONSIBLE)
+									}
+								}
+								LayoutColumn documentActionGroupMainLayoutValidateEndDateColumn {
+									minWidth = 200
+									Group documentActionGroupMainLayoutValidateEndDateGroup {
+										Field(GWVALIDATEENDDATE) {
+											color = #D6EEFF
+											autoHide = DISABLED
+										}
+										Field(CAS_PMRESPONSIBLE)
+									}
+								}
+							}
+							DocumentActions documentActions()
+						}
+					}
+					ZLayout mainLayout {
+						Group general {
+							caption = GENERAL
+							Field(GWAUTOVERSION)
+							Field(DOCNUMBER)
+							Field(CAS_CONTRACTOBJECT)
+							Field(CAS_BRIEFOUTCOME) {
+								autoHide = DISABLED
+							}
+							Field(CAS_SPECIALCLAUSES) {
+								autoHide = DISABLED
+							}
+							Field(GWDOCUMENTLANGUAGE)
+						}
+						Group typeStatus {
+							caption = TYPE_STATUS
+							Field(CATEGORY) {
+								autoHide = DISABLED
+							}
+							Field(GWSSTATUS) {
+								autoHide = DISABLED
+							}
+							Field(CAS_INDIRECTCOSTS) {
+								color = #BF4800
+								autoHide = DISABLED
+							}
+							Field(CAS_NETMARGIN) {
+								color = #006917
+								autoHide = DISABLED
+							}
+							Field(CAS_OFFEREDPRICE) {
+								color = #006B8A
+								autoHide = DISABLED
+							}
+						}
+						Group groupGeneratedId1 {
+							caption = GROUP_CAPTION_0
+							visibility = `export async function computeVisibility(): Promise<boolean> {\n    if ($do.GWSTYPE.get() === \'Customer Contract\' || $do.GWSTYPE.get() === \'Subco/associate Contract\') return true;\n    else return false;\n}`
+							Field(CAS_CONTRACTOBJECT) {
+								autoHide = DISABLED
+							}
+							Field(CAS_BRIEFOUTCOME) {
+								autoHide = DISABLED
+							}
+							Field(CAS_SALESRESPONSIBLE) {
+								autoHide = DISABLED
+							}
+							Field(CAS_PMRESPONSIBLE) {
+								autoHide = DISABLED
+							}
+							Field(CAS_COMMERCIALTERMS) {
+								autoHide = DISABLED
+							}
+							Field(CAS_SPECIALCLAUSES) {
+								autoHide = DISABLED
+							}
+							Field(CAS_CONTRACTTYPOLOGY) {
+								autoHide = DISABLED
+							}
+							Field(CAS_CONTCLASSIFIIEDINFO) {
+								autoHide = DISABLED
+							}
+						}
+						TagSelector tags {
+						}
+						PrimaryLinkedParentsList primaryLinks()
+						EmbeddedList dossier {
+							caption = DOSSIER
+							datasource = dossierMD
+						}
+						FormLetterRecipientCount recipients {
+							caption = RECIPIENTS
+						}
+						Group additionalInformation {
+							caption = ADDITIONAL_INFORMATION
+							Permissions permissions()
+							ScriptedField insertInformation {
+								caption = INSERT_INFORMATION_CAPTION
+								expression = `
+									import { getInsertInformation } from "smartdesign.base/additional-information";
+									getInsertInformation($do);
+								`
+							}
+							ScriptedField updateInformation {
+								caption = UPDATE_INFORMATION_CAPTION
+								expression = `
+									import { getUpdateInformation } from "smartdesign.base/additional-information";
+									getUpdateInformation($do);
+								`
+							}
+						}
+						DocumentVersionList versionList {
+						}
+						ExtensionPoint defaultExtension {
+							id = "record.default"
+						}
+					}
+					Group notes {
+						caption = NOTES
+						Field(NOTES2) {
+							showCaption = false
+						}
+					}
+				}
+			}
+			PartExtensionPoint defaultPartExtensionPoint {
+				id = "record.part.default"
+			}
+		}
+	}
+
+	state edit {
+		Parts parts {
+			Part mainPart {
+				caption = GENERAL_PART_LABEL
+				enableJumpmarks = false
+				VerticalLayout contentLayout {
+					Group keyword {
+						caption = KEYWORD
+						Field(KEYWORD) {
+							showCaption = false
+						}
+						Field(DOCNUMBER)
+						LinkField(CAS_DOCOPP_LINK)
+					}
+					ZLayout mainLayout {
+						Group general {
+							caption = GENERAL
+							Field(GWSTYPE)
+							Field(GWSSTATUS)
+							Field(CATEGORY)
+							Field(GWDOCUMENTLANGUAGE)
+						}
+						Group times {
+							caption = TIMES
+							Field(DOCDATE)
+							Field(GWVALIDATESTARTDATE)
+							Field(GWVALIDATEENDDATE)
+						}
+						Group groupGeneratedId1 {
+							caption = GROUP_CAPTION_0
+							visibility = `export async function computeVisibility(): Promise<boolean> {\n    if ($do.GWSTYPE.get() === \'Customer Contract\' || $do.GWSTYPE.get() === \'Subco/associate Contract\'|| $do.GWSTYPE.get() === \'Contract client\' || $do.GWSTYPE.get() === \'Contract subco/asociat\') return true;\n    else return false;\n}`
+							Field(CAS_CONTRACTCATEGORY)
+							Field(CAS_CONTRACTOBJECT)
+							Field(CAS_CONTRACTTYPOLOGY)
+							Field(CAS_SALESRESPONSIBLE)
+							Field(CAS_PMRESPONSIBLE)
+							Field(CAS_OFFEREDPRICE)
+							Field(CAS_INDIRECTCOSTS)
+							Field(CAS_NETMARGIN)
+							Field(CAS_CONTCLASSIFIIEDINFO)
+						}
+						Group groupGeneratedId2 {
+							caption = GROUP_CAPTION_0
+							visibility = `export async function computeVisibility(): Promise<boolean> {\n    if ($do.GWSTYPE.get() === \'Customer Contract\' || $do.GWSTYPE.get() === \'Subco/associate Contract\'|| $do.GWSTYPE.get() === \'Contract client\'|| $do.GWSTYPE.get() === \'Contract subco/asociat\') return true;\n    else return false;\n}`
+							TextField(CAS_BRIEFOUTCOME)
+							TextField(CAS_COMMERCIALTERMS)
+							TextField(CAS_SPECIALCLAUSES)
+						}
+						ExtensionPoint defaultExtension {
+							id = "record.default"
+						}
+						Group typeStatus {
+							caption = TYPE_STATUS
+							Field(CATEGORY)
+							Field(GWSSTATUS)
+							Field(CAS_SALESRESPONSIBLE)
+							Field(CAS_PMRESPONSIBLE)
+						}
+						TagSelector tags {
+						}
+						Permissions permissions {
+						}
+						FormLetterRecipientCount recipients {
+							caption = RECIPIENTS
+						}
+						PrimaryLinkedParentsList primaryLinks()
+					}
+					Group notes {
+						caption = NOTES
+						Field(NOTES2) {
+							showCaption = false
+						}
+					}
+				}
+			}
+			PartExtensionPoint defaultPartExtensionPoint {
+				id = "record.part.default"
+			}
+		}
+	}
+}

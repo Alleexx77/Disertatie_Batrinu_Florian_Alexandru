@@ -1,0 +1,8 @@
+namespace custom.myfirstwebapp
+
+flow {
+	on initialization => OpenWebApp
+	internal {
+		on OpenWebApp => HTMLPage
+	}
+}

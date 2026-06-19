@@ -1,0 +1,226 @@
+namespace smartdesign.product
+
+/* IMPORTANT: This is a generated file. Manual changes will disable automatic updates. */
+@Derived(sha1="b0cae912ee37a03ccf3df1f2f1fbffd699fa08c3")
+form Record {
+
+	context {
+		primary import do = DataObject(BSPRODUCT)
+		dossierMD = DossierMassData()
+	}
+
+	events {
+		on edit += `export async function onEdit(): Promise<void> {\n    if ($do.isNew()) {\n        $do.GWSECTION.set(\'Online\');\n    } $do.GWSECTION.set(\'Online\');\n}`
+	}
+
+	header = DefaultHeader {
+		title = PRODUCT
+	}
+
+	state read {
+		Parts parts {
+			Part mainPart {
+				caption = GENERAL_PART_LABEL
+				enableJumpmarks = false
+				VerticalLayout contentLayout {
+					RecordSummary recordSummary {
+						showRecordTypeIcon = true
+						headline = Headline id:recordSummaryHeadline {
+							title = ScriptedField id:businessCardTitle {
+								expression = `Arrays.join([$do.BPRNUMBER.tryGet(), $do.KEYWORD.tryGet()], " - ")`
+							}
+							subTitle = TextField(DESCRIPTION)
+						}
+					}
+					ZLayout mainLayout {
+						Group general {
+							caption = GENERAL
+							Field(CAS_STOCK_ID)
+							Field(CAS_VIN)
+							Field(CAS_BRAND)
+							Field(CAS_MODEL)
+							Field(CAS_CONDITION)
+							Field(CAS_EXTERIOR_COLOR)
+							Field(CAS_INTERIOR_COLOR)
+							Field(CAS_INTERIOR_MATERIAL)
+							Field(CAS_DRIVE_TYPE)
+						}
+						Group description {
+							caption = GROUP_CAPTION_2
+							TextField(CAS_YEAR)
+							TextField(CAS_MILEAGE)
+							Field(CAS_TRANSMISSION)
+							TextField(CAS_FUEL_TYPE)
+							Field(CAS_ENGINE_CAPACITY)
+							Field(CAS_HORSEPOWER)
+							Field(CAS_EMISSION_STANDARD)
+						}
+						Group price {
+							caption = PRICE
+							Field(PRICE)
+							Field(PURCHASEPRICE) {
+								autoHide = DISABLED
+							}
+							Field(CAS_MINIMUM_ACCEPTED_PRICE)
+							Field(CAS_WARRANTY_AVAILABLE)
+							Field(ITDACTIVE) {
+								autoHide = DISABLED
+							}
+							LinkField(PRODUCTGROUP_LINK)
+						}
+						Group time {
+							caption = TIME
+							Field(AVAILABLEFROM)
+							Field(AVAILABLEUNTIL)
+						}
+						TagSelector tagSelector {
+						}
+						Group tags {
+							caption = TAGS
+							Field(NOTES) {
+								showCaption = false
+							}
+						}
+						EmbeddedList dossier {
+							caption = DOSSIER
+							datasource = dossierMD
+						}
+						ExtensionPoint defaultExtension {
+							id = "record.default"
+						}
+						Group additionalInformation {
+							caption = ADDITIONAL_INFORMATION
+							ScriptedField insertInformation {
+								caption = INSERT_INFORMATION_CAPTION
+								expression = `
+									import { getInsertInformation } from "smartdesign.base/additional-information";
+									getInsertInformation($do);
+								`
+							}
+							ScriptedField updateInformation {
+								caption = UPDATE_INFORMATION_CAPTION
+								expression = `
+									import { getUpdateInformation } from "smartdesign.base/additional-information";
+									getUpdateInformation($do);
+								`
+							}
+						}
+					}
+					Group notes {
+						caption = NOTES
+						Field(NOTES2) {
+							showCaption = false
+						}
+					}
+				}
+			}
+			PartExtensionPoint defaultPartExtensionPoint {
+				id = "record.part.default"
+			}
+		}
+	}
+
+	state edit {
+		Parts parts {
+			Part mainPart {
+				caption = GENERAL_PART_LABEL
+				enableJumpmarks = false
+				VerticalLayout contentLayout {
+					Group keyword {
+						caption = KEYWORD
+						Field(KEYWORD) {
+							showCaption = false
+						}
+						Field(BPRNUMBER)
+						Field(ITDACTIVE)
+						Field(PRODMANAGER)
+					}
+					ZLayout mainLayout {
+						Group groupGeneratedId1 {
+							caption = GENERAL
+							Field(CAS_STOCK_ID)
+							Field(CAS_VIN)
+							Field(CAS_BRAND)
+							Field(CAS_MODEL)
+							Field(CAS_EXTERIOR_COLOR)
+							Field(CAS_INTERIOR_COLOR)
+							Field(CAS_INTERIOR_MATERIAL)
+							Field(CAS_GENERATION)
+							Field(CAS_DRIVE_TYPE)
+							Field(CAS_CONDITION)
+						}
+						Group groupGeneratedId2 {
+							caption = GROUP_CAPTION_0
+							Field(CAS_YEAR)
+							Field(CAS_MILEAGE)
+							Field(CAS_TRANSMISSION)
+							Field(CAS_FUEL_TYPE)
+							Field(CAS_ENGINE_CAPACITY)
+							Field(CAS_HORSEPOWER)
+							Field(CAS_EMISSION_STANDARD)
+						}
+						Group price {
+							caption = PRICE
+							Field(CURRENCYNAT)
+							Field(PRICE)
+							Field(PURCHASEPRICE)
+							Field(CAS_MINIMUM_ACCEPTED_PRICE)
+							Field(CAS_WARRANTY_AVAILABLE)
+							Field(QUANTITYUNIT)
+						}
+						Group groupGeneratedId3 {
+							caption = GROUP_CAPTION_1
+							Field(CAS_ACCIDENT_FREE)
+							Field(CAS_HISTORY_AVAILABLE)
+							TextField(DESCRIPTION)
+						}
+						Group general {
+							caption = GENERAL
+							Field(CAS_RESPDEPARTMENT)
+							Field(PRODMANAGERDEPUTY)
+							Field(GWSECTION) {
+								visibility = false
+							}
+						}
+						Group product {
+							caption = PRODUCT
+							LinkField(PRODUCTGROUP_LINK)
+						}
+						Group time {
+							caption = TIME
+							Field(AVAILABLEFROM)
+							Field(AVAILABLEUNTIL)
+						}
+						TagSelector tagSelector {
+						}
+						Group tags {
+							caption = TAGS
+							Field(NOTES) {
+								showCaption = false
+							}
+						}
+						Permissions permissions {
+						}
+						Group description {
+							caption = DESCRIPTION
+							TextField(TECHNICALDESCRIPTION)
+							TextField(CUSTOMERBENEFIT)
+						}
+						ExtensionPoint defaultExtension {
+							id = "record.default"
+						}
+					}
+					Group notes {
+						caption = NOTES
+						Field(NOTES2) {
+							showCaption = false
+						}
+					}
+				}
+			}
+			PartExtensionPoint defaultPartExtensionPoint {
+				id = "record.part.default"
+			}
+		}
+	}
+}

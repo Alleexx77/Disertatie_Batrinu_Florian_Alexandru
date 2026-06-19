@@ -1,0 +1,10 @@
+namespace custom.projectchangehistory
+
+commands {
+	command newProjectchangehistory uses new {
+		typeToCreate = PROJECTCHANGEHISTORY
+	}
+	command newLinkedProjectchangehistory uses new_linked {
+		newCommand = newProjectchangehistory
+	}
+}

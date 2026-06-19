@@ -1,0 +1,11 @@
+namespace smartdesign.serviceagreement
+
+extension smartdesign.serviceagreement.ITDSA {
+	text CAS_DETALII_SLA
+	string CAS_STATUS_CONTRACT
+	string CAS_RESPONSABIL_VANZARI as user
+	datetime CAS_DATA_START_CONTRACT
+	datetime CAS_DATA_END_CONTRACT
+	string CAS_TYPE
+	string CAS_SERVICE_LEVEL
+}

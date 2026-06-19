@@ -1,0 +1,6 @@
+!namespace smartdesign.todo
+!language-extension RO
+
+FIELD_CAPTION_0 = Responsabil de executie
+!override
+TODOOWNER = Detalii executie

@@ -1,0 +1,4 @@
+!namespace smartdesign.document
+!language-extension RO
+
+CMD_LBL_NEW_FAQ = FAQ nou

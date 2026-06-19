@@ -1,0 +1,7 @@
+namespace smartdesign.base
+
+@AppDesignerCompatible
+widget companyStructureWidget extends WebWidget {
+	@Scriptable
+	string gguid
+}

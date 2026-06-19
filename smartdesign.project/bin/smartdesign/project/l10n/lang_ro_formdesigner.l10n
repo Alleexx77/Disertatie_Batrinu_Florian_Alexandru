@@ -1,0 +1,13 @@
+!namespace smartdesign.project
+!language-extension RO
+
+!override
+PROJECT_STATUS = Persoane responsabile
+PART_CAPTION = Indicatori financiari
+METRIC_CAPTION_0 = Valoare totala facturata
+METRIC_CAPTION = Valoare facturata planificata
+PART_CAPTION_2 = Istoric Modificari Proiect
+EMBEDDEDLIST_EXTENDEDLISTENTRYCAPTION_0 = Modificari Milestone
+EMBEDDEDLIST_CAPTION_0 = Modificari Milestones
+LINK_LIST_CAPTION = Milestones
+FIELD_CAPTION_0 = Responsabil Proiect

@@ -1,0 +1,167 @@
+namespace smartdesign.email
+
+/* IMPORTANT: This is a generated file. Manual changes will disable automatic updates. */
+@Derived(sha1="f85422735951fa89076d88850183df6e788f3869")
+overlay form Record {
+
+	overlay state ^edit {
+		.Group notes {
+			Field(ANSWERDATE) last
+		}
+	}
+}
+// ORIGINAL FORM GENERATED CONTENT START
+//namespace smartdesign.email
+//
+//form Record {
+//
+//	context {
+//		primary import do = DataObject(EMAILSTORE)
+//		dossierMD = DossierMassData()
+//	}
+//
+//	header = DefaultHeader {
+//		title = EMAIL
+//	}
+//
+//	state read {
+//		fixedContent = ComponentSwitcher id:componentSwitcher {
+//			^content = RecordSummary id:recordSummaryMain {
+//				showRecordTypeIcon = true
+//				headline = Headline id:headlineMain {
+//					title = Field(SUBJECT)
+//					subTitle = Field(XFROM)
+//				}
+//				HorizontalLayout headlineMainLayout {
+//					LayoutColumn headlineMainLayoutGeneralColumn {
+//						minWidth = 200
+//						maxWidth = 440
+//						Group general {
+//							Field(SUBJECT)
+//							Field(SENDDATE) {
+//								caption = SEND_DATE
+//							}
+//						}
+//					}
+//					LayoutColumn headlineMainLayoutSenderDetailColumn {
+//						minWidth = 200
+//						maxWidth = 440
+//						Group headlineMainLayoutSenderDetailGroup {
+//							MailField(XFROM) {
+//								iconName = "platform:field/sender"
+//							}
+//							MailField(XTO) {
+//								iconName = "platform:field/arrow"
+//							}
+//							MailField(XCC)
+//						}
+//					}
+//					LayoutColumn headlineMainLayoutMiscDetailColumn {
+//						minWidth = 200
+//						Group headlineMainLayoutMiscDetailGroup {
+//							Field(EMAILSIZE)
+//							Field(HASATTACHMENTS)
+//							Field(CATEGORY)
+//						}
+//					}
+//				}
+//			}
+//			smallContent = RecordSummary id:recordSummaryReduced {
+//				headline = Headline id:headlineReduced {
+//					title = Field(SUBJECT)
+//					subTitle = Field(XFROM)
+//				}
+//			}
+//		}
+//		Parts parts {
+//			Part mainPart {
+//				caption = GENERAL_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout contentLayout {
+//					Group body {
+//						caption = BODY
+//						Field(BODY) {
+//							showCaption = false
+//						}
+//						actions = email_summary
+//					}
+//					Group notes {
+//						caption = NOTES
+//						Field(NOTES2) {
+//							showCaption = false
+//						}
+//					}
+//					ZLayout mainLayout {
+//						EmailAttachmentList attachments {
+//							caption = ATTACHMENTS
+//						}
+//						TagSelector tags {
+//						}
+//						Permissions permissions()
+//						PrimaryLinkedParentsList primaryLinks()
+//						EmbeddedList dossier {
+//							caption = DOSSIER
+//							datasource = dossierMD
+//						}
+//						ExtensionPoint defaultExtension {
+//							id = "record.default"
+//						}
+//						Group additionalInformation {
+//							caption = ADDITIONAL_INFORMATION
+//							ScriptedField insertInformation {
+//								caption = INSERT_INFORMATION_CAPTION
+//								expression = `
+//									import { getInsertInformation } from "smartdesign.base/additional-information";
+//									getInsertInformation($do);
+//								`
+//							}
+//							ScriptedField updateInformation {
+//								caption = UPDATE_INFORMATION_CAPTION
+//								expression = `
+//									import { getUpdateInformation } from "smartdesign.base/additional-information";
+//									getUpdateInformation($do);
+//								`
+//							}
+//						}
+//					}
+//				}
+//			}
+//			PartExtensionPoint defaultPartExtensionPoint {
+//				id = "record.part.default"
+//			}
+//		}
+//	}
+//
+//	state edit {
+//		Parts parts {
+//			Part mainPart {
+//				caption = GENERAL_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout contentLayout {
+//					Group notes {
+//						caption = NOTES
+//						Field(NOTES2) {
+//							showCaption = false
+//						}
+//					}
+//					ZLayout mainLayout {
+//						EmailAttachmentList attachments {
+//							caption = ATTACHMENTS
+//						}
+//						TagSelector tags {
+//						}
+//						Permissions permissions()
+//						PrimaryLinkedParentsList primaryLinks()
+//						ExtensionPoint defaultExtension {
+//							id = "record.default"
+//						}
+//					}
+//				}
+//			}
+//			PartExtensionPoint defaultPartExtensionPoint {
+//				id = "record.part.default"
+//			}
+//		}
+//	}
+//}
+// ORIGINAL FORM GENERATED CONTENT END

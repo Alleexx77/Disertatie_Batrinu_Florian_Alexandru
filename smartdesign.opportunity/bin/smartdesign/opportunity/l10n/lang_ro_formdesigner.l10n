@@ -1,0 +1,47 @@
+!namespace smartdesign.opportunity
+!language-extension RO
+
+PART_CAPTION = Oportunitate Castigata
+PART_CAPTION_2 = Analiza win-loss
+!override
+VOLUME = Oferta & Volum
+!override
+ACQUISITION = Detalii oportunitate
+GROUP_CAPTION_0 = Informatii suplimentare
+GROUP_CAPTION_1 = Detalii aprobari
+GROUP_CAPTION_2 = Date de sincronizare
+PART_CAPTION_3 = Sincronizare NAV
+PART_CAPTION_4 = Introducere Detalii Contract
+LINKFIELD_CAPTION_0 = Contract
+PART_CAPTION_5 = Parteneri
+PART_CAPTION_6 = Competitori
+PART_CAPTION_7 = Initiere flux de aprobare
+PART_CAPTION_8 = Legare Proiect
+LINK_LIST_CAPTION = Oferte Oportunitate
+PART_CAPTION_9 = Detalii Aprobare Oferte
+GROUP_CAPTION_3 = Analiza Win-Loss
+PART_CAPTION_10 = Echipa Oportunitate
+SCRIPTEDFIELD_CAPTION_0 = Sales Offer
+SCRIPTEDFIELD_CAPTION_1 = Leasing
+SCRIPTEDFIELD_CAPTION_2 = Net Margin
+LINKLISTGROUPEDBYROLES_CAPTION_0 = Documents
+LINK_LIST_CAPTION_2 = Leasing Documents
+LINKFIELD_CAPTION_1 = Lead
+FIELD_CAPTION_0 = Manager
+FIELD_CAPTION_1 = Responsabil
+FIELD_CAPTION_2 = Responsabil BID and Leasing
+FIELD_CAPTION_3 = Specialist Trade In
+FIELD_CAPTION_4 = Initiaza Flux Aprobare
+PART_CAPTION_11 = Leasing
+GROUP_CAPTION_4 = Leasing Company
+FIELD_CAPTION_5 = Oferta Tehnica Aprobata
+FIELD_CAPTION_6 = Oferta Comerciala Aprobata
+FIELD_CAPTION_7 = Trade In Approved
+SCRIPTEDFIELD_CAPTION_3 = Trade In Responsible Approval
+SCRIPTEDFIELD_CAPTION_4 = Trade In Manager Approval
+FIELD_CAPTION_8 = Trade In Manager Approved
+FIELD_CAPTION_9 = Trade In Estimated Value
+LINKFIELD_CAPTION_2 = Oferta comerciala
+GROUP_CAPTION_5K = Lead Info
+FIELD_CAPTION_10 = Lost Reason
+FIELD_CAPTION_11 = Won/Loss

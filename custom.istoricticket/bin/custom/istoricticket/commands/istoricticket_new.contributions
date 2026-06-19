@@ -1,0 +1,14 @@
+namespace custom.istoricticket
+
+contributions {
+	command(newIstoricticket) {
+		target = id(custom.istoricticket)
+		context = MassData(ISTORICTICKET)
+		pointId = "newMenu"
+	}
+	command(newLinkedIstoricticket) {
+		target = id(custom.istoricticket)
+		context = MassData(ISTORICTICKET)
+		pointId = "newLinkedMenu"
+	}
+}

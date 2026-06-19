@@ -1,0 +1,286 @@
+namespace smartdesign.document
+
+/* IMPORTANT: This is a generated file. Manual changes will disable automatic updates. */
+@Derived(sha1="0f52eb818d4519280b717cb74bdb6c6708d0b31f")
+overlay form Memo {
+	context {
+		ticketLink = LinkedDataObject(do) {
+			linkedBy = FAQDOC_LINK
+		}
+	}
+
+	events {
+		on edit += `export async function onEdit(): Promise<void> {\n    if ($do.isNew()) {\n        if ($ticketLink) {\n            $do.GWSTYPE.set(\'FAQ\');\n            $do.GWSSTATUS.set(\'Public (displayed in Helpdesk online)\');\n            $do.GWVALIDATESTARTDATE.set(new Date);\n            $do.KEYWORD.set(\'FAQ ticket - \'+$ticketLink.TSKNUMBER.get());\n            $do.GWSPRODUCT.set($ticketLink.GWSPRODUCT.get());\n            $do.ITDPROBLEM.set($ticketLink.ITDPROBLEM.get());\n            $do.ITDSOLUTION.set($ticketLink.ITDSOLUTION.get());\n        }\n    }\n}`
+	}
+
+	overlay state ^read {
+		.VerticalLayout contentLayout {
+			move .HorizontalLayout wrappingNotesLayout last
+		}
+		.Headline recordSummaryHeadline {
+			FieldBadge fieldBadgeGeneratedId1 {
+				ref = DOCNUMBER
+				color = #666666
+			} first
+		}
+		.Group number {
+			delete .Field(DOCNUMBER)
+			caption = smartdesign.base.GENERAL
+			HorizontalLayout horizontalLayoutGeneratedId1 {
+				LayoutColumn layoutColumnGeneratedId1 {
+					minWidth = 100
+					Group groupGeneratedId1 {
+						Field(GWSTYPE)
+					}
+				}
+				LayoutColumn layoutColumnGeneratedId2 {
+					minWidth = 100
+					Group groupGeneratedId2 {
+						Field(GWVALIDATESTARTDATE)
+					}
+				}
+			} first
+			Field(GWSSTATUS) first
+			Field(GWSPRODUCT) first
+		}
+		after .Group number {
+			Group groupGeneratedId3 {
+				caption = GROUP_CAPTION_1
+				TextField(ITDPROBLEM)
+				TextField(ITDSOLUTION)
+			}
+			move .Group additionalInformation
+		}
+		delete .HorizontalLayout recordSummaryMainLayout
+		.Group additionalInformation {
+			delete .Field(CATEGORY)
+		}
+		delete .Group typeStatus
+	}
+
+	overlay state ^edit {
+		after .Part mainPart {
+			Part partGeneratedId1 {
+				enableJumpmarks = false
+				caption = PART_CAPTION
+				visibility =
+				`export async function computeVisibility(): Promise<boolean> {\n    if (user.name === \'ADMINISTRATOR\') {\n        return true;\n    }\n    return false;\n}`
+				VerticalLayout verticalLayoutGeneratedId1 {
+					ZLayout zLayoutGeneratedId1 {
+						Group groupGeneratedId1 {
+							LinkField(FAQDOC_LINK)
+							Field(DOCNUMBER)
+						}
+					}
+				}
+			}
+		}
+		.VerticalLayout contentLayout {
+			move .Group notes last
+		}
+		.Group number {
+			delete .Field(DOCNUMBER)
+			caption = smartdesign.base.GENERAL
+			HorizontalLayout horizontalLayoutGeneratedId1 {
+				LayoutColumn layoutColumnGeneratedId1 {
+					minWidth = 50
+					Group groupGeneratedId2 {
+						Field(GWSTYPE)
+					}
+				}
+				LayoutColumn layoutColumnGeneratedId2 {
+					minWidth = 50
+					Group groupGeneratedId3 {
+						Field(GWVALIDATESTARTDATE)
+					}
+				}
+			} first
+			Field(GWSSTATUS) first
+			Field(GWSPRODUCT) first
+		}
+		after .Group number {
+			Group groupGeneratedId4 {
+				caption = GROUP_CAPTION_1
+				visibility =
+				`export async function computeVisibility(): Promise<boolean> {\n    if ($do.GWSTYPE.get() === \'FAQ\') {\n        return true;\n    }\n    return false;\n}`
+				TextField(ITDPROBLEM)
+				TextField(ITDSOLUTION)
+			}
+		}
+		after .Group catchphrases {
+			move .Permissions permissions
+		}
+		delete .Group typeStatus
+		.Group times {
+			delete .Field(GWVALIDATESTARTDATE)
+		}
+		>ZLayout zLayoutGeneratedId1 {
+			move .Group times last
+		}
+	}
+}
+// ORIGINAL FORM GENERATED CONTENT START
+//namespace smartdesign.document
+//
+//form Memo {
+//
+//	context {
+//		primary import do = DataObject(DOCUMENT)
+//		dossierMD = DossierMassData()
+//	}
+//
+//	header = DefaultHeader {
+//		title = MEMO
+//	}
+//
+//	state read {
+//		Parts parts {
+//			Part mainPart {
+//				caption = GENERAL_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout contentLayout {
+//					RecordSummary recordSummary {
+//						showRecordTypeIcon = true
+//						headline = Headline id:recordSummaryHeadline {
+//							title = Field(KEYWORD)
+//							subTitle = Field(DOCDATE)
+//						}
+//						HorizontalLayout recordSummaryMainLayout {
+//							LayoutColumn recordSummaryMainLayoutStartDateColumn {
+//								minWidth = 200
+//								maxWidth = 320
+//								Group recordSummaryMainLayoutStartDateGroup {
+//									Field(GWVALIDATESTARTDATE)
+//								}
+//							}
+//							LayoutColumn recordSummaryMainLayoutEndDateColumn {
+//								minWidth = 200
+//								Group recordSummaryMainLayoutEndDateGroup {
+//									Field(GWVALIDATEENDDATE)
+//								}
+//							}
+//						}
+//					}
+//					HorizontalLayout wrappingNotesLayout {
+//						LayoutColumn notesLayoutColumn {
+//							Group notes {
+//								caption = MEMO
+//								Field(NOTES2) {
+//									showCaption = false
+//								}
+//							}
+//						}
+//					}
+//					ZLayout mainLayout {
+//						Group number {
+//							caption = NUMBER
+//							Field(DOCNUMBER)
+//						}
+//						TagSelector tags {
+//						}
+//						Permissions permissions {
+//						}
+//						Group typeStatus {
+//							caption = TYPE_STATUS
+//							Field(GWSTYPE)
+//							Field(GWSSTATUS)
+//						}
+//						Group catchphrases {
+//							caption = CATCHPHRASES
+//							Field(NOTES) {
+//								showCaption = false
+//							}
+//						}
+//						PrimaryLinkedParentsList primaryLinks()
+//						EmbeddedList dossier {
+//							caption = DOSSIER
+//							datasource = dossierMD
+//						}
+//						ExtensionPoint defaultExtension {
+//							id = "record.default"
+//						}
+//						Group additionalInformation {
+//							caption = ADDITIONAL_INFORMATION
+//							ScriptedField insertInformation {
+//								caption = INSERT_INFORMATION_CAPTION
+//								expression = `
+//									import { getInsertInformation } from "smartdesign.base/additional-information";
+//									getInsertInformation($do);
+//								`
+//							}
+//							ScriptedField updateInformation {
+//								caption = UPDATE_INFORMATION_CAPTION
+//								expression = `
+//									import { getUpdateInformation } from "smartdesign.base/additional-information";
+//									getUpdateInformation($do);
+//								`
+//							}
+//							Field(CATEGORY)
+//						}
+//					}
+//				}
+//			}
+//			PartExtensionPoint defaultPartExtensionPoint {
+//				id = "record.part.default"
+//			}
+//		}
+//	}
+//
+//	state edit {
+//		Parts parts {
+//			Part mainPart {
+//				caption = GENERAL_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout contentLayout {
+//					Group keyword {
+//						caption = KEYWORD
+//						Field(KEYWORD) {
+//							showCaption = false
+//						}
+//					}
+//					Group notes {
+//						caption = NOTES
+//						Field(NOTES2) {
+//							showCaption = false
+//						}
+//					}
+//					ZLayout mainLayout {
+//						Group number {
+//							caption = NUMBER
+//							Field(DOCNUMBER)
+//						}
+//						Group times {
+//							caption = TIMES
+//							Field(DOCDATE)
+//							Field(GWVALIDATESTARTDATE)
+//							Field(GWVALIDATEENDDATE)
+//						}
+//						TagSelector tags {
+//						}
+//						Permissions permissions()
+//						Group typeStatus {
+//							caption = TYPE_STATUS
+//							Field(GWSTYPE)
+//							Field(GWSSTATUS)
+//						}
+//						Group catchphrases {
+//							caption = CATCHPHRASES
+//							Field(NOTES) {
+//								showCaption = false
+//							}
+//						}
+//						PrimaryLinkedParentsList primaryLinks()
+//						ExtensionPoint defaultExtension {
+//							id = "record.default"
+//						}
+//					}
+//				}
+//			}
+//			PartExtensionPoint defaultPartExtensionPoint {
+//				id = "record.part.default"
+//			}
+//		}
+//	}
+//}
+//
+// ORIGINAL FORM GENERATED CONTENT END

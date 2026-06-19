@@ -1,0 +1,35 @@
+namespace custom.opportunitylineitem
+
+form Search {
+
+	context {
+		primary searchMD = DataObjectMassData(OPPORTUNITYLINEITEM)
+		lastUsedMD = LastUsedMassData(OPPORTUNITYLINEITEM)
+		favoriteMD = DataObjectMassData(OPPORTUNITYLINEITEM)
+	}
+
+	header = DefaultHeader {
+		title = OPPORTUNITYLINEITEM_PLURAL
+		contributionPoints = { }
+	}
+
+	state read {
+		VerticalLayout contentLayout {
+			SearchList searchList {
+				caption = OPPORTUNITYLINEITEM_PLURAL
+				datasource = searchMD
+			}
+			FavoritesList favorites {
+				caption = FAVORITES
+				datasource = favoriteMD
+			}
+			EmbeddedList recentlyUsed {
+				caption = RECENTLY_USED
+				datasource = lastUsedMD
+			}
+			ViewsList viewsList {
+				objectTypeViews = OPPORTUNITYLINEITEM
+			}
+		}
+	}
+}

@@ -1,0 +1,24 @@
+namespace smartdesign.project
+
+extension smartdesign.project.PROJECT {
+	int CAS_BUDGETEDVALUE
+	int CAS_INVOICEDVALUE
+	string CAS_SALESREPONSABLE {
+		suggestions =
+		`export async function suggestPresals(): Promise<string[]> {\n    const group = await Permission.Owner.fromName(\"Sales\", \"GROUP\");\n\n    if (group) {\n        const members = await group.members(\"USER\");\n        return members.map(m => m.name ?? m.toString());\n    } else {\n        const allUsers = await Permission.Owner.all(\"USER\");\n        return allUsers.map(u => u.name ?? u.toString());\n    }\n}`
+	}
+	string CAS_LINKPROIECTNAV
+	link CAS_PRJOPP_LINK {
+		targetObjectType = GWOPPORTUNITY
+		linkAttribute = "CAS_PRJOPP"
+	}
+	link CAS_OPPROJ_LINK {
+		targetObjectType = GWOPPORTUNITY
+		linkAttribute = "CAS_OPPROJ"
+	}
+	int CAS_TOT_PLANNEDFORINVOICE
+	override PROJECTDEPUTY {
+		suggestions =
+		`export async function suggestPresals(): Promise<string[]> {\n    const group = await Permission.Owner.fromName(\"Sales\", \"GROUP\");\n\n    if (group) {\n        const members = await group.members(\"USER\");\n        return members.map(m => m.name ?? m.toString());\n    } else {\n        const allUsers = await Permission.Owner.all(\"USER\");\n        return allUsers.map(u => u.name ?? u.toString());\n    }\n}`
+	}
+}

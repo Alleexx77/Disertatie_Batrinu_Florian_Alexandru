@@ -1,0 +1,361 @@
+namespace smartdesign.productusage
+
+/* IMPORTANT: This is a generated file. Manual changes will disable automatic updates. */
+@Derived(sha1="e13b5f180488779d88d95bdd9f8ea0a9bd92c1d7")
+overlay form Record {
+
+	events {
+		on edit += `export async function onEdit(): Promise<void> {\n    if ($do.isNew()) {\n        if ($serviceAgreement) {\n            $do.MAINTENANCESTATUS.set($serviceAgreement.MAINTENANCESTATUS.get());\n            $do.MAINTENANCESTART.set($serviceAgreement.MAINTENANCESTART.get());\n            $do.MAINTENANCEEND.set($serviceAgreement.MAINTENANCEEND.get());\n        }\n    }\n}`
+		on change(CAS_SERVICE_INTERVAL) += `export async function onChangeCasServiceInterval(): Promise<void> {\n    const value = $do.CAS_SERVICE_INTERVAL.get();\n    if (value) {\n        if ($do.CAS_GENERARE_TICKETE.get() === null || $do.CAS_GENERARE_TICKETE.get() === \'\') {\n            if ($do.CAS_START_GARANTIE_CLIENT.get() != null && $do.CAS_END_GARANTIE_CLIENT.get() != null) {\n                $do.CAS_GENERARE_TICKETE.set(\'Da\');\n            }\n        }\n    }\n}`
+		on change(CAS_START_GARANTIE_CLIENT) += `export async function onChangeCasStartGarantieClient(): Promise<void> {\n    const value = $do.CAS_START_GARANTIE_CLIENT.get();\n    if (value) {\n        if ($do.CAS_GENERARE_TICKETE.get() === null || $do.CAS_GENERARE_TICKETE.get() === \'\') {\n            if ($do.CAS_SERVICE_INTERVAL.get() != null && $do.CAS_END_GARANTIE_CLIENT.get() != null) {\n                $do.CAS_GENERARE_TICKETE.set(\'Da\');\n            }\n        }\n    }\n}`
+		on change(CAS_END_GARANTIE_CLIENT) += `export async function onChangeCasEndGarantieClient(): Promise<void> {\n    const value = $do.CAS_END_GARANTIE_CLIENT.get();\n    if (value) {\n        if ($do.CAS_GENERARE_TICKETE.get() === null || $do.CAS_GENERARE_TICKETE.get() === \'\') {\n            if ($do.CAS_START_GARANTIE_CLIENT.get() != null && $do.CAS_SERVICE_INTERVAL.get() != null) {\n                $do.CAS_GENERARE_TICKETE.set(\'Da\');\n            }\n        }\n    }\n}`
+	}
+
+	overlay state ^read {
+		after .Part mainPart {
+			Part partGeneratedId1 {
+				enableJumpmarks = false
+				caption = PART_CAPTION
+				visibility =
+				`export async function computeVisibility(): Promise<boolean> {\n    if (user.name === \'ADMINISTRATOR\') {\n        return true;\n    }\n    return false;\n}`
+				VerticalLayout verticalLayoutGeneratedId1 {
+					ZLayout zLayoutGeneratedId1 {
+						Group groupGeneratedId3 {
+							Field(CUSTOMIZED)
+							Field(DELIVERYDATE)
+							Field(TERMINATIONDATE)
+							Field(VERSION)
+							Field(SERVICEPRODUCT)
+							Field(PUDESCRIPTION)
+						}
+					}
+				}
+			}
+		}
+		.VerticalLayout contentLayout {
+			move .Group notes last
+		}
+		.Headline recordSummaryHeadline {
+			FieldBadge fieldBadgeGeneratedId1 {
+				ref = PRODUCTNUMBER
+				color = #666666
+			} last
+		}
+		.FieldBadge recordSummaryHeadlineBadge {
+			color =
+			`import { Color } from \"smartdesign.base/color\";\n\nexport async function computeColor(): Promise<Color> {\n    if ($do.MAINTENANCESTATUS.get() === \'Activ\' ||\n        $do.MAINTENANCESTATUS.get() === \'Active\') {\n        return Color.hex(\"#00871E\");\n    } if ($do.MAINTENANCESTATUS.get() === \'Inactiv\' ||\n        $do.MAINTENANCESTATUS.get() === \'Cancelled\') {\n        return Color.hex(\"#E2001A\");\n    } return Color.hex(\"#777777\");\n}`
+		}
+		.Group common {
+			delete .Field(PRODUCTNUMBER)
+			delete .Field(SERIALNUMBER)
+			delete .Field(QUANTITY)
+			delete .Field(CUSTOMIZED)
+			delete .Field(DELIVERYDATE)
+			delete .Field(TERMINATIONDATE)
+			delete .Field(VERSION)
+			LinkField(SUBCONTRACTOR_LINK) last
+			LinkField(PROIECTPRODUSE_LINK) last
+		}
+		.Group maintenance {
+			delete .Field(SERVICEPRODUCT)
+			delete .Field(MAINTENANCESTATUS)
+			delete .Field(MAINTENANCESTART)
+			delete .Field(MAINTENANCEEND)
+			delete .Field(PUDESCRIPTION)
+			caption = GROUP_CAPTION_0
+			HorizontalLayout horizontalLayoutGeneratedId1 {
+				LayoutColumn layoutColumnGeneratedId1 {
+					minWidth = 100
+					Group groupGeneratedId1 {
+						Field(MAINTENANCESTATUS) {
+							color =
+							`import { Color } from \"smartdesign.base/color\";\n\nexport async function computeColor(): Promise<Color> {\n    if ($do.MAINTENANCESTATUS.get() === \'Activ\' ||\n        $do.MAINTENANCESTATUS.get() === \'Active\') {\n        return Color.hex(\"#00871E\");\n    } if ($do.MAINTENANCESTATUS.get() === \'Inactiv\' ||\n        $do.MAINTENANCESTATUS.get() === \'Cancelled\') {\n        return Color.hex(\"#E2001A\");\n    } return Color.hex(\"#777777\");\n}`
+						}
+						Field(MAINTENANCESTART)
+						Field(CAS_START_GARANTIE_CLIENT) {
+							iconName = "platform:field/calendar-bold"
+						}
+						Field(CAS_START_GARANTIE_PROD) {
+							iconName = "platform:field/calendar-bold"
+						}
+					}
+				}
+				LayoutColumn layoutColumnGeneratedId2 {
+					minWidth = 100
+					Group groupGeneratedId2 {
+						Field(CAS_PROJECT_MANAGER) {
+							iconName = "platform:field/person-bold"
+							color = #FF6B11
+						}
+						Field(MAINTENANCEEND)
+						Field(CAS_END_GARANTIE_CLIENT) {
+							iconName = "platform:field/calendar-bold"
+						}
+						Field(CAS_END_GARANTIE_PROD) {
+							iconName = "platform:field/calendar-bold"
+						}
+					}
+				}
+			} first
+			Field(CAS_SERVICE_INTERVAL) {
+				color = #593B20
+			} first
+		}
+		delete .HorizontalLayout recordSummaryMainLayout
+		>ZLayout zLayoutGeneratedId1 {
+			move .Group billing last
+		}
+	}
+
+	overlay state ^edit {
+		after .Part mainPart {
+			Part partGeneratedId1 {
+				enableJumpmarks = false
+				caption = PART_CAPTION
+				visibility =
+				`export async function computeVisibility(): Promise<boolean> {\n    if (user.name === \'ADMINISTRATOR\') {\n        return true;\n    }\n    return false;\n}`
+				VerticalLayout verticalLayoutGeneratedId1 {
+					ZLayout zLayoutGeneratedId1 {
+						Group groupGeneratedId3 {
+							Field(QUANTITY)
+							Field(DELIVERYDATE)
+							Field(TERMINATIONDATE)
+							Field(VERSION)
+							Field(SERIALNUMBER)
+						}
+						Group groupGeneratedId6 {
+							Field(CUSTOMIZED)
+							Field(CAS_SUBCONTRACTOR)
+							Field(CAS_PROJECT)
+							LinkField(SERVICEAGREEMENT_LINK) {
+								visibility = hasServiceAgreement
+								readonly = `true`
+							}
+							Field(CAS_GENERARE_TICKETE)
+						}
+					}
+				}
+			}
+		}
+		.Group common {
+			delete .Field(SERIALNUMBER)
+			delete .LinkField(SERVICEAGREEMENT_LINK)
+			delete .Field(QUANTITY)
+			delete .Field(CUSTOMIZED)
+			delete .Field(DELIVERYDATE)
+			delete .Field(TERMINATIONDATE)
+			delete .Field(VERSION)
+			LinkField(L2USAPU_LINK) last
+			LinkField(SUBCONTRACTOR_LINK) last
+			LinkField(PROIECTPRODUSE_LINK) last
+			Field(CAS_SERVICE_INTERVAL) last
+		}
+		.Group maintenance {
+			delete .Field(MAINTENANCESTATUS)
+			delete .Field(MAINTENANCESTART)
+			delete .Field(MAINTENANCEEND)
+			caption = GROUP_CAPTION_0
+			HorizontalLayout horizontalLayoutGeneratedId2 {
+				LayoutColumn layoutColumnGeneratedId3 {
+					minWidth = 100
+					Group groupGeneratedId4 {
+						Field(MAINTENANCESTATUS)
+						Field(MAINTENANCESTART)
+					}
+				}
+				LayoutColumn layoutColumnGeneratedId4 {
+					minWidth = 100
+					Group groupGeneratedId5 {
+						Field(CAS_PROJECT_MANAGER)
+						Field(MAINTENANCEEND)
+					}
+				}
+			} first
+			Field(CAS_START_GARANTIE_CLIENT) first
+			Field(CAS_END_GARANTIE_CLIENT) first
+			Field(CAS_START_GARANTIE_PROD) first
+			Field(CAS_END_GARANTIE_PROD) first
+		}
+	}
+}
+// ORIGINAL FORM GENERATED CONTENT START
+//namespace smartdesign.productusage
+//
+//form Record {
+//
+//	context {
+//		primary import do = DataObject(ITDPRODUSAGE)
+//		serviceAgreement = LinkedDataObject(do) {
+//			linkedBy = SERVICEAGREEMENT_LINK
+//		}
+//		dossierMD = DossierMassData()
+//	}
+//
+//	definitions {
+//		condition hasServiceAgreement = `$serviceAgreement != null`
+//	}
+//
+//	header = DefaultHeader {
+//		title = PRODUCTUSAGE
+//	}
+//
+//	state read {
+//		Parts parts {
+//			Part mainPart {
+//				caption = GENERAL_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout contentLayout {
+//					RecordSummary recordSummary {
+//						showRecordTypeIcon = true
+//						headline = Headline id:recordSummaryHeadline {
+//							title = Field(PRODUCTUSAGE_CAPTION)
+//							subTitle = Field(CUSTOMER)
+//							FieldBadge recordSummaryHeadlineBadge {
+//								ref = MAINTENANCESTATUS
+//								color = #FFD97B
+//							}
+//						}
+//						HorizontalLayout recordSummaryMainLayout {
+//							LayoutColumn recordSummaryMainLayoutRateColumn {
+//								minWidth = 200
+//								maxWidth = 440
+//								Group recordSummaryMainLayoutRateGroup {
+//									Field(SERVICERATE)
+//								}
+//							}
+//							LayoutColumn recordSummaryMainLayoutPriceColumn {
+//								minWidth = 200
+//								maxWidth = 440
+//								Group recordSummaryMainLayoutPriceGroup {
+//									Field(PRODUCTPRICE)
+//								}
+//							}
+//							LayoutColumn recordSummaryMainLayoutQuantityColumn {
+//								minWidth = 200
+//								Group recordSummaryMainLayoutQuantityGroup {
+//									Field(QUANTITY)
+//								}
+//							}
+//						}
+//					}
+//					Group notes {
+//						caption = NOTES
+//						Field(NOTES2) {
+//							showCaption = false
+//						}
+//					}
+//					ZLayout mainLayout {
+//						Group common {
+//							caption = COMMON
+//							Field(PRODUCTNUMBER)
+//							Field(SERIALNUMBER)
+//							LinkField(CUSTOMER_LINK)
+//							LinkField(SERVICEAGREEMENT_LINK)
+//							Field(QUANTITY)
+//							Field(CUSTOMIZED)
+//							Field(DELIVERYDATE)
+//							Field(TERMINATIONDATE)
+//							Field(VERSION)
+//						}
+//						Group maintenance {
+//							caption = MAINTENANCE
+//							Field(SERVICEPRODUCT)
+//							Field(MAINTENANCESTATUS)
+//							Field(MAINTENANCESTART)
+//							Field(MAINTENANCEEND)
+//							Field(PUDESCRIPTION)
+//						}
+//						Group billing {
+//							caption = BILLING
+//							Field(SERVICERATE)
+//							Field(PRODUCTPRICE)
+//							Field(PUGROSSPROFIT)
+//							Field(PUREBATE)
+//						}
+//						EmbeddedList dossier {
+//							caption = DOSSIER
+//							datasource = dossierMD
+//						}
+//						ExtensionPoint defaultExtension {
+//							id = "record.default"
+//						}
+//						Group additionalInformation {
+//							caption = ADDITIONAL_INFORMATION
+//							ScriptedField insertInformation {
+//								caption = INSERT_INFORMATION_CAPTION
+//								expression = `
+//									import { getInsertInformation } from "smartdesign.base/additional-information";
+//									getInsertInformation($do);
+//								`
+//							}
+//							ScriptedField updateInformation {
+//								caption = UPDATE_INFORMATION_CAPTION
+//								expression = `
+//									import { getUpdateInformation } from "smartdesign.base/additional-information";
+//									getUpdateInformation($do);
+//								`
+//							}
+//						}
+//					}
+//				}
+//			}
+//			PartExtensionPoint defaultPartExtensionPoint {
+//				id = "record.part.default"
+//			}
+//		}
+//	}
+//
+//	state edit {
+//		Parts parts {
+//			Part mainPart {
+//				caption = GENERAL_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout contentLayout {
+//					Group product {
+//						caption = PRODUCT
+//						LinkField(PRODUCT_LINK) {
+//							showCaption = false
+//						}
+//					}
+//					ZLayout mainLayout {
+//						Group common {
+//							caption = COMMON
+//							Field(SERIALNUMBER)
+//							LinkField(CUSTOMER_LINK) {
+//								readonly = hasServiceAgreement
+//							}
+//							LinkField(SERVICEAGREEMENT_LINK) {
+//								visibility = hasServiceAgreement
+//								readonly = `true`
+//							}
+//							Field(QUANTITY)
+//							Field(CUSTOMIZED)
+//							Field(DELIVERYDATE)
+//							Field(TERMINATIONDATE)
+//							Field(VERSION)
+//						}
+//						Group maintenance {
+//							caption = MAINTENANCE
+//							Field(MAINTENANCESTATUS)
+//							Field(MAINTENANCESTART)
+//							Field(MAINTENANCEEND)
+//						}
+//						ExtensionPoint defaultExtension {
+//							id = "record.default"
+//						}
+//					}
+//					Group notes {
+//						caption = NOTES
+//						Field(NOTES2) {
+//							showCaption = false
+//						}
+//					}
+//				}
+//			}
+//			PartExtensionPoint defaultPartExtensionPoint {
+//				id = "record.part.default"
+//			}
+//		}
+//	}
+//}
+// ORIGINAL FORM GENERATED CONTENT END

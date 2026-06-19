@@ -1,0 +1,6 @@
+!namespace smartdesign.document
+!language-extension RO
+
+GROUP_CAPTION_0 = Continut contract
+PART_CAPTION = ADMIN
+GROUP_CAPTION_1 = Request - Solution

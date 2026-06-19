@@ -1,0 +1,7 @@
+namespace smartdesign.phonecall
+
+extension smartdesign.phonecall.GWPHONECALL {
+	string CAS_AUDIOFILELINK
+	string CAS_MAIN_OBJECTIVE
+	string CAS_FOLLOWUP_ACTION
+}

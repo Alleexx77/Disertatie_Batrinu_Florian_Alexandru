@@ -1,0 +1,8 @@
+namespace custom.projectchangehistory
+
+contributions {
+	command(linkToProjectchangehistory) {
+		context = DataObject(*, read) or MassData(*)
+		pointId = "linkWithMenu"
+	}
+}

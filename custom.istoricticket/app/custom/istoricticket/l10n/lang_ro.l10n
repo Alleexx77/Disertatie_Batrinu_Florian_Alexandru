@@ -1,0 +1,7 @@
+!namespace custom.istoricticket
+!language RO
+
+APP_NAME = Istoric tickete
+ISTORICTICKET_SINGULAR = Istoric ticket
+ISTORICTICKET_PLURAL = Istoric tickete
+LINK_WITH_ISTORICTICKET = Conectează cu Istoric ticket

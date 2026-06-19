@@ -1,0 +1,5 @@
+!namespace smartdesign.productusage
+!language-extension EN
+
+PART_CAPTION = ADMIN
+GROUP_CAPTION_0 = Garantie

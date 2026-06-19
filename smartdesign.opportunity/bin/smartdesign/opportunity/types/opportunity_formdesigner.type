@@ -1,0 +1,86 @@
+namespace smartdesign.opportunity
+
+extension smartdesign.opportunity.GWOPPORTUNITY {
+	string CAS_BIDRESPONSIBLE {
+		suggestions =
+		`export async function suggestBID(): Promise<string[]> {\n    const group = await Permission.Owner.fromName(\"BID Management\", \"GROUP\");\n\n    if (group) {\n        const members = await group.members(\"USER\");\n        return members.map(m => m.name ?? m.toString());\n    } else {\n        const allUsers = await Permission.Owner.all(\"USER\");\n        return allUsers.map(u => u.name ?? u.toString());\n    }\n}`
+	}
+	string CAS_PROJECTNAME
+	string CAS_STRONGPOINTS
+	string CAS_REASON
+	string CAS_DATASEMNARECONTRACT
+	string CAS_DATAULTIMSCHIMBFAZA
+	string CAS_PRESALESRESPONSABLE {
+		suggestions =
+		`export async function suggestPresals(): Promise<string[]> {\n    const group = await Permission.Owner.fromName(\"Trade In\", \"GROUP\");\n\n    if (group) {\n        const members = await group.members(\"USER\");\n        return members.map(m => m.name ?? m.toString());\n    } else {\n        const allUsers = await Permission.Owner.all(\"USER\");\n        return allUsers.map(u => u.name ?? u.toString());\n    }\n}`
+	}
+	string CAS_TECHNICALRESPONSIBLE {
+		suggestions =
+		`export async function suggestTechincalLead(): Promise<string[]> {\n    const group = await Permission.Owner.fromName(\"Technical Lead\", \"GROUP\");\n\n    if (group) {\n        const members = await group.members(\"USER\");\n        return members.map(m => m.name ?? m.toString());\n    } else {\n        const allUsers = await Permission.Owner.all(\"USER\");\n        return allUsers.map(u => u.name ?? u.toString());\n    }\n}`
+	}
+	string CAS_PMRESPONSIBLE {
+		suggestions =
+		`export async function suggestPM(): Promise<string[]> {\n    const group = await Permission.Owner.fromName(\"Manager PM\", \"GROUP\");\n\n    if (group) {\n        const members = await group.members(\"USER\");\n        return members.map(m => m.name ?? m.toString());\n    } else {\n        const allUsers = await Permission.Owner.all(\"USER\");\n        return allUsers.map(u => u.name ?? u.toString());\n    }\n}`
+	}
+	datetime CAS_DATADEPUNEREOFERTA
+	int CAS_CONFIDENCEGRADE
+	string CAS_PROJECTSCOPE
+	string CAS_WHATWEKNOW
+	string CAS_WHATWEDONTKNOW
+	string CAS_WAEKPOINTS
+	string CAS_NUMARPROIECTCAS
+	boolean CAS_INITIATEAPPROVALFLOW
+	boolean CAS_INITSINCRONIZARENAV
+	string CAS_OFFERAPPROVED
+	string CAS_TECHNICALOFFERAPPROVED
+	string CAS_DETALIIMOTIV
+	link CAS_OPPDOC_LINK {
+		targetObjectType = DOCUMENT
+		linkAttribute = "CAS_OPPDOC"
+	}
+	link VENDOR_LINK {
+		targetObjectType = ADDRESS
+		linkAttribute = "VENDOR"
+	}
+	link VENDOR3_LINK {
+		targetObjectType = ADDRESS
+		linkAttribute = "VENDOR3"
+	}
+	string CAS_TECHOFFERAPPROVER
+	link CAS_OPPROJ_LINK {
+		targetObjectType = PROJECT
+		linkAttribute = "CAS_OPPROJ"
+	}
+	link CAS_DOCOPP_LINK {
+		targetObjectType = DOCUMENT
+		linkAttribute = "CAS_DOCOPP"
+	}
+	override PROBABILITY =
+	`export async function computeProbability(): Promise<number | null> {\n    const phase = $do.DISTRIBUTIONPHASE.get();\n\n    switch (phase) {\n        case \'Calificare\':\n            return 10;\n        case \'Discovery\':\n            return 25;\n        case \'Ofertare\':\n            return 50;\n        case \'Negociere\':\n            return 75;\n        case \'Contractare\':\n            return 100;\n        case \'Contract semnat\':\n            return 100;\n        default:\n            return null;\n    }\n}`
+	string CAS_OFFERRESPDEPART
+	override STATUS {
+		validation +=
+		`export async function validatetatus(): Promise<Validation.Result> {\n    const Motiv = $do.CAS_REASON.get();\n    const Detalii = $do.CAS_DETALIIMOTIV.get();\n    const value = $do.STATUS.get();\n    \n        if (value == \"Lost\") {\n            if (!Motiv) {\n        return Validation.error(\"Trebuie să introduceți un motiv pentru pierdere.\");\n                        }\n \n            if (!Detalii) {\n        return Validation.error(\"Trebuie să completați detaliile motivului pentru pierdere.\");\n                          }\n}     \n\n            return Validation.ok();\n}`
+	}
+	decimal CAS_OFFERNETMARGIN
+	decimal CAS_OFFERTOTALPRICE
+	string CAS_PROJECTID
+	link REFERENCE_LINK {
+		targetObjectType = GWSLLEAD
+		linkAttribute = "REFERENCE"
+	}
+	link ACCOUNT_LINK {
+		targetObjectType = ADDRESS
+		linkAttribute = "ACCOUNT"
+	}
+	override PERSONINCHARGE {
+		suggestions =
+		`export async function suggestBID(): Promise<string[]> {\n    const group = await Permission.Owner.fromName(\"Sales\", \"GROUP\");\n\n    if (group) {\n        const members = await group.members(\"USER\");\n        return members.map(m => m.name ?? m.toString());\n    } else {\n        const allUsers = await Permission.Owner.all(\"USER\");\n        return allUsers.map(u => u.name ?? u.toString());\n    }\n}`
+	}
+	string CAS_TRADE_MANAGER_APPROVE
+	decimal CAS_TRADE_ESTIMATED_VALUE
+	string CAS_TRADEIN_APPROVED
+	string CAS_WON_LOSS
+	string CAS_WON_REASON
+	string CAS_LOST_REASON
+}

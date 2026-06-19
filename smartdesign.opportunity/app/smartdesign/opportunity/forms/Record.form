@@ -1,0 +1,934 @@
+namespace smartdesign.opportunity
+
+/* IMPORTANT: This is a generated file. Manual changes will disable automatic updates. */
+@Derived(sha1="d2cdd6ce7bd26b8f49cba244015a3e08b162dddf")
+form Record {
+
+	context {
+		primary import do = DataObject(GWOPPORTUNITY)
+		lnkedOPPROJ = LinkedDataObject(do) {
+			linkedBy = CAS_OPPROJ_LINK
+		}
+		positions = DependentDataObjects(GWOPPORTUNITYPOS)
+		dossierMD = DossierMassData()
+		linkListOpportunityLineItems = LinkMassData(GWOPPORTUNITY => OPPORTUNITYLINEITEM) {
+			attributes = "CAS_OPP_LINK"
+			table {
+				columns = target.CAS_PRODUCT, target.CAS_QUANTITY, target.CAS_PRICE, target.CAS_DISCOUNT, target.CAS_TOTALPRICE,
+				target.CAS_MARGIN
+			}
+			query {
+				order = [target.CAS_PRODUCT -> ASC]
+			}
+		}
+		totalOpportunityLineItemsSource = LinkMassData(GWOPPORTUNITY => OPPORTUNITYLINEITEM) {
+			attributes = "CAS_OPP_LINK"
+		}
+		totalOpportunityLineItems = Aggregation(totalOpportunityLineItemsSource) {
+			function = SUM
+			field = CAS_TOTALPRICE
+		}
+		totalNetMarign = Aggregation(totalOpportunityLineItemsSource) {
+			function = SUM
+			field = CAS_MARGIN
+		}
+		linksByRole = LinkMassData(GWOPPORTUNITY => ADDRESS) {
+			attributes = "BUYINGAGENT", "DECISIONMAKER", "EXTCONSULTANT", "MENTOR", "PARTNER", "SLCOMPETITOR", "VENDOR",
+			"VENDOR2", "VENDOR3"
+			query {
+			}
+		}
+		searchFilterMD = DataObjectMassData(ADDRESS) {
+			query {
+				where = GWISCOMPANY = false
+			}
+		}
+		dossierMD2 = DossierMassData()
+		linkListAddress = LinkMassData(GWOPPORTUNITY => ADDRESS) {
+			attributes = "ACCOUNT", "BUYINGAGENT", "CONTACT", "DECISIONMAKER", "EXTCONSULTANT", "MENTOR", "PARTNER",
+			"SLCOMPETITOR", "STANDARD", "VENDOR", "VENDOR2", "VENDOR3"
+			query {
+			}
+		}
+		linkListAddress2 = LinkMassData(GWOPPORTUNITY => ADDRESS) {
+			attributes = "SLCOMPETITOR"
+			summary {
+				caption = `\r\n\t\t\texport function computeCaption() {\r\n\t\t\t\tif ($current.GWISCOMPANY.get(false) && !$current.GWISCONTACT.get(false)) {\r\n\t\t\t\t\treturn Arrays.join([$current.COMPNAME.get(), $current.COMPNAME2.get()], \" \");\r\n\t\t\t\t} else {\r\n\t\t\t\t\tconst christianName = $current.CHRISTIANNAME.get();\r\n\t\t\t\t\tconst name = $current.NAME.get();\r\n\t\t\t\t\tconst addressTerm = $current.ADDRESSTERM.tryGet();\r\n\t\t\t\t\tconst title = $current.TITLE.tryGet();\r\n\t\t\t\t\tconst namePrefix = $current.GWNAMEPREFIX.tryGet();\r\n\r\n\t\t\t\t\tif (christianName && name) {\r\n\t\t\t\t\t\treturn Arrays.join([title, christianName, namePrefix, name], \" \");\r\n\t\t\t\t\t} else if (name) {\r\n\t\t\t\t\t\treturn Arrays.join([addressTerm, title, namePrefix, name], \" \");\r\n\t\t\t\t\t} else if (christianName) {\r\n\t\t\t\t\t\treturn christianName;\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t`
+				description = `($current.GWISCOMPANY.get(false) && !$current.GWISCONTACT.get(false)) ? $current.TOWN1.get() : Arrays.join([$current.COMPNAME.get(), $current.GWBRANCH.get(),$current.TURNOVER.get(), $current.WWWFIELDSTR3.get()], \" \")`
+				icon = target.ICON
+			}
+			query {
+				where = target.GWSTYPE = "$EN$Competitor"
+			}
+		}
+		searchFilterMD2 = DataObjectMassData(ADDRESS) {
+			query {
+				where = GWSTYPE = "$EN$Competitor"
+			}
+		}
+		linkListAddress3 = LinkMassData(GWOPPORTUNITY => ADDRESS) {
+			attributes = "PARTNER"
+			query {
+				where = target.GWSTYPE = "$EN$Partener- Furnizor Tehnologie" OR target.GWSTYPE = "$EN$Partener - Asociat/Subco" OR
+				target.GWSTYPE = "$EN$Partener - Marketing"
+			}
+		}
+		searchFilterMD3 = DataObjectMassData(ADDRESS) {
+			query {
+				where = GWSTYPE = "$EN$Partener- Furnizor Tehnologie" OR GWSTYPE = "$EN$Partener - Asociat/Subco" OR GWSTYPE =
+				"$EN$Partener - Marketing"
+			}
+		}
+		linkListDocument2 = LinkMassData(GWOPPORTUNITY => DOCUMENT) {
+			attributes = "Verbindung"
+			query {
+				where = target.GWSTYPE = "$EN$Technical Offer" OR target.GWSTYPE = "$EN$Commercial Offer"
+			}
+		}
+		linkListOpportunitylineitem = LinkMassData(GWOPPORTUNITY => OPPORTUNITYLINEITEM) {
+			table {
+				columns = target.CAS_PRODUCT, target.CAS_QUANTITY, target.CAS_PRICE, target.CAS_DISCOUNT, target.CAS_TOTALPRICE,
+				target.CAS_MARGIN
+			}
+			query {
+			}
+		}
+		linkedReference = LinkedDataObject(do) {
+			linkedBy = REFERENCE_LINK
+		}
+		parentAddress = ParentDataObject(do) {
+			targetObjectType = ADDRESS
+		}
+		linkListDocument4 = LinkMassData(GWOPPORTUNITY => DOCUMENT) {
+			attributes = "AcordANAF", "AcordGDPR", "AdvVenit", "CarteIdent", "Cererefinantare", "ExtrasCont"
+			query {
+			}
+		}
+		linkListDocument5 = LinkMassData(GWOPPORTUNITY => DOCUMENT) {
+			attributes = "AcordANAF", "ActConstitutiv", "BilantContabil", "Cererefinantare", "CertificatInr", "CertificatONRC"
+			query {
+			}
+		}
+	}
+
+	events {
+		@Inherited
+		on change(positions) += `
+			export async function recomputeTotalAndGroupAmounts(): Promise<void> {
+				const groups = new Map<string, DataObject.GWOPPORTUNITYPOS.Writable>();
+				let totalAmount = BigNumber.ZERO;
+				for await (const position of $positions) {
+					if (position.ISGROUP.get(false)) {
+						position.TOTALPRICE.set(BigNumber.ZERO);
+						groups.set(position.GGUID.get(), position);
+					} else if (!position.OPTIONALPOSITION.get(false)) {
+						const positionAmount = position.TOTALPRICE.get(BigNumber.ZERO);
+						addAmountToGroups(position, positionAmount, groups);
+						totalAmount = totalAmount.plus(positionAmount);
+					}
+				}
+				$do.OPPTOTALAMOUNT.set(totalAmount);
+			}
+			function addAmountToGroups(
+				position: DataObject.GWOPPORTUNITYPOS.Writable,
+				positionAmount: BigNumber,
+				groups: Map<string, DataObject.GWOPPORTUNITYPOS.Writable>
+			) {
+				let current: DataObject.GWOPPORTUNITYPOS.Writable | undefined = position;
+				while (current) {
+					const group = groups.get(current.GROUPGUID.get());
+					if (group) {
+						group.TOTALPRICE.set(group.TOTALPRICE.get(BigNumber.ZERO).plus(positionAmount));
+					}
+					current = group;
+				}
+			}
+		`
+		on apply += `export async function onApply(): Promise<void> {\n  const lastChangeDateField = $do.CAS_DATAULTIMSCHIMBFAZA;\n  if ($do.DISTRIBUTIONPHASE.get()) {\n    const now = new Date();\n\n    // Convertim data în format \"YYYY-MM-DD HH:mm:ss\"\n    const formattedDate = now.toISOString().slice(0, 19).replace(\'T\', \' \');\n\n    // Setăm valoarea formatată în câmpul CAS_DATAULTIMSCHIMBFAZA\n    lastChangeDateField.set(now);\n  }\n  // Dacă DISTRIBUTIONPHASE are o valoare\n\n    const total = await $totalOpportunityLineItems.get();\n    $do.OPPTOTALAMOUNT.set(total ?? BigNumber.ZERO);\n\n    const totalMargin = await $totalNetMarign.get();\n$do.CAS_OFFERNETMARGIN.set(totalMargin ?? BigNumber.ZERO);\n\n}`
+		on edit += `export async function onEdit(): Promise<void> {\n    if ($do.isNew()) {\n        $do.DISTRIBUTIONPHASE.set(\"Calificare\")\n        $do.CAS_PMRESPONSIBLE.set(\"Alexandru Batrinu\")\n    }\n    if($lnkedOPPROJ){\n        $do.CAS_PROJECTNAME.set($lnkedOPPROJ.KEYWORD.get())\n    }\n    if($lnkedOPPROJ)\n    {\n          $do.CAS_NUMARPROIECTCAS.set($lnkedOPPROJ.PRJNUMBER.get())\n    }\n    if($lnkedOPPROJ)\n    {\n        $do.CAS_PROJECTID.set($lnkedOPPROJ.GGUID.get())\n    }\n    if($do.DISTRIBUTIONPHASE.get()===\"Contractare\") $do.STATUS.set(\"Won\")\n}`
+		on change(PERSONINCHARGE) += `export async function onChangePersonincharge(): Promise<void> {\n    const value = $do.PERSONINCHARGE.get();\n    \n}`
+	}
+
+	header = DefaultHeader {
+		title = OPPORTUNITY
+	}
+
+	state read {
+
+		fixedContent = ComponentSwitcher id:componentSwitcher {
+			^content = RecordSummary id:recordSummary {
+				showRecordTypeIcon = true
+				headline = Headline id:recordSummaryHeadline {
+					title = Field(KEYWORD)
+					subTitle = Field(OPPORTUNITYNUMBER)
+					FieldBadge recordSummaryHeadlineStatusBadge {
+						ref = STATUS
+						color = #ED9C26
+					}
+					Badge cpqOpportunityBadge {
+						color = #069A32
+						label = CMD_LBL_NEW_CPQ_INGROUP
+						visibility = `$do.CASSOURCE.tryGet(\'\') === \'CPQ\';`
+					}
+				}
+				BreadCrumb recordSummaryBreadCrumbForDistributionPhase {
+					ref = DISTRIBUTIONPHASE
+					^height = "70"
+				}
+				HorizontalLayout recordSummaryMainLayout {
+					LayoutColumn recordSummaryMainLayoutStatusColumn {
+						Group recordSummaryMainLayoutStatusGroup {
+							LinkField(ACCOUNTINFORMATION_LINK)
+						}
+						minWidth = 200
+						maxWidth = 320
+					}
+					LayoutColumn recordSummaryMainLayoutAmountColumn {
+						minWidth = 200
+						maxWidth = 320
+						Group recordSummaryMainLayoutAmountGroup {
+							Field(STATUS) {
+								autoHide = DISABLED
+							}
+						}
+					}
+					LayoutColumn recordSummaryMainLayoutProgressColumn {
+						minWidth = 200
+						Group recordSummaryMainLayoutProgressGroup {
+							Field(CAS_DATASEMNARECONTRACT) {
+								autoHide = DISABLED
+							}
+							Field(CAS_DATAULTIMSCHIMBFAZA) {
+								autoHide = DISABLED
+							}
+						}
+					}
+				}
+			}
+			smallContent = RecordSummary id:reducedRecordSummary {
+				headline = Headline id:reducedRecordSummaryHeadline {
+					title = Field(KEYWORD)
+					subTitle = Field(OPPORTUNITYNUMBER)
+					FieldBadge reducedRecordSummaryHeadlineBadge {
+						ref = STATUS
+						color = #ED9C26
+					}
+					Badge reducedCpqOpportunityBadge {
+						color = #069A32
+						label = CMD_LBL_NEW_CPQ_INGROUP
+						visibility = `$do.CASSOURCE.tryGet(\'\') === \'CPQ\';`
+					}
+				}
+				HorizontalLayout reducedRecordSummaryMainLayout {
+					LayoutColumn reducedRecordSummaryMainLayoutCustomerColumn {
+						Group reducedRecordSummaryCustomerGroup {
+							LinkField(ACCOUNTINFORMATION_LINK)
+						}
+						minWidth = 200
+						maxWidth = 320
+					}
+				}
+			}
+		}
+		Parts parts {
+			Part mainPart {
+				caption = GENERAL_PART_LABEL
+				enableJumpmarks = false
+				VerticalLayout contentLayout {
+					HorizontalLayout wrappingContentLayout {
+						LayoutColumn wrappingContentLayoutMainLayoutColumn {
+							ZLayout mainLayout {
+								Group acquisition {
+									caption = ACQUISITION
+									Field(START_DT)
+									Field(END_DT)
+									Field(CAS_DATADEPUNEREOFERTA) {
+										autoHide = DISABLED
+									}
+									Field(CAS_OFFERNETMARGIN) {
+										autoHide = DISABLED
+									}
+									Field(CAS_OFFERTOTALPRICE) {
+										autoHide = DISABLED
+									}
+									Field(CAS_PROJECTID)
+								}
+								Group groupGeneratedId5 {
+									caption = GROUP_CAPTION_2
+									autoHide = DISABLED
+									Field(CAS_INITSINCRONIZARENAV) {
+										autoHide = DISABLED
+									}
+									Field(CAS_PROJECTNAME) {
+										autoHide = DISABLED
+									}
+									Field(CAS_NUMARPROIECTCAS) {
+										autoHide = DISABLED
+									}
+								}
+								Group groupGeneratedId1 {
+									caption = PART_CAPTION_2
+									Field(CAS_REASON)
+									autoHide = DISABLED
+									Field(CAS_DETALIIMOTIV)
+								}
+								ExtensionPoint defaultExtension {
+									id = "record.default"
+								}
+								Group additionalInformation {
+									caption = ADDITIONAL_INFORMATION
+									Permissions permissions()
+									ScriptedField insertInformation {
+										caption = INSERT_INFORMATION_CAPTION
+										expression = `
+											import { getInsertInformation } from "smartdesign.base/additional-information";
+											getInsertInformation($do);
+										`
+									}
+									ScriptedField updateInformation {
+										caption = UPDATE_INFORMATION_CAPTION
+										expression = `
+											import { getUpdateInformation } from "smartdesign.base/additional-information";
+											getUpdateInformation($do);
+										`
+									}
+								}
+							}
+							Group notes {
+								caption = NOTES
+								Field(NOTES2) {
+									showCaption = false
+								}
+							}
+							maxWidth = 0
+							minWidth = 300
+						}
+						LayoutColumn proposalColumn {
+							maxWidth = 0
+							minWidth = 300
+							Group groupGeneratedId2 {
+								Field(CAS_PROJECTSCOPE) {
+									autoHide = DISABLED
+								}
+								Field(CAS_WHATWEKNOW) {
+									autoHide = DISABLED
+								}
+								Field(CAS_WHATWEDONTKNOW) {
+									autoHide = DISABLED
+								}
+								Field(CAS_CONFIDENCEGRADE) {
+									autoHide = DISABLED
+								}
+								Field(PROBABILITY) {
+									autoHide = DISABLED
+									color = `\n\nimport { STATUS_GRADIENT } from \"smartdesign.base/color\";\nSTATUS_GRADIENT.boundaries(0, 100).sample($do.PROBABILITY.get() || 0);`
+								}
+								Field(CAS_STRONGPOINTS) {
+									autoHide = DISABLED
+								}
+								caption = GROUP_CAPTION_0
+								Field(CAS_WAEKPOINTS) {
+									autoHide = DISABLED
+								}
+								Field(SOURCE) {
+									autoHide = DISABLED
+								}
+								autoHide = DISABLED
+							}
+							PrimaryLinkedParentsList primaryLinks()
+							TagSelector tags {
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId1 {
+							minWidth = 300
+							LinkListGroupedByRoles contacts {
+								caption = CONTACTS
+								datasource = linksByRole
+								addMessage = ADD_CONTACT_PERSON
+								deleteMessage = DELETE_CONTACT_PERSON
+								emptyListMessage = NO_CONTACT_PERSON_SELECTED
+							}
+							EmbeddedList embeddedListGeneratedId1 {
+								caption = DOSSIER
+								datasource = dossierMD2
+							}
+						}
+					}
+				}
+			}
+			Part partGeneratedId5 {
+				enableJumpmarks = false
+				caption = PART_CAPTION_10
+				VerticalLayout verticalLayoutGeneratedId5 {
+					HorizontalLayout horizontalLayoutGeneratedId2 {
+						LayoutColumn layoutColumnGeneratedId4 {
+							Group groupGeneratedId11 {
+								caption = PART_CAPTION_10
+								Field(CAS_OFFERRESPDEPART)
+								Field(CAS_PMRESPONSIBLE)
+								Field(CAS_BIDRESPONSIBLE)
+								Field(CAS_PRESALESRESPONSABLE)
+								Field(PERSONINCHARGE)
+								Field(CAS_TECHNICALRESPONSIBLE) {
+									visibility = `export async function computeVisibility(): Promise<boolean> {\n    if($do.CAS_OFFERRESPDEPART.get()===\"Tehnic\")return true;\n    else return false;\n}`
+								}
+							}
+						}
+					}
+				}
+			}
+			Part opportunityLineItemsPart {
+				enableJumpmarks = false
+				autoHide = DISABLED
+				VerticalLayout layoutOpportunityLineItems {
+					Group lineItemsGroup {
+						Table opportunityLineItemsTable {
+							datasource = linkListOpportunityLineItems
+							visibility = `true`
+						}
+						visibility = false
+					}
+					InfoHeader lineItemsInfo {
+						CommandPopoverButton addLineItemsMenu {
+							containedCommands = { new_linked_OPPORTUNITYLINEITEM }
+							icon = "platform:field/plus"
+						}
+					}
+					Group groupGeneratedId10 {
+						HorizontalLayout horizontalLayoutGeneratedId4 {
+							LayoutColumn layoutColumnGeneratedId6 {
+								Group groupGeneratedId14 {
+									ScriptedField totalLineItemsSum {
+										outputType = CURRENCY
+										expression = `
+                    export async function computeExpression() {
+                        const total = await $totalOpportunityLineItems.get();
+                        if (total) {
+                            return ScriptedField.currency(total, "EUR");
+                        }
+                        return ScriptedField.currency(0, "EUR");
+                    }
+                `
+										color = #0E4883
+										iconName = "platform:field/coin"
+										caption = OVERALL
+									}
+								}
+							}
+							LayoutColumn layoutColumnGeneratedId7 {
+								Group groupGeneratedId15 {
+									ScriptedField scriptedFieldGeneratedId3 {
+										expression = `export async function computeExpression() {\n    const totalMargin = await $totalNetMarign.get();\n    if (totalMargin) {\n        return ScriptedField.currency(totalMargin, \"EUR\");\n    }\n    return ScriptedField.currency(0, \"EUR\");\n}\n`
+										outputType = CURRENCY
+										iconName = "platform:field/star"
+										caption = SCRIPTEDFIELD_CAPTION_2
+										color = #00871E
+									}
+								}
+							}
+						}
+						EmbeddedList embeddedListGeneratedId2 {
+							datasource = linkListOpportunitylineitem
+							displayMode = TABLE
+							autoHide = DISABLED
+						}
+					}
+				}
+				caption = OFFER
+			}
+			Part partGeneratedId1 {
+				enableJumpmarks = false
+				caption = OFFER
+				VerticalLayout verticalLayoutGeneratedId1 {
+					Group groupGeneratedId3 {
+						OpportunityPositionsList proposal {
+							caption = PROPOSAL
+							CommandPopoverButton newOpportunityPosition {
+								containedCommands = { new_opportunity_position, new_opportunity_position_group, take_over_template_positions,
+								add_from_product_catalog }
+								caption = CMD_LBL_ADD
+							}
+						}
+					}
+				}
+				visibility = false
+			}
+			Part partGeneratedId4 {
+				enableJumpmarks = false
+				caption = PART_CAPTION_9
+				VerticalLayout verticalLayoutGeneratedId4 {
+					HorizontalLayout horizontalLayoutGeneratedId1 {
+						LayoutColumn layoutColumnGeneratedId2 {
+							Group groupGeneratedId8 {
+								Group groupGeneratedId4 {
+									caption = GROUP_CAPTION_1
+									Field(CAS_INITIATEAPPROVALFLOW) {
+										autoHide = DISABLED
+									}
+									Field(CAS_OFFERRESPDEPART)
+									Field(ATTORNEYINFACT) {
+										autoHide = DISABLED
+									}
+									HorizontalLayout horizontalLayoutGeneratedId3 {
+										LayoutColumn layoutColumnGeneratedId5 {
+											ZLayout zLayoutGeneratedId1 {
+												minimumColumnWidth = 200
+												Group groupGeneratedId12 {
+													Field(CAS_TECHNICALOFFERAPPROVED) {
+														autoHide = DISABLED
+													}
+													Field(CAS_OFFERAPPROVED) {
+														autoHide = DISABLED
+													}
+												}
+												Group groupGeneratedId13 {
+													ScriptedField scriptedFieldGeneratedId1 {
+														caption = SCRIPTEDFIELD_CAPTION_0
+														color = `import { Color } from \"smartdesign.base/color\";\n\nexport async function computeColor(): Promise<Color> {\n    if ($do.CAS_TECHNICALOFFERAPPROVED.get() === \"Da\") {\n        return Color.hex(\"#00871E\");\n    } if ($do.CAS_TECHNICALOFFERAPPROVED.get() === null) {\n        return Color.hex(\"#FF6B11\");\n    }\n    if ($do.CAS_TECHNICALOFFERAPPROVED.get() === \"Nu\") {\n        return Color.hex(\"#FF0000\");\n    }\n    return Color.hex(\"#FFF\");\n}`
+														expression = `export async function computeExpression(): Promise<string | undefined> {\n    if($do.CAS_INITIATEAPPROVALFLOW){\n    if ($do.CAS_TECHNICALOFFERAPPROVED.get() === \"Da\") {\n        return \"APROBAT 👍\";\n    } if ($do.CAS_TECHNICALOFFERAPPROVED.get() === null) {\n        return \"IN CURS ⌛\";\n    }\n     if ($do.CAS_TECHNICALOFFERAPPROVED.get() === \"Nu\") {\n        return \"RESPINS 👎\";\n    }\n    }\n    return \"\";\n}`
+													}
+													ScriptedField scriptedFieldGeneratedId2 {
+														caption = SCRIPTEDFIELD_CAPTION_1
+														expression = `export async function computeExpression(): Promise<string | undefined> {\n     if($do.CAS_INITIATEAPPROVALFLOW){\n    if ($do.CAS_OFFERAPPROVED.get() === \"Da\") {\n        return \"APROBAT 👍\";\n    } if ($do.CAS_OFFERAPPROVED.get() === null) {\n        return \"IN CURS ⌛\";\n    }\n    if ($do.CAS_OFFERAPPROVED.get() === \"Nu\") {\n        return \"RESPINS 👎\";\n    }\n     }\n    return \"\";\n}`
+														color = `import { Color } from \"smartdesign.base/color\";\n\nexport async function computeColor(): Promise<Color> {\n    if ($do.CAS_OFFERAPPROVED.get() === \"Da\") {\n        return Color.hex(\"#00871E\");\n    } if ($do.CAS_OFFERAPPROVED.get() === null) {\n        return Color.hex(\"#FF6B11\");\n    }\n     if ($do.CAS_OFFERAPPROVED.get() === \"Nu\") {\n        return Color.hex(\"#FF0000\");\n    }\n    return Color.hex(\"#FFF\");\n}`
+													}
+												}
+											}
+										}
+									}
+									autoHide = DISABLED
+								}
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId3 {
+							Group groupGeneratedId9 {
+								LinkListGroupedByRoles linkListGroupedByRolesGeneratedId3 {
+									caption = LINK_LIST_CAPTION
+									autoHide = DISABLED
+									datasource = linkListDocument2
+								}
+							}
+						}
+					}
+				}
+			}
+			Part partGeneratedId2 {
+				enableJumpmarks = false
+				caption = PART_CAPTION_5
+				autoHide = DISABLED
+				VerticalLayout verticalLayoutGeneratedId2 {
+					Group groupGeneratedId7 {
+						caption = PART_CAPTION_5
+						LinkListGroupedByRoles linkListGroupedByRolesGeneratedId2 {
+							datasource = linkListAddress3
+							searchFilter = searchFilterMD3
+						}
+					}
+				}
+				visibility = false
+			}
+			Part partGeneratedId3 {
+				enableJumpmarks = false
+				caption = PART_CAPTION_6
+				autoHide = DISABLED
+				VerticalLayout verticalLayoutGeneratedId3 {
+					Group groupGeneratedId6 {
+						caption = PART_CAPTION_6
+						LinkListGroupedByRoles linkListGroupedByRolesGeneratedId1 {
+							datasource = linkListAddress2
+							autoHide = DISABLED
+							searchFilter = searchFilterMD2
+						}
+					}
+				}
+			}
+			PartExtensionPoint defaultPartExtensionPoint {
+				id = "record.part.default"
+			}
+		}
+	}
+
+	state edit {
+		Parts parts {
+			Part mainPart {
+				caption = GENERAL_PART_LABEL
+				enableJumpmarks = false
+				VerticalLayout contentLayout {
+					BreadCrumb breadCrumbGeneratedId1 {
+						ref = DISTRIBUTIONPHASE
+						restEnabled = false
+					}
+					Group keyword {
+						caption = KEYWORD_GW
+						Field(KEYWORD) {
+							showCaption = false
+						}
+						Field(STATUS)
+					}
+					ZLayout mainLayout {
+						Group general {
+							caption = GENERAL
+							Field(STATUS) {
+								visibility = false
+							}
+							Field(DISTRIBUTIONPHASE)
+							Field(OPPORTUNITYNUMBER)
+							LinkField(ACCOUNTINFORMATION_LINK)
+							LinkField(REFERENCE_LINK) {
+								caption = LINKFIELD_CAPTION_1
+							}
+							Field(PERSONINCHARGE)
+						}
+						Group acquisition {
+							caption = ACQUISITION
+							SliderField(PROBABILITY) {
+								colorScheme = RED_TO_GREEN
+								percent = true
+							}
+							Field(CURRENCYNAT)
+							Field(linkedReference.CAS_TRADE_IN_INTERESTED)
+							Field(linkedReference.CAS_TRADE_IN_VEHICLE)
+							Field(linkedReference.CAS_FINANCING_TYPE)
+							Field(linkedReference.CAS_DOWN_PAYMENT)
+							Field(linkedReference.CAS_MONTYHLY_RATE_ACCEPTED)
+						}
+						Group pointInTime {
+							caption = POINT_IN_TIME
+							Field(START_DT)
+							Field(END_DT)
+							Field(LASTCONTACTINSALESPROCESS)
+							Field(GW_ALARMRELATIVE_EFFECTIVE)
+						}
+						Group groupGeneratedId15 {
+							Field(NOTES2)
+							caption = GROUP_CAPTION_5K
+						}
+						LinkListGroupedByRoles contacts {
+							caption = CONTACTS
+							datasource = linksByRole
+							addMessage = ADD_CONTACT_PERSON
+							deleteMessage = DELETE_CONTACT_PERSON
+							emptyListMessage = NO_CONTACT_PERSON_SELECTED
+							searchFilter = searchFilterMD
+						}
+						Group groupGeneratedId13 {
+							caption = GROUP_CAPTION_3
+							Field(CAS_REASON) {
+								autoHide = DISABLED
+							}
+							Field(CAS_DETALIIMOTIV) {
+								autoHide = DISABLED
+							}
+							visibility = `export async function computeVisibility(): Promise<boolean> {\n  if ($do.STATUS.get() === \"Lost\") {\n    return true;\n  } else {\n    return false;\n  }\n}`
+						}
+						TagSelector tags {
+						}
+						PrimaryLinkedParentsList primaryLinks()
+						Permissions permissions()
+						ExtensionPoint defaultExtension {
+							id = "record.default"
+						}
+					}
+					Group notes {
+						caption = NOTES
+						Field(NOTES2) {
+							showCaption = false
+						}
+					}
+				}
+				autoHide = DISABLED
+				visibility = `export async function computeVisibility(): Promise<boolean> {\n  const phase = $do.DISTRIBUTIONPHASE.get();\n  if (\n    phase === \'Calificare\' ||\n    phase === \'Discovery\' ||\n     phase === \'Ofertare\' ||\n    phase === \'Negociere\' ||\n    phase === \'Contractare\' ||\n    phase === \'Contract semnat\'\n  ) {\n    return true;\n  }\n  return false;\n}`
+			}
+			Part partGeneratedId11 {
+				enableJumpmarks = false
+				caption = PART_CAPTION_11
+				visibility = `export async function computeVisibility(): Promise<boolean> {\n   if($linkedReference.CAS_FINANCING_TYPE.get()===\"Leasing\") return true;\n   else return false;\n}`
+				VerticalLayout verticalLayoutGeneratedId11 {
+					autoHide = DISABLED
+					HorizontalLayout horizontalLayoutGeneratedId6 {
+						LayoutColumn layoutColumnGeneratedId9 {
+							Group groupGeneratedId16 {
+								caption = PART_CAPTION_11
+								visibility = `export async function computeVisibility(): Promise<boolean> {\n    return true;\n}`
+								enablement = `export async function computeEnablement(): Promise<boolean> {\n  if($parentAddress.GWSTYPE.get()===\"Client\")return true;\n    else return false;\n}`
+								LinkListGroupedByRoles linkListGroupedByRolesGeneratedId3 {
+									datasource = linkListDocument4
+								}
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId10 {
+							Group groupGeneratedId17 {
+								caption = GROUP_CAPTION_4
+								enablement = `export async function computeEnablement(): Promise<boolean> {\n    if($parentAddress.GWSTYPE.get()!==\"Client\")return true;\n    else return false;\n}`
+								LinkListGroupedByRoles linkListGroupedByRolesGeneratedId5 {
+									datasource = linkListDocument5
+								}
+							}
+						}
+					}
+				}
+			}
+			Part partGeneratedId5 {
+				enableJumpmarks = false
+				caption = ACQUISITION
+				VerticalLayout verticalLayoutGeneratedId5 {
+					HorizontalLayout horizontalLayoutGeneratedId3 {
+						LayoutColumn layoutColumnGeneratedId5 {
+							maxWidth = 400
+							Group groupGeneratedId5 {
+								caption = GROUP_CAPTION_0
+								Field(PROBABILITY)
+								Field(CAS_STRONGPOINTS)
+								Field(CAS_WAEKPOINTS)
+								Field(SOURCE)
+							}
+							Group groupGeneratedId7 {
+								caption = CONTACTS
+								LinkListGroupedByRoles linkListGroupedByRolesGeneratedId1 {
+									datasource = linkListAddress
+								}
+								visibility = false
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId6 {
+							Group groupGeneratedId6 {
+								caption = ACQUISITION
+								Field(START_DT) {
+									visibility = false
+								}
+								Field(END_DT) {
+									visibility = false
+								}
+								Field(CAS_DATADEPUNEREOFERTA)
+								Field(CAS_DATASEMNARECONTRACT)
+								TextField(CAS_WHATWEKNOW)
+								TextField(CAS_WHATWEDONTKNOW)
+							}
+							Group groupGeneratedId8 {
+								TagSelector tagSelectorGeneratedId1()
+							}
+						}
+					}
+				}
+				visibility = `export async function computeVisibility(): Promise<boolean> {\n  const phase = $do.DISTRIBUTIONPHASE.get();\n  if (\n    phase === \'Qualification\' ||\n    phase === \'Calificare\' ||\n    phase === \'Discovery\' ||\n    phase === \'Offer\' ||\n     phase === \'Ofertare\' ||\n    phase === \'Negotiation\' ||\n    phase === \'Negociere\' ||\n    phase === \'Contractare\' ||\n    phase === \'Contract semnat\' \n  ) {\n    return false;\n  }\n  return true;\n}`
+			}
+			alignment = VERTICAL
+			Part partGeneratedId9 {
+				enableJumpmarks = false
+				caption = PART_CAPTION_10
+				visibility = `export async function computeVisibility(): Promise<boolean> {\n  const phase = $do.DISTRIBUTIONPHASE.get();\n  if (\n   \n    phase === \'Discovery\' ||\n     phase === \'Ofertare\' ||\n    phase === \'Negociere\' ||\n    phase === \'Contractare\' ||\n    phase === \'Contract semnat\'\n  ) {\n    return true;\n  }\n  return false;\n}`
+				VerticalLayout verticalLayoutGeneratedId9 {
+					Group groupGeneratedId14 {
+						caption = PART_CAPTION_10
+						Field(CAS_OFFERRESPDEPART) {
+							autoHide = DISABLED
+							visibility = false
+						}
+						Field(CAS_PMRESPONSIBLE) {
+							caption = FIELD_CAPTION_0
+						}
+						Field(PERSONINCHARGE) {
+							caption = FIELD_CAPTION_1
+						}
+						Field(CAS_BIDRESPONSIBLE) {
+							caption = FIELD_CAPTION_2
+						}
+						Field(CAS_PRESALESRESPONSABLE) {
+							caption = FIELD_CAPTION_3
+						}
+					}
+				}
+			}
+			Part partGeneratedId1 {
+				enableJumpmarks = false
+				caption = VOLUME
+				VerticalLayout verticalLayoutGeneratedId1 {
+					HorizontalLayout horizontalLayoutGeneratedId1 {
+						LayoutColumn layoutColumnGeneratedId1 {
+							Group volume {
+								caption = VOLUME
+								SliderField(PROBABILITY) {
+									percent = true
+									colorScheme = RED_TO_GREEN
+								}
+								Field(OPPTOTALAMOUNT)
+								Field(RELATIVEAMOUNT)
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId2 {
+							Group groupGeneratedId1 {
+								OpportunityPositionsList proposal {
+									caption = PROPOSAL
+									CommandPopoverButton newOpportunityPosition {
+										containedCommands = { new_opportunity_position, new_opportunity_position_group,
+										take_over_template_positions, add_from_product_catalog }
+										caption = CMD_LBL_ADD
+									}
+								}
+							}
+						}
+					}
+				}
+				enablement = false
+				visibility = `false`
+			}
+			Part partGeneratedId7 {
+				enableJumpmarks = false
+				caption = PART_CAPTION_7
+				VerticalLayout verticalLayoutGeneratedId7 {
+					HorizontalLayout horizontalLayoutGeneratedId4 {
+						LayoutColumn layoutColumnGeneratedId4 {
+							Group groupGeneratedId11 {
+								Group groupGeneratedId3 {
+									caption = GROUP_CAPTION_1
+									Field(CAS_INITIATEAPPROVALFLOW) {
+										caption = FIELD_CAPTION_4
+										enablement = `export async function computeVisibility(): Promise<boolean> {\n    const group = await Permission.Owner.fromName(\"Manager PM\", \"GROUP\");\n\n    if (!group) {\n        return false;\n    }\n\n    const members = await group.members(\"USER\");\n    const isMember = members.some(m => m.id === user.id);\n\n    if(isMember) return true;\n    else return false;\n}`
+									}
+									LinkField(CAS_OPPDOC_LINK) {
+										caption = LINKFIELD_CAPTION_2
+										enablement = `export async function computeVisibility(): Promise<boolean> {\n    const group = await Permission.Owner.fromName(\"Sales\", \"GROUP\");\n\n    if (!group) {\n        return false;\n    }\n\n    const members = await group.members(\"USER\");\n    const isMember = members.some(m => m.id === user.id);\n\n    if(isMember) return true;\n    else return false;\n}`
+										visibility = `export async function computeVisibility(): Promise<boolean> {\n    return $do.CAS_INITIATEAPPROVALFLOW.get() === true\n}`
+									}
+									Field(CAS_TECHNICALOFFERAPPROVED) {
+										caption = FIELD_CAPTION_5
+										visibility = `export async function computeVisibility(): Promise<boolean> {\n    const group = await Permission.Owner.fromName(\"Manager PM\", \"GROUP\");\n\n    if (!group) {\n        return false;\n    }\n\n    const members = await group.members(\"USER\");\n    const isMember = members.some(m => m.id === user.id);\n\n    if($do.CAS_INITIATEAPPROVALFLOW.get() === true && isMember) return true;\n    else return false;\n}`
+										enablement = `export async function computeVisibility(): Promise<boolean> {\n    const group = await Permission.Owner.fromName(\"Manager PM\", \"GROUP\");\n\n    if (!group) {\n        return false;\n    }\n\n    const members = await group.members(\"USER\");\n    const isMember = members.some(m => m.id === user.id);\n\n    if(isMember) return true;\n    else return false;\n}`
+									}
+									ScriptedField scriptedFieldGeneratedId1 {
+										expression = `export async function computeExpression(): Promise<string | undefined> {\n    if($do.CAS_INITIATEAPPROVALFLOW){\n    if ($do.CAS_TECHNICALOFFERAPPROVED.get() === \"Da\") {\n        return \"APROBAT 👍\";\n    } if ($do.CAS_TECHNICALOFFERAPPROVED.get() === null) {\n        return \"IN CURS ⌛\";\n    }\n     if ($do.CAS_TECHNICALOFFERAPPROVED.get() === \"Nu\") {\n        return \"RESPINS 👎\";\n    }\n    }\n    return \"\";\n}\n\n`
+										caption = SCRIPTEDFIELD_CAPTION_0
+										visibility = `export async function computeVisibility(): Promise<boolean> {\n    if($do.CAS_INITIATEAPPROVALFLOW.get()=== true) return true;\n    else return false;\n}`
+									}
+									Field(CAS_TRADEIN_APPROVED) {
+										caption = FIELD_CAPTION_7
+										visibility = `export async function computeVisibility(): Promise<boolean> {\n    return $do.CAS_INITIATEAPPROVALFLOW.get() === true\n        && $linkedReference?.CAS_TRADE_IN_INTERESTED.get() === \"Yes\";\n}`
+										enablement = `export async function computeVisibility(): Promise<boolean> {\n    const group = await Permission.Owner.fromName(\"Trade In\", \"GROUP\");\n\n    if (!group) {\n        return false;\n    }\n\n    const members = await group.members(\"USER\");\n    const isMember = members.some(m => m.id === user.id);\n\n    if(isMember) return true;\n    else return false;\n}`
+									}
+									Field(CAS_TRADE_ESTIMATED_VALUE) {
+										caption = FIELD_CAPTION_9
+										visibility = `export async function computeVisibility(): Promise<boolean> {\n    return $do.CAS_INITIATEAPPROVALFLOW.get() === true\n        && $linkedReference?.CAS_TRADE_IN_INTERESTED.get() === \"Yes\";\n}`
+										enablement = `export async function computeVisibility(): Promise<boolean> {\n    const group = await Permission.Owner.fromName(\"Trade In\", \"GROUP\");\n\n    if (!group) {\n        return false;\n    }\n\n    const members = await group.members(\"USER\");\n    const isMember = members.some(m => m.id === user.id);\n\n    if(isMember) return true;\n    else return false;\n}`
+									}
+									Field(CAS_TRADE_MANAGER_APPROVE) {
+										caption = FIELD_CAPTION_8
+										visibility = `export async function computeVisibility(): Promise<boolean> {\n    return $do.CAS_INITIATEAPPROVALFLOW.get() === true\n        && $linkedReference?.CAS_TRADE_IN_INTERESTED.get() === \"Yes\"\n        \n}`
+										enablement = `export async function computeVisibility(): Promise<boolean> {\n    const group = await Permission.Owner.fromName(\"Manager PM\", \"GROUP\");\n\n    if (!group) {\n        return false;\n    }\n\n    const members = await group.members(\"USER\");\n    const isMember = members.some(m => m.id === user.id);\n\n    if(isMember && $do.CAS_TRADEIN_APPROVED.get() === \"Da\") return true;\n    else return false;\n}`
+									}
+									ScriptedField scriptedFieldGeneratedId3 {
+										expression = `export async function computeExpression(): Promise<string | undefined> {\n     if($do.CAS_INITIATEAPPROVALFLOW){\n    if ($do.CAS_TRADEIN_APPROVED.get() === \"Da\") {\n        return \"APROBAT 👍\";\n    } if ($do.CAS_TRADEIN_APPROVED.get() === null) {\n        return \"IN CURS ⌛\";\n    }\n    if ($do.CAS_TRADEIN_APPROVED.get() === \"Nu\") {\n        return \"RESPINS 👎\";\n    }\n     }\n    return \"\";\n}`
+										caption = SCRIPTEDFIELD_CAPTION_3
+										visibility = `export async function computeVisibility(): Promise<boolean> {\n    return $do.CAS_INITIATEAPPROVALFLOW.get() === true\n        && $linkedReference?.CAS_TRADE_IN_INTERESTED.get() === \"Yes\";\n}`
+									}
+									ScriptedField scriptedFieldGeneratedId4 {
+										expression = `export async function computeExpression(): Promise<string | undefined> {\n     if($do.CAS_INITIATEAPPROVALFLOW){\n    if ($do.CAS_TRADE_MANAGER_APPROVE.get() === \"Da\") {\n        return \"APROBAT 👍\";\n    } if ($do.CAS_TRADE_MANAGER_APPROVE.get() === null) {\n        return \"IN CURS ⌛\";\n    }\n    if ($do.CAS_TRADE_MANAGER_APPROVE.get() === \"Nu\") {\n        return \"RESPINS 👎\";\n    }\n     }\n    return \"\";\n}`
+										caption = SCRIPTEDFIELD_CAPTION_4
+										visibility = `export async function computeVisibility(): Promise<boolean> {\n    return $do.CAS_INITIATEAPPROVALFLOW.get() === true\n        && $linkedReference?.CAS_TRADE_IN_INTERESTED.get() === \"Yes\"\n}`
+									}
+									Field(CAS_OFFERAPPROVED) {
+										caption = FIELD_CAPTION_6
+										visibility = `export async function computeVisibility(): Promise<boolean> {\n    return $do.CAS_INITIATEAPPROVALFLOW.get() === true\n}`
+										enablement = `export async function computeVisibility(): Promise<boolean> {\n    const group = await Permission.Owner.fromName(\"BID Management\", \"GROUP\");\n\n    if (!group) {\n        return false;\n    }\n\n    const members = await group.members(\"USER\");\n    const isMember = members.some(m => m.id === user.id);\n\n    if(isMember) return true;\n    else return false;\n}`
+									}
+									ScriptedField scriptedFieldGeneratedId2 {
+										expression = `export async function computeExpression(): Promise<string | undefined> {\n     if($do.CAS_INITIATEAPPROVALFLOW){\n    if ($do.CAS_OFFERAPPROVED.get() === \"Da\") {\n        return \"APROBAT 👍\";\n    } if ($do.CAS_OFFERAPPROVED.get() === null) {\n        return \"IN CURS ⌛\";\n    }\n    if ($do.CAS_OFFERAPPROVED.get() === \"Nu\") {\n        return \"RESPINS 👎\";\n    }\n     }\n    return \"\";\n}`
+										caption = SCRIPTEDFIELD_CAPTION_1
+										visibility = `export async function computeVisibility(): Promise<boolean> {\n    if($do.CAS_INITIATEAPPROVALFLOW.get()=== true) return true;\n    else return false;\n}`
+									}
+								}
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId7 {
+							LinkListGroupedByRoles linkListGroupedByRolesGeneratedId2 {
+								datasource = linkListDocument2
+								caption = LINK_LIST_CAPTION
+							}
+						}
+					}
+				}
+				visibility = `export async function computeVisibility(): Promise<boolean> {\n  const phase = $do.DISTRIBUTIONPHASE.get();\n  if (\n     phase === \'Ofertare\' ||\n    phase === \'Negociere\' ||\n    phase === \'Contractare\' ||\n    phase === \'Contract semnat\'\n  ) {\n    return true;\n  }\n  return false;\n}`
+			}
+			Part partGeneratedId2 {
+				enableJumpmarks = false
+				caption = PART_CAPTION
+				VerticalLayout verticalLayoutGeneratedId2 {
+					Group groupGeneratedId10 {
+						caption = PART_CAPTION
+						Field(CAS_WON_LOSS) {
+							caption = FIELD_CAPTION_11
+						}
+						Field(CAS_WON_REASON) {
+							visibility = `export async function computeVisibility(): Promise<boolean> {\n   if($do.CAS_WON_LOSS.get()==\"Da\") return true;\n   else return false;\n}`
+						}
+						Field(CAS_LOST_REASON) {
+							visibility = `export async function computeVisibility(): Promise<boolean> {\n   if($do.CAS_WON_LOSS.get()==\"Nu\") return true;\n   else return false;\n}`
+							caption = FIELD_CAPTION_10
+						}
+					}
+				}
+				visibility = `export async function computeVisibility(): Promise<boolean> {\n  const phase = $do.DISTRIBUTIONPHASE.get();\n  if (\n   \n    phase === \'Negociere\' ||\n    phase === \'Contractare\' ||\n    phase === \'Contract semnat\'\n  ) {\n    return true;\n  }\n  return false;\n}`
+			}
+			Part partGeneratedId6 {
+				enableJumpmarks = false
+				caption = PART_CAPTION_4
+				VerticalLayout verticalLayoutGeneratedId6 {
+					Group groupGeneratedId9 {
+						LinkField(CAS_OPPDOC_LINK) {
+							caption = LINKFIELD_CAPTION_0
+						}
+					}
+				}
+				visibility = `export async function computeVisibility(): Promise<boolean> {\n  const phase = $do.DISTRIBUTIONPHASE.get();\n  if (phase===\'Contractare\'||phase===\'Contract semnat\' ) {\n    return true;\n  }\n  return false;\n}`
+			}
+			Part partGeneratedId8 {
+				enableJumpmarks = false
+				caption = PART_CAPTION_8
+				VerticalLayout verticalLayoutGeneratedId8 {
+					Group groupGeneratedId12 {
+						LinkField(CAS_OPPROJ_LINK) {
+							caption = PART_CAPTION_8
+						}
+					}
+				}
+				visibility = `export async function computeVisibility(): Promise<boolean> {\n  const phase = $do.DISTRIBUTIONPHASE.get();\n  if ( phase===\'Contractare\'|| phase===\'Contract semnat\') {\n    return true;\n  }\n  return false;\n}`
+			}
+			Part partGeneratedId4 {
+				enableJumpmarks = false
+				caption = PART_CAPTION_3
+				VerticalLayout verticalLayoutGeneratedId4 {
+					HorizontalLayout horizontalLayoutGeneratedId2 {
+						LayoutColumn layoutColumnGeneratedId3 {
+							Group groupGeneratedId2 {
+								caption = GROUP_CAPTION_2
+								Field(CAS_INITSINCRONIZARENAV) {
+									enablement = `export async function computeEnablement(): Promise<boolean> {\n    const numarProiect = await $do.CAS_NUMARPROIECTCAS.get();\n    const numeProiect = await $do.CAS_PROJECTNAME.get();\n\n    return !!(numarProiect && numeProiect);\n}`
+								}
+								Field(CAS_NUMARPROIECTCAS) {
+								}
+								Field(CAS_PROJECTNAME) {
+								}
+							}
+						}
+					}
+				}
+				visibility = `export async function computeVisibility(): Promise<boolean> {\r\n  const phase = $do.DISTRIBUTIONPHASE.get();\r\n  if (phase===\'Contract semnat\' ) {\r\n    return true;\r\n  }\r\n  return false;\r\n}`
+			}
+			Part partGeneratedId3 {
+				enableJumpmarks = false
+				caption = PART_CAPTION_2
+				VerticalLayout verticalLayoutGeneratedId3 {
+					Group groupGeneratedId4 {
+						caption = PART_CAPTION_2
+						Field(CAS_REASON)
+						TextField(CAS_DETALIIMOTIV)
+					}
+				}
+				enablement = false
+				visibility = `false`
+			}
+			PartExtensionPoint defaultPartExtensionPoint {
+				id = "record.part.default"
+			}
+		}
+	}
+}

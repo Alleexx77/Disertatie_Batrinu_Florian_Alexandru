@@ -1,0 +1,31 @@
+namespace smartdesign.productusage
+
+extension smartdesign.productusage.ITDPRODUSAGE {
+	string CAS_PROJECT_MANAGER as user
+	datetime CAS_START_GARANTIE_CLIENT
+	datetime CAS_END_GARANTIE_CLIENT
+	datetime CAS_START_GARANTIE_PROD
+	datetime CAS_END_GARANTIE_PROD
+	link SUBCONTRACTOR_LINK {
+		targetObjectType = ADDRESS
+		linkAttribute = "SUBCONTRACTOR"
+		fieldsToSave = COMPNAME
+		backingField = CAS_SUBCONTRACTOR
+	}
+	link PROIECTPRODUSE_LINK {
+		targetObjectType = PROJECT
+		linkAttribute = "PROIECTPRODUSE"
+		fieldsToSave = KEYWORD
+		backingField = CAS_PROJECT
+	}
+	string CAS_SUBCONTRACTOR
+	string CAS_PROJECT
+	int CAS_SERVICE_INTERVAL {
+		unit = "days"
+	}
+	link L2USAPU_LINK {
+		targetObjectType = ITDSA
+		linkAttribute = "L2USAPU"
+	}
+	string CAS_GENERARE_TICKETE
+}

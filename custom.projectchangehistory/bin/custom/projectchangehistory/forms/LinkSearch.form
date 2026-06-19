@@ -1,0 +1,35 @@
+namespace custom.projectchangehistory
+
+form LinkSearch {
+
+	context {
+		primary searchMassdata = DataObjectMassData(PROJECTCHANGEHISTORY)
+		lastUsedMD = LastUsedMassData(PROJECTCHANGEHISTORY)
+	}
+
+	header = DefaultHeader {
+		title = LINK_WITH_PROJECTCHANGEHISTORY
+		contributionPoints = { }
+	}
+
+	state read {
+		height = content
+		VerticalLayout contentLayout {
+			ratio = { 0, 1, 1 }
+			SearchField searchField(searchResults) {
+				hideTargetViewerWhenEmpty = true
+				widgetsToHide = { recentlyUsed }
+			}
+			List searchResults {
+				datasource = searchMassdata
+				minVisibleItems = 8
+			}
+			EmbeddedList recentlyUsed {
+				caption = RECENTLY_USED
+				datasource = lastUsedMD
+				extendedListEntryMode = HIDE
+				entryAction = None
+			}
+		}
+	}
+}

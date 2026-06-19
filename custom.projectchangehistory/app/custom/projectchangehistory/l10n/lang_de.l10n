@@ -1,0 +1,7 @@
+!namespace custom.projectchangehistory
+!default-language DE
+
+APP_NAME = Project Change History
+PROJECTCHANGEHISTORY_SINGULAR = ProjectChangeHistory
+PROJECTCHANGEHISTORY_PLURAL = ProjectChangeHistory
+LINK_WITH_PROJECTCHANGEHISTORY = Verknüpfen mit ProjectChangeHistory

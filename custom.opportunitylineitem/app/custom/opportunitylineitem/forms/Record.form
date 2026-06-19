@@ -1,0 +1,124 @@
+namespace custom.opportunitylineitem
+
+form Record {
+
+	context {
+		primary import do = DataObject(OPPORTUNITYLINEITEM)
+		dossierMD = DossierMassData()
+		productLink = LinkedDataObject(do) {
+			linkedBy = CAS_PROD_LINK_LINK
+		}
+		linkedCasOppLink = LinkedDataObject(do) {
+			linkedBy = CAS_OPP_LINK_LINK
+		}
+	}
+
+	events {
+		on edit += `export async function onEdit(): Promise<void> {\n    if ($do.isNew()) {\n        // Valori implicite la creare;\n        $do.CAS_DISCOUNT.set(new BigNumber(0));\n        $do.CAS_TOTALPRICE.set(new BigNumber(0));\n       \n    }\n    if($productLink)\n       {\n        $do.CAS_COST.set($productLink.PURCHASEPRICE.get());\n       }\n\n    // Dacă linia are deja un produs selectat, completează automat informațiile\n}`
+		on change(productLink) += `export async function onChangeProductLink(): Promise<void> {\n    if ($productLink) {\n            $do.CAS_PRODUCT.set($productLink.KEYWORD.get());\n            $do.CAS_PRODUCTDESCRIPTION.set($productLink.DESCRIPTION.get());\n            $do.CAS_UNITMEASUREMENT.set($productLink.QUANTITYUNIT.get());\n            $do.CAS_PRICE.set($productLink.PRICE.get());\n            $do.CAS_COST.set($productLink.PURCHASEPRICE.get());\n  if ($linkedCasOppLink) {\n        $do.CAS_CURRENCY.set($linkedCasOppLink.CURRENCYNAT.get())\n    }\n}\n    }`
+		on apply += `export async function onApply(): Promise<void> {\n    if($linkedCasOppLink)\n    {\n        $do.CAS_OPPORTUNITY_NAME.set($linkedCasOppLink.KEYWORD.get());\n        $do.CAS_OPPORTUNITY_NUMBER.set($linkedCasOppLink.OPPORTUNITYNUMBER.get());\n    }\n}`
+	}
+
+	header = DefaultHeader {
+		title = OPPORTUNITYLINEITEM_SINGULAR
+	}
+
+	state read {
+		VerticalLayout contentLayout {
+			ZLayout mainLayout {
+				Permissions permissions {
+				}
+				EmbeddedList dossier {
+					caption = DOSSIER
+					datasource = dossierMD
+				}
+				ExtensionPoint defaultExtension {
+					id = "record.default"
+				}
+				Group additionalInformation {
+					caption = ADDITIONAL_INFORMATION
+					ScriptedField insertInformation {
+						caption = INSERT_INFORMATION_CAPTION
+						expression = `
+							import { getInsertInformation } from "smartdesign.base/additional-information";
+							getInsertInformation($do);
+						`
+					}
+					ScriptedField updateInformation {
+						caption = UPDATE_INFORMATION_CAPTION
+						expression = `
+							import { getUpdateInformation } from "smartdesign.base/additional-information";
+							getUpdateInformation($do);
+						`
+					}
+				}
+			}
+		}
+	}
+
+	state edit {
+		VerticalLayout contentLayout {
+			HorizontalLayout {
+				LayoutColumn {
+					Group {
+						caption = GENERAL
+						Field(CAS_PRODUCT)
+						Field(CAS_CURRENCY) {
+							readonly = true
+						}
+					}
+				}
+				LayoutColumn {
+					Group {
+						caption = GROUP_CAPTION_0
+						LinkField(CAS_PROD_LINK_LINK) {
+							caption = GROUP_CAPTION_0
+						}
+						LinkField(CAS_OPP_LINK_LINK) {
+							visibility = false
+						}
+						TextField(CAS_PRODUCTDESCRIPTION)
+					}
+				}
+			}
+			HorizontalLayout {
+				LayoutColumn {
+					Group {
+						caption = GROUP_CAPTION_1
+						Field(CAS_PRICE)
+						Field(productLink.CAS_MINIMUM_ACCEPTED_PRICE)
+						Field(CAS_QUANTITY)
+						Field(CAS_COST)
+						SliderField(CAS_DISCOUNT) {
+							percent = true
+						}
+						Field(CAS_UNITMEASUREMENT)
+						Field(CAS_TOTALPRICE)
+					}
+				}
+				LayoutColumn {
+					Group {
+						Field(CAS_MARGIN)
+					}
+				}
+			}
+			ZLayout mainLayout {
+				Permissions permissions {
+				}
+				ExtensionPoint defaultExtension {
+					id = "record.default"
+				}
+				Group {
+					caption = GROUP_CAPTION_2
+					Field(CAS_PROJECT_NAME)
+					Field(CAS_PROJECT_NUMBER)
+					Field(CAS_ID_PROJECT)
+					Field(CAS_OPPORTUNITY_NAME)
+					Field(CAS_OPPORTUNITY_NUMBER)
+					Field(CAS_INITIATENAVSYNC)
+					visibility = `export async function computeVisibility(): Promise<boolean> {\n   if( user.name?.trim().toLowerCase() === \"administrator\") return true;\n   else return false;\n}\n`
+				}
+			}
+		}
+	}
+}

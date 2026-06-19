@@ -1,0 +1,13 @@
+!namespace smartdesign.project
+!language-extension EN
+
+!override
+PROJECT_STATUS = Responsible Persons
+PART_CAPTION = Financial KPI
+METRIC_CAPTION_0 = Total invoiced amount
+METRIC_CAPTION = Planned invoice value
+PART_CAPTION_2 = Project Change History
+EMBEDDEDLIST_EXTENDEDLISTENTRYCAPTION_0 = Milestone Changes
+EMBEDDEDLIST_CAPTION_0 = Milestone Changes
+LINK_LIST_CAPTION = Milestones
+FIELD_CAPTION_0 = Project responsible

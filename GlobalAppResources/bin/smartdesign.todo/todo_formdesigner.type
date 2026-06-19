@@ -1,0 +1,5 @@
+namespace smartdesign.todo
+
+extension smartdesign.todo.TODO {
+	string CAS_ASSIGNEDTO
+}

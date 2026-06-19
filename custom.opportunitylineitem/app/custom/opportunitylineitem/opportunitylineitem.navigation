@@ -1,0 +1,12 @@
+namespace custom.opportunitylineitem
+
+flow {
+	on initialization => ShowSearch
+	external {
+		on OpenRecord => Record
+		on OpenLinkOpportunitylineitemSearch => LinkSearch
+	}
+	internal {
+		on ShowSearch => Search
+	}
+}

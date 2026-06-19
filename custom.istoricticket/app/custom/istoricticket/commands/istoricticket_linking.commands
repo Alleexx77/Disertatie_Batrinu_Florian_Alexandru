@@ -1,0 +1,16 @@
+namespace custom.istoricticket
+
+intents {
+	intent OpenLinkIstoricticketSearch {
+		type = overlay
+		pagesToKeep = 0
+	}
+}
+
+commands {
+	command linkToIstoricticket uses linkTo {
+		label = ISTORICTICKET_SINGULAR
+		targetType = ISTORICTICKET
+		searchIntent = OpenLinkIstoricticketSearch
+	}
+}

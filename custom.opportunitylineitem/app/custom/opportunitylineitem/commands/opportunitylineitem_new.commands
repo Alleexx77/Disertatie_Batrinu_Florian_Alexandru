@@ -1,0 +1,10 @@
+namespace custom.opportunitylineitem
+
+commands {
+	command newOpportunitylineitem uses new {
+		typeToCreate = OPPORTUNITYLINEITEM
+	}
+	command newLinkedOpportunitylineitem uses new_linked {
+		newCommand = newOpportunitylineitem
+	}
+}

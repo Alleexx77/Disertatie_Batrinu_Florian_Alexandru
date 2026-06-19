@@ -1,0 +1,29 @@
+namespace smartdesign.product
+
+extension smartdesign.product.BSPRODUCT {
+	string CAS_MODEL
+	string CAS_RESPDEPARTMENT
+	string CAS_MANUFACTURER
+	string GWSECTION
+	string CAS_STOCK_ID
+	string CAS_VIN
+	string CAS_BRAND
+	string CAS_GENERATION
+	string CAS_DRIVE_TYPE
+	string CAS_CONDITION
+	int CAS_YEAR
+	int CAS_FIRST_REGISTRATION_DATE
+	string CAS_MILEAGE
+	string CAS_FUEL_TYPE
+	string CAS_ENGINE_CAPACITY
+	string CAS_HORSEPOWER
+	string CAS_EXTERIOR_COLOR
+	string CAS_INTERIOR_COLOR
+	string CAS_INTERIOR_MATERIAL
+	decimal CAS_MINIMUM_ACCEPTED_PRICE as money
+	string CAS_WARRANTY_AVAILABLE
+	string CAS_ACCIDENT_FREE
+	string CAS_HISTORY_AVAILABLE
+	string CAS_EMISSION_STANDARD
+	string CAS_TRANSMISSION
+}

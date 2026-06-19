@@ -1,0 +1,7 @@
+!namespace smartdesign.product
+!language-extension EN
+
+PART_CAPTION = Picture
+GROUP_CAPTION_0 = Technical Details
+GROUP_CAPTION_1 = Vehicle History
+GROUP_CAPTION_2 = Technical Details

@@ -1,0 +1,46 @@
+namespace custom.istoricticket
+
+objecttype ISTORICTICKET {
+	datetime CAS_DATA
+	string CAS_DEPARTAMENT_NOU
+	string CAS_DEPARTAMENT_VECHI
+	string CAS_NUMAR_TICKET
+	string CAS_RESPONSABIL_NOU as user
+	string CAS_RESPONSABIL_VECHI as user
+	string CAS_USERNAME
+	boolean DELETABLE
+	gguid DELGUID
+	int EDITPERMISSION
+	int FOREIGNEDITPERMISSION
+	gguid GGUID
+	gguid GRPGUID
+	int GWNOTESFORMAT
+	string ICON
+	string ICONALTERNATE
+	datetime INSERTTIMESTAMP
+	string INSERTUSER
+	boolean ISSYSTEMDUPLICATABLE
+	boolean ISSYSTEMUNCOMMITTED
+	boolean ISTEMPLATE
+	int OID
+	gguid OWNERGUID
+	string OWNERNAME
+	suggestions PERMISSIONS
+	string SMARTACTIONRESULTS_FAILURE_INFO
+	boolean SMART_DESIGN_INTERNAL_RECORD_EDITABLE
+	gguid SYSOPERATIONGUID
+	suggestions TYPESUGGESTIONS
+	datetime UPDATETIMESTAMP
+	string UPDATEUSER
+	string VIEWICON
+	link ISTORICTICKETE_LINK {
+		targetObjectType = TASK
+		linkAttribute = "ISTORICTICKETE"
+	}
+
+	summary {
+		caption = CAS_NUMAR_TICKET
+		description = CAS_USERNAME
+		icon = ICON
+	}
+}

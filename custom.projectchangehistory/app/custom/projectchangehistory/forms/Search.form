@@ -1,0 +1,35 @@
+namespace custom.projectchangehistory
+
+form Search {
+
+	context {
+		primary searchMD = DataObjectMassData(PROJECTCHANGEHISTORY)
+		lastUsedMD = LastUsedMassData(PROJECTCHANGEHISTORY)
+		favoriteMD = DataObjectMassData(PROJECTCHANGEHISTORY)
+	}
+
+	header = DefaultHeader {
+		title = PROJECTCHANGEHISTORY_PLURAL
+		contributionPoints = { }
+	}
+
+	state read {
+		VerticalLayout contentLayout {
+			SearchList searchList {
+				caption = PROJECTCHANGEHISTORY_PLURAL
+				datasource = searchMD
+			}
+			FavoritesList favorites {
+				caption = FAVORITES
+				datasource = favoriteMD
+			}
+			EmbeddedList recentlyUsed {
+				caption = RECENTLY_USED
+				datasource = lastUsedMD
+			}
+			ViewsList viewsList {
+				objectTypeViews = PROJECTCHANGEHISTORY
+			}
+		}
+	}
+}

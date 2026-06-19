@@ -1,0 +1,15 @@
+namespace custom.myfirstwebwidget
+
+@AppDesignerCompatible
+widget MyFirstWebWidget extends WebWidget {
+    field ref
+    field ref2
+    field ref3
+    field ref4
+    field ref5
+    field ref6
+    field ref7
+    field ref8
+    field ref9
+    field ref10
+}

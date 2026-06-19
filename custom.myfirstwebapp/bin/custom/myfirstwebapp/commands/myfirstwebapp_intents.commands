@@ -1,0 +1,7 @@
+namespace custom.myfirstwebapp
+
+intents {
+	intent OpenWebApp {
+		pagesToKeep = 0
+	}
+}

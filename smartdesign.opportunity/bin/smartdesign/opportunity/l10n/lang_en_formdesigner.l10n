@@ -1,0 +1,47 @@
+!namespace smartdesign.opportunity
+!language-extension EN
+
+PART_CAPTION = Opportunity Won/Lost
+PART_CAPTION_2 = Win-Loss Analysis
+!override
+VOLUME = Offer & Volume
+!override
+ACQUISITION = Opportunity Details
+GROUP_CAPTION_0 = Opportunity Insights
+GROUP_CAPTION_1 = Approval Details
+GROUP_CAPTION_2 = Sync Data
+PART_CAPTION_3 = Sync NAV
+PART_CAPTION_4 = Introduce Contract Details
+LINKFIELD_CAPTION_0 = Contract
+PART_CAPTION_5 = Partners
+PART_CAPTION_6 = Competitors
+PART_CAPTION_7 = Initiate approval flow
+PART_CAPTION_8 = Link Project
+LINK_LIST_CAPTION = Opportunity Offers
+PART_CAPTION_9 = Offer Approval Details
+GROUP_CAPTION_3 = Win-Loss Analysis
+PART_CAPTION_10 = Opportunity Team
+SCRIPTEDFIELD_CAPTION_0 = Sales Offer Manager Approval
+SCRIPTEDFIELD_CAPTION_1 = Leasing Responsible Approval
+SCRIPTEDFIELD_CAPTION_2 = Net Margin
+LINKLISTGROUPEDBYROLES_CAPTION_0 = Documents
+LINK_LIST_CAPTION_2 = Leasing Documents
+LINKFIELD_CAPTION_1 = Lead
+FIELD_CAPTION_0 = Manager
+FIELD_CAPTION_1 = Sales Responsible
+FIELD_CAPTION_2 = BID and Leasing Responible
+FIELD_CAPTION_3 = Trade In Specialist
+FIELD_CAPTION_4 = Manager Initiate Approval Flow
+PART_CAPTION_11 = Leasing Documents
+GROUP_CAPTION_4 = Leasing Company
+FIELD_CAPTION_5 = Sales Offer Manager Approved
+FIELD_CAPTION_6 = Leasing Offer Approved
+FIELD_CAPTION_7 = Trade In Responsible Approved
+SCRIPTEDFIELD_CAPTION_3 = Trade In Responsible Approval
+SCRIPTEDFIELD_CAPTION_4 = Trade In Manager Approval
+FIELD_CAPTION_8 = Trade In Manager Approved
+FIELD_CAPTION_9 = Trade In Estimated Value
+LINKFIELD_CAPTION_2 = Oferta comerciala
+GROUP_CAPTION_5K = Lead Info
+FIELD_CAPTION_10 = Lost Reason
+FIELD_CAPTION_11 = Won/Loss

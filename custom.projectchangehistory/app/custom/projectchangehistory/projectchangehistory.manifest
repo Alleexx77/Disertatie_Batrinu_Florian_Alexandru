@@ -1,0 +1,8 @@
+app custom.projectchangehistory {
+	name = APP_NAME
+	color = "#1467ba"
+
+	requirements {
+		objecttypes { PROJECTCHANGEHISTORY }
+	}
+}

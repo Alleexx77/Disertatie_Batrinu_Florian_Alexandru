@@ -1,0 +1,27 @@
+!namespace smartdesign.address
+!language-extension RO
+
+GROUP_CAPTION_0 = Contact Data
+FIELD_CAPTION_0 = Default Phone 1
+FIELD_CAPTION_1 = Default Email
+GROUP_CAPTION_1 = Contact Information
+PART_CAPTION = Address
+PART_CAPTION_2 = Business Info
+SCRIPTEDFIELD_CAPTION_0 = WhatsApp
+SCRIPTEDFIELD_CAPTION_1 = LinkedIn
+!override
+NAME_COMPANY = Detalii
+!override
+DELIVERY_ADDRESS = Adresă Birou
+!override
+PHONE = Detalii Profil
+!override
+PRIVATE_ADDRESS = Office address
+GROUP_CAPTION_2 = Contact
+PART_CAPTION_3 = Company Structure
+PROJECTS = Proiecte
+OPPORTUNITIES = Oportunitati
+TICKETS = Tickete
+!override
+EMAIL = Detalii de contact
+LINKLISTGROUPEDBYROLES_CAPTION_0 = Structura Companie

@@ -1,0 +1,257 @@
+namespace smartdesign.serviceagreement
+
+/* IMPORTANT: This is a generated file. Manual changes will disable automatic updates. */
+@Derived(sha1="1ca7b1e05e323b3a144926f0c11d2f2566609bda")
+form Record {
+
+	context {
+		primary import do = DataObject(ITDSA)
+		dossierMD = DossierMassData()
+		linkedProductUsagesMD = LinkMassData(ITDSA => ITDPRODUSAGE) {
+			attributes = "L2USAPU"
+			summary {
+				caption = target.PRODUCT
+				description = target.CUSTOMER
+			}
+		}
+	}
+
+	definitions {
+		condition dontSetDeliveryContactIdentical = builtin:de.cas.smartdesign.app.serviceagreement.conditions.DontSetDeliveryContactIdenticalCondition
+		condition alwaysReadOnly = builtin:de.cas.smartdesign.app.serviceagreement.conditions.AlwaysReadOnlyCondition
+	}
+
+	events {
+		on edit += `export async function onEdit(): Promise<void> {\n    if ($do.isNew()) {\n        $do.MAINTENANCESTATUS.set(\'Active\');\n        $do.MAINTENANCESTART.set(new Date);\n    }\n}`
+	}
+
+	header = DefaultHeader {
+		title = SERVICEAGREEMENT
+	}
+
+	state read {
+		Parts parts {
+			Part mainPart {
+				caption = GENERAL_PART_LABEL
+				enableJumpmarks = false
+				VerticalLayout contentLayout {
+					RecordSummary recordSummary {
+						showRecordTypeIcon = true
+						headline = Headline id:recordSummaryHeadline {
+							title = Field(KEYWORD)
+							subTitle = Field(SERVICELEVEL)
+							FieldBadge recordSummaryHeadlineBadge {
+								ref = MAINTENANCESTATUS
+								color = `import { Color } from \"smartdesign.base/color\";\n\nexport async function computeColor(): Promise<Color> {\n    if ($do.MAINTENANCESTATUS.get() === \'Activ\' ||\n        $do.MAINTENANCESTATUS.get() === \'Active\') {\n        return Color.hex(\"#00871E\");\n    } if ($do.MAINTENANCESTATUS.get() === \'Inactiv\' ||\n        $do.MAINTENANCESTATUS.get() === \'Cancelled\') {\n        return Color.hex(\"#E2001A\");\n    } return Color.hex(\"#777777\");\n}`
+							}
+							FieldBadge fieldBadgeGeneratedId1 {
+								ref = ITSANUMBER
+								color = #666666
+							}
+						}
+					}
+					ZLayout mainLayout {
+						Group common {
+							caption = COMMON
+							Field(CUSTOMER_LINK)
+							Field(CONTACTPERSONGENERAL_LINK)
+							TextField(CAS_DETALII_SLA)
+						}
+						Group agreementStatus {
+							caption = GROUP_CAPTION_0
+							HorizontalLayout horizontalLayoutGeneratedId1 {
+								LayoutColumn layoutColumnGeneratedId1 {
+									minWidth = 100
+									Group groupGeneratedId1 {
+										Field(CAS_TYPE) {
+											color = `import { Color } from \"smartdesign.base/color\";\n\nexport async function computeColor(): Promise<Color> {\n    if ($do.CAS_TYPE.get() === \'Suport\') {\n        return Color.hex(\"#5E106B\");\n    } if ($do.CAS_TYPE.get() === \'Garantie\') {\n        return Color.hex(\"#125DA8\");\n    }\n    return Color.hex(\"#FFF\");\n}`
+										}
+										Field(MAINTENANCESTART) {
+											iconName = "platform:field/calendar-bold"
+										}
+									}
+								}
+								LayoutColumn layoutColumnGeneratedId2 {
+									minWidth = 100
+									Group groupGeneratedId2 {
+										Field(CAS_RESPONSABIL_VANZARI) {
+											iconName = "platform:field/person-bold"
+											color = #FF6B11
+										}
+										Field(MAINTENANCEEND) {
+											iconName = "platform:field/calendar-bold"
+										}
+									}
+								}
+							}
+						}
+						TagSelector tags {
+						}
+						EmbeddedList linkedProductUsages {
+							caption = LINKED_PRODUCTUSAGES
+							datasource = linkedProductUsagesMD
+							autoHide = DISABLED
+							actions = { add_product_usage }
+						}
+						EmbeddedList dossier {
+							caption = DOSSIER
+							datasource = dossierMD
+						}
+						ExtensionPoint defaultExtension {
+							id = "record.default"
+						}
+						Group additionalInformation {
+							caption = ADDITIONAL_INFORMATION
+							ScriptedField insertInformation {
+								caption = INSERT_INFORMATION_CAPTION
+								expression = `
+									import { getInsertInformation } from "smartdesign.base/additional-information";
+									getInsertInformation($do);
+								`
+							}
+							ScriptedField updateInformation {
+								caption = UPDATE_INFORMATION_CAPTION
+								expression = `
+									import { getUpdateInformation } from "smartdesign.base/additional-information";
+									getUpdateInformation($do);
+								`
+							}
+						}
+					}
+					Group notes {
+						caption = NOTES
+						Field(NOTES2) {
+							showCaption = false
+						}
+					}
+				}
+			}
+			Part partGeneratedId1 {
+				enableJumpmarks = false
+				caption = PART_CAPTION
+				VerticalLayout verticalLayoutGeneratedId1 {
+					ZLayout zLayoutGeneratedId1 {
+						Group groupGeneratedId3 {
+							Field(CONTACTPERSONDELIVERY_LINK)
+							Field(SERVICELEVEL)
+							Field(MAINTENANCESTATUS)
+							Field(TERMINATIONDATE)
+							Field(SASECTION)
+						}
+						Group maintenance {
+							caption = MAINTENANCE
+							Field(CO_MAINTENANCEAMOUNT)
+							Field(CO_SAGROSSPROFIT)
+							Field(SASERVICERATE)
+							Field(SAREBATE)
+						}
+						Group billing {
+							caption = BILLING
+							LinkField(BILLINGADDRESS_LINK)
+							Field(LASTBILLINGDATE)
+							Field(NEXTBILLINGDATE)
+							Field(BILLINGRANGE)
+						}
+					}
+				}
+				visibility = `export async function computeVisibility(): Promise<boolean> {\n    if (user.name === \'ADMINISTRATOR\') {\n        return true;\n    }\n    return false;\n}`
+			}
+			PartExtensionPoint defaultPartExtensionPoint {
+				id = "record.part.default"
+			}
+		}
+	}
+
+	state edit {
+		Parts parts {
+			Part mainPart {
+				caption = GENERAL_PART_LABEL
+				enableJumpmarks = false
+				VerticalLayout contentLayout {
+					Group keyword {
+						caption = KEYWORD
+						Field(KEYWORD) {
+							showCaption = false
+						}
+					}
+					ZLayout mainLayout {
+						Group common {
+							caption = COMMON
+							LinkField(CUSTOMER_LINK)
+							LinkField(CONTACTPERSONGENERAL_LINK)
+							TextField(CAS_DETALII_SLA) {
+								visibleRows = 3
+							}
+						}
+						Group groupGeneratedId1 {
+							caption = GROUP_CAPTION_0
+							HorizontalLayout horizontalLayoutGeneratedId1 {
+								LayoutColumn layoutColumnGeneratedId1 {
+									minWidth = 100
+									Group groupGeneratedId2 {
+										Field(CAS_TYPE)
+										Field(MAINTENANCESTATUS)
+										Field(MAINTENANCESTART)
+									}
+								}
+								LayoutColumn layoutColumnGeneratedId2 {
+									minWidth = 100
+									Group groupGeneratedId3 {
+										Field(SERVICELEVEL)
+										Field(CAS_RESPONSABIL_VANZARI)
+										Field(MAINTENANCEEND)
+									}
+								}
+							}
+						}
+						TagSelector tags {
+						}
+						ExtensionPoint defaultExtension {
+							id = "record.default"
+						}
+					}
+					Group notes {
+						caption = NOTES
+						Field(NOTES2) {
+							showCaption = false
+						}
+					}
+				}
+			}
+			Part partGeneratedId1 {
+				enableJumpmarks = false
+				caption = PART_CAPTION
+				visibility = `export async function computeVisibility(): Promise<boolean> {\n    if (user.name === \'ADMINISTRATOR\') {\n        return true;\n    }\n    return false;\n}`
+				VerticalLayout verticalLayoutGeneratedId1 {
+					ZLayout zLayoutGeneratedId1 {
+						Group groupGeneratedId4 {
+							Field(ITSANUMBER)
+							Field(FEDERALSTATE)
+							Field(COUNTRY)
+							Field(DELIVERYCONTACTIDENTICAL)
+							LinkField(CONTACTPERSONDELIVERY_LINK) {
+								enablement = dontSetDeliveryContactIdentical
+							}
+							Field(TERMINATIONDATE)
+							Field(SASECTION)
+						}
+						Group billing {
+							caption = BILLING
+							LinkField(BILLINGADDRESS_LINK)
+							Field(LASTBILLINGDATE)
+							Field(NEXTBILLINGDATE)
+							Field(BILLINGRANGE)
+							Field(SERVICELEVEL) {
+								readonly = alwaysReadOnly
+							}
+							Field(CAS_SERVICE_LEVEL)
+						}
+					}
+				}
+			}
+			PartExtensionPoint defaultPartExtensionPoint {
+				id = "record.part.default"
+			}
+		}
+	}
+}

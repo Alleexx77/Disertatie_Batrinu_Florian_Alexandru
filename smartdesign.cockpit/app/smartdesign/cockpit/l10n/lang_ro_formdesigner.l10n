@@ -1,0 +1,45 @@
+!namespace smartdesign.cockpit
+!language-extension RO
+
+PART_CAPTION = Vanzari
+PART_CAPTION_0 = Dashboard activitati
+CHART_CAPTION = Stagii oportunitate
+CHART_CAPTION_2 = Status oportunitati
+GROUPEDVALUESCHART_CAPTION_0 = Oportunitati castigate anul trecut
+!override
+OPEN_TASKS = Sarcini deschise - Prioritate
+GROUPEDVALUESCHART_CAPTION_1 = Oportunitati pierdute anul trecut
+GROUPEDVALUESCHART_CAPTION_2 = Contracte cu data semnare in anul curent
+LINK_LIST_CAPTION = Lead-uri deschise repartizate
+LINK_LIST_CAPTION_2 = Leaduri convertite in anul curent
+LINK_LIST_CAPTION_3 = Task-uri in lucru
+LINK_LIST_CAPTION_4 = Intalniri din ziua curenta
+LINK_LIST_CAPTION_5 = Apeluri programate azi
+GROUPEDVALUESCHART_CAPTION_3 = Contracte clienti semnate anul curent
+CHART_CAPTION_3 = Contracte cu data de expirare in rumatoarele 45 de zile
+LINK_LIST_CAPTION_6 = Leaduri de alocat
+CHART_CAPTION_4 = Oportunitati in lucru pe Account Manager
+CHART_CAPTION_5 = Oportunitati castigate pe Account Manager
+CHART_CAPTION_6 = Contracte semnate pe Account Manager
+LINK_LIST_CAPTION_7 = Top 10 Oportunitati dupa valoare
+LINK_LIST_CAPTION_8 = Oportunitati cu marja, data creare si data inchidere
+PART_CAPTION_2 = Proiecte
+CHART_CAPTION_7 = Valori ffacturate pe Sales Rep
+GROUPED_VALUES_LIST_CAPTION = Milestones cu deadline in < 15 zile
+GROUPED_VALUES_LIST_CAPTION_2 = Milestones cu deadline depasit
+GROUPEDVALUESCHART_CAPTION_4 = Valori facturate pe Milestones inceput anul acesta
+CHART_CAPTION_8 = Panificat Facturare pentru milestones din anul curent
+GROUPEDVALUESCHART_CAPTION_5 = Valori Planificat Facturare per Sales Rep
+GROUPED_VALUES_LIST_CAPTION_3 = Poriecte grupate pe Project Manager
+GROUPED_VALUES_LIST_CAPTION_4 = Proiecte grupate dupa status
+PART_CAPTION_3 = Helpdesk
+GROUPEDVALUESCHART_CAPTION_6 = Tickete pe Origine
+CHART_CAPTION_9 = Tickete  IN LUCRU pe prioritate
+GROUPED_VALUES_LIST_CAPTION_5 = Tickete CU SLA DEPASIT
+CHART_CAPTION_10 = Tickete deschise pe departament
+CHART_CAPTION_11 = Tickete DE ALOCAT in Level 1 dupa prioritate
+GROUPED_VALUES_LIST_CAPTION_6 = Tickete cu data expirare maine
+GROUPED_VALUES_LIST_CAPTION_7 = Tickete inchise in ultimele 7 zile
+GROUPED_VALUES_LIST_CAPTION_8 = Interventii Preventive  in 15  zile
+GROUPED_VALUES_LIST_CAPTION_9 = Plangeri grupate pe Prioritate
+LINK_LIST_CAPTION_9 = Tickete "In Formulare Solutie" la Level 1

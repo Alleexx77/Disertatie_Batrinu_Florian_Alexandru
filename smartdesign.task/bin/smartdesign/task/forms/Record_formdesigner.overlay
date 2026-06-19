@@ -1,0 +1,403 @@
+namespace smartdesign.task
+
+/* IMPORTANT: This is a generated file. Manual changes will disable automatic updates. */
+@Derived(sha1="92c7710b7dfc44d4ab4fc4f36a5abdda5775e3b4")
+overlay form Record {
+	context {
+		listJob = DataObjectMassData(TASK) {
+			query {
+				where = GWSTYPE = "Support Intervention" OR GWSTYPE = "Interventie Suport"
+			}
+		}
+		listProjectchangehistorySource = LinkMassData(TASK => PROJECTCHANGEHISTORY) {
+			attributes = "Verbindung"
+			query {
+				order = [target.UPDATETIMESTAMP -> DESC]
+			}
+		}
+		parentAddress = ParentDataObject(do) {
+			targetObjectType = ADDRESS
+		}
+	}
+
+	events {
+		on edit += `export async function onEdit(): Promise<void> {\n    if ($do.isNew()) {\n        $do.GWSTYPE.set(\'Support Intervention\');\n    }\n}`
+		on change(GWSTYPE) += `export async function onChangeGwstype(): Promise<void> {\n    const value = $do.GWSTYPE.get();\n    if (value) {\n        if (value === \'Support Intervention\' || value === \'Interventie Suport\') {\n            $do.CAS_NR_INTERVENTIE.trySet(\'INTERV\'+(await $listJob.count()+1).toString());\n        }\n    }\n}`
+		on change(CAS_INCEPUT_INTERVENTIE) += `export async function onChangeCasInceputInterventie(): Promise<void> {\n    const value = $do.CAS_INCEPUT_INTERVENTIE.get();\n    if (value == true) {\n        $do.CAS_DATA_INCEPUT_INTERVENTIE.set(new Date);\n    }\n}`
+		on change(CAS_FINALIZARE_INTERVENTIE) += `export async function onChangeCasFinalizareInterventie(): Promise<void> {\n    const value = $do.CAS_FINALIZARE_INTERVENTIE.get();\n    if (value == true) {\n        $do.CAS_DATA_SFARSIT_INTERVENTIE.set(new Date);\n    }\n}`
+	}
+
+	overlay state ^read {
+		after .Part mainPart {
+			Part partGeneratedId1 {
+				enableJumpmarks = false
+				caption = PART_CAPTION
+				visibility =
+				`export async function computeVisibility(): Promise<boolean> {\n  if ($do.GWSTYPE.get() !== \"Support Intervention\" && $do.GWSTYPE.get() !== null) {\n    return true;\n  } else {\n    return false;\n  }\n}`
+				VerticalLayout verticalLayoutGeneratedId1 {
+					Group groupGeneratedId1 {
+						caption = GROUP_CAPTION_0
+						ExtendedPositionList extendedPositionListGeneratedId1 {
+							datasource = listProjectchangehistorySource
+							columns = { target.CAS_FINALINVOICED, target.CAS_INITIALINVOICED, target.CAS_FINALPLANINV,
+							target.CAS_INITIALPLANINV, target.CAS_FINALSTATUS, target.CAS_INITIALSTATUS, target.CAS_FINALENDDATE,
+							target.CAS_INITIALENDDATE }
+							positionTitle = target.UPDATETIMESTAMP
+							lastColumnAlwaysVisible = false
+						}
+					}
+				}
+			}
+			Part partGeneratedId2 {
+				enableJumpmarks = false
+				caption = GROUP_CAPTION_1
+				VerticalLayout verticalLayoutGeneratedId2 {
+					ZLayout zLayoutGeneratedId1 {
+						Group groupGeneratedId2 {
+							Field(CAS_DATA_INCEPUT_INTERVENTIE) {
+								iconName = "platform:field/calendar-bold"
+							}
+							Field(CAS_DATA_SFARSIT_INTERVENTIE) {
+								iconName = "platform:field/calendar-bold"
+							}
+							ScriptedField scriptedFieldGeneratedId1 {
+								expression =
+								`export async function computeExpression(): Promise<string | undefined> {\n    const start = $do.CAS_DATA_INCEPUT_INTERVENTIE.get();\n    const end = $do.CAS_DATA_SFARSIT_INTERVENTIE.get();\n    if (start != undefined && end != undefined) {\n        const hours = Dates.between(start,end,Dates.Unit.HOURS);\n        const minutes = Dates.between(start,end,Dates.Unit.MINUTES);\n        var minuteRamase = (minutes-(hours*60))\n        return hours+\' h \'+minuteRamase+\' min\';\n    }\n}`
+								iconName = "platform:field/duration"
+								color = #125DA8
+								alignment = CENTER
+								caption = SCRIPTEDFIELD_CAPTION_0
+							}
+							LinkField(REPREZCLIENT_LINK)
+						}
+						Group groupGeneratedId3 {
+							TextField(CAS_CONSTATARI)
+							TextField(CAS_ECHIPAMENTE_INLOCUITE)
+						}
+						Group groupGeneratedId4 {
+							TextField(CAS_MATERIALE_FOLOSITE)
+							TextField(CAS_OPERATIUNI)
+						}
+						Group groupGeneratedId5 {
+							caption = GROUP_CAPTION_2
+							TextField(CAS_OBSERVATII_CLIENT) {
+								showCaption = false
+							}
+						}
+					}
+				}
+			}
+		}
+		.Group recordSummaryMainLayoutDatesGroup {
+			Field(CAS_PROJECT) last
+			Field(parentAddress.COMPNAME) last
+		}
+		.Group recordSummaryMainLayoutTypeGroup {
+			.Field(TSKNUMBER) {
+				autoHide = DISABLED
+				caption = FIELD_CAPTION_1
+			}
+			Field(CAS_INVOICEDVALUE) last
+			Field(CAS_PLANNEDFORINVOICE) last
+		}
+		.Group typeStatus {
+			Field(CAS_PROJECTID) last
+		}
+		delete .Group catchphrases
+	}
+
+	overlay state ^edit {
+		after .Part mainPart {
+			Part partGeneratedId2 {
+				enableJumpmarks = false
+				caption = GROUP_CAPTION_1
+				visibility =
+				`export async function computeVisibility(): Promise<boolean> {\n    if ($do.GWSTYPE.get() === \'Support Intervention\' ||\n        $do.GWSTYPE.get() === \'Interventie Suport\') {\n        return true;\n    }\n    return false;\n}`
+				VerticalLayout verticalLayoutGeneratedId2 {
+					ZLayout zLayoutGeneratedId2 {
+						Group groupGeneratedId3 {
+							Field(CAS_INCEPUT_INTERVENTIE)
+							Field(CAS_DATA_INCEPUT_INTERVENTIE) {
+								enablement = false
+							}
+							Field(CAS_FINALIZARE_INTERVENTIE)
+							Field(CAS_DATA_SFARSIT_INTERVENTIE) {
+								enablement = false
+							}
+							LinkField(REPREZCLIENT_LINK)
+						}
+						Group groupGeneratedId5 {
+							TextField(CAS_CONSTATARI)
+							TextField(CAS_ECHIPAMENTE_INLOCUITE)
+						}
+						Group groupGeneratedId6 {
+							TextField(CAS_MATERIALE_FOLOSITE)
+							TextField(CAS_OPERATIUNI)
+						}
+						Group groupGeneratedId7 {
+							caption = GROUP_CAPTION_2
+							TextField(CAS_OBSERVATII_CLIENT) {
+								showCaption = false
+								visibleRows = 12
+							}
+						}
+					}
+				}
+			}
+			Part partGeneratedId1 {
+				enableJumpmarks = false
+				caption = PART_CAPTION_2
+				visibility =
+				`export async function computeVisibility(): Promise<boolean> {\n    if (user.name === \'ADMINISTRATOR\') {\n        return true;\n    }\n    return false;\n}`
+				VerticalLayout verticalLayoutGeneratedId1 {
+					ZLayout zLayoutGeneratedId1 {
+						Group groupGeneratedId4 {
+							Field(TSKNUMBER)
+							Field(CAS_NR_INTERVENTIE)
+							Field(CAS_PERSOANA_CONTACT)
+						}
+					}
+				}
+			}
+		}
+		.Group keyword {
+			Field(CAS_PROJECT) {
+				visibility =
+				`export async function computeVisibility(): Promise<boolean> {\n  if ($do.GWSTYPE.get() === \"Milestone\") {\n    return true;\n  } else {\n    return false;\n  }\n}`
+			} last
+		}
+		after .ZLayout mainLayout {
+			move .TagSelector tags
+		}
+		.Group typeStatus {
+			delete .Field(GWSTYPE)
+			delete .Field(GWSSTATUS)
+			caption = GENERAL
+			HorizontalLayout horizontalLayoutGeneratedId1 {
+				LayoutColumn layoutColumnGeneratedId1 {
+					minWidth = 100
+					Group groupGeneratedId1 {
+						Field(GWSTYPE)
+						Field(CAS_PLANNEDFORINVOICE) {
+							visibility =
+							`export async function computeVisibility(): Promise<boolean> {\n  if ($do.GWSTYPE.get() !== \"Support Intervention\" && $do.GWSTYPE.get() !== null) {\n    return true;\n  } else {\n    return false;\n  }\n}`
+						}
+					}
+				}
+				LayoutColumn layoutColumnGeneratedId2 {
+					minWidth = 100
+					Group groupGeneratedId2 {
+						Field(GWSSTATUS)
+						Field(CAS_INVOICEDVALUE) {
+							visibility =
+							`export async function computeVisibility(): Promise<boolean> {\n  if ($do.GWSTYPE.get() !== \"Support Intervention\" && $do.GWSTYPE.get() !== null) {\n    return true;\n  } else {\n    return false;\n  }\n}`
+						}
+					}
+				}
+			} first
+			Field(CAS_PROJECTID) {
+				visibility =
+				`export async function computeVisibility(): Promise<boolean> {\n  if ($do.GWSTYPE.get() !== \"Support Intervention\" && $do.GWSTYPE.get() !== null) {\n    return true;\n  } else {\n    return false;\n  }\n}`
+			} first
+		}
+		after .Group typeStatus {
+			move .Group timeFrame
+		}
+		after .PrimaryLinkedParentsList primaryLinks {
+			move .Permissions permissions
+		}
+		delete .Group number
+		delete .Group catchphrases
+	}
+}
+// ORIGINAL FORM GENERATED CONTENT START
+//namespace smartdesign.task
+//
+//form Record {
+//
+//	context {
+//		primary import do = DataObject(TASK)
+//		dossierMD = DossierMassData()
+//		linkedResourcePlans = LinkMassData(TASK => ITDRESPLAN) {
+//			attributes = "ITDITRPTSK"
+//			summary {
+//				caption = target.KEYWORD
+//				description = target.RESPLAN_DESCRIPTION
+//			}
+//		}
+//	}
+//
+//	header = DefaultHeader {
+//		title = TASK
+//	}
+//
+//	state read {
+//		Parts parts {
+//			Part mainPart {
+//				caption = GENERAL_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout contentLayout {
+//					RecordSummary recordSummary {
+//						showRecordTypeIcon = true
+//						headline = Headline id:recordSummaryHeadline {
+//							title = Field(KEYWORD)
+//						}
+//						HorizontalLayout recordSummaryMainLayout {
+//							LayoutColumn recordSummaryMainLayoutDatesColumn {
+//								minWidth = 200
+//								maxWidth = 320
+//								Group recordSummaryMainLayoutDatesGroup {
+//									Field(START_DT) {
+//										iconName = "platform:field/time"
+//									}
+//									Field(END_DT) {
+//										iconName = "platform:field/time"
+//									}
+//								}
+//							}
+//							LayoutColumn recordSummaryMainLayoutTypeColumn {
+//								minWidth = 200
+//								Group recordSummaryMainLayoutTypeGroup {
+//									Field(GWSTYPE) {
+//										color = #767676
+//									}
+//									Field(TSKNUMBER)
+//								}
+//							}
+//						}
+//					}
+//					HorizontalLayout wrappingHorizontalLayout {
+//						LayoutColumn wrappingHorizontalLayoutMainLayoutColumn {
+//							ZLayout mainLayout {
+//								PrimaryLinkedParentsList primaryLinks {
+//								}
+//								Group catchphrases {
+//									caption = CATCHPHRASES
+//									Field(NOTES) {
+//										showCaption = false
+//									}
+//								}
+//								Group timeFrame {
+//									caption = TIMEFRAME
+//									Field(START_DT)
+//									Field(END_DT)
+//									Field(DURATION)
+//								}
+//								TagSelector tags {
+//								}
+//								Group typeStatus {
+//									caption = TYPE_STATUS
+//									Field(GWSTYPE)
+//									Field(GWSSTATUS)
+//								}
+//								Permissions permissions {
+//								}
+//								EmbeddedList linkedresourceplans {
+//									caption = LINKED_RESOURCEPLANS
+//									datasource = linkedResourcePlans
+//								}
+//								ExtensionPoint defaultExtension {
+//									id = "record.default"
+//								}
+//								Group additionalInformation {
+//									caption = ADDITIONAL_INFORMATION
+//									ScriptedField insertInformation {
+//										caption = INSERT_INFORMATION_CAPTION
+//										expression = `
+//											import { getInsertInformation } from "smartdesign.base/additional-information";
+//											getInsertInformation($do);
+//										`
+//									}
+//									ScriptedField updateInformation {
+//										caption = UPDATE_INFORMATION_CAPTION
+//										expression = `
+//											import { getUpdateInformation } from "smartdesign.base/additional-information";
+//											getUpdateInformation($do);
+//										`
+//									}
+//									Field(CATEGORY)
+//								}
+//							}
+//							Group notes {
+//								caption = NOTES
+//								Field(NOTES2) {
+//									showCaption = false
+//								}
+//							}
+//						}
+//						LayoutColumn wrappingHorizontalLayoutDossierColumn {
+//							minWidth = 200
+//							maxWidth = 400
+//							EmbeddedList dossierListGeneral {
+//								caption = DOSSIER
+//								datasource = dossierMD
+//								maxItemsShown = 16
+//							}
+//						}
+//					}
+//				}
+//			}
+//			PartExtensionPoint defaultPartExtensionPoint {
+//				id = "record.part.default"
+//			}
+//		}
+//	}
+//
+//	state edit {
+//		Parts parts {
+//			Part mainPart {
+//				caption = GENERAL_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout contentLayout {
+//					Group keyword {
+//						caption = KEYWORD
+//						Field(KEYWORD) {
+//							showCaption = false
+//						}
+//					}
+//					ZLayout mainLayout {
+//						Group number {
+//							caption = NUMBER
+//							Field(TSKNUMBER)
+//						}
+//						Group catchphrases {
+//							caption = CATCHPHRASES
+//							Field(NOTES) {
+//								showCaption = false
+//							}
+//						}
+//						Group timeFrame {
+//							caption = TIMEFRAME
+//							Field(START_DT)
+//							Field(END_DT)
+//						}
+//						TagSelector tags {
+//						}
+//						Permissions permissions {
+//						}
+//						Group typeStatus {
+//							caption = TYPE_STATUS
+//							Field(GWSTYPE)
+//							Field(GWSSTATUS)
+//						}
+//						PrimaryLinkedParentsList primaryLinks {
+//						}
+//						ExtensionPoint defaultExtension {
+//							id = "record.default"
+//						}
+//					}
+//					Group notes {
+//						caption = NOTES
+//						Field(NOTES2) {
+//							showCaption = false
+//						}
+//					}
+//				}
+//			}
+//			PartExtensionPoint defaultPartExtensionPoint {
+//				id = "record.part.default"
+//			}
+//		}
+//	}
+//}
+// ORIGINAL FORM GENERATED CONTENT END

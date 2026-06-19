@@ -1,0 +1,21 @@
+!namespace smartdesign.address
+!default-language-extension DE
+
+GROUP_CAPTION_0 = Contact Data
+FIELD_CAPTION_0 = Default Phone 1
+FIELD_CAPTION_1 = Default Email
+GROUP_CAPTION_1 = Contact Information
+PART_CAPTION = Address
+PART_CAPTION_2 = Business Info
+SCRIPTEDFIELD_CAPTION_0 = WhatsApp
+SCRIPTEDFIELD_CAPTION_1 = LinkedIn
+!override
+PHONE = Profile Details
+GROUP_CAPTION_2 = Contact
+PART_CAPTION_3 = Company Structure
+PROJECTS = Projects
+OPPORTUNITIES = Opportunities
+TICKETS = Tickets
+!override
+EMAIL = Contact Details
+LINKLISTGROUPEDBYROLES_CAPTION_0 = Company Structure

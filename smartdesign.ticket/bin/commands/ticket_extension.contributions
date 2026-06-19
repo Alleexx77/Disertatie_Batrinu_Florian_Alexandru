@@ -1,0 +1,19 @@
+namespace smartdesign.ticket
+
+contributions {
+	command(new_linked_ticket) {
+		context = objecttype (ADDRESS)
+		pointId = "contextMenu"
+		position = rank(4010)
+	}
+	command(new_linked_ticket) {
+		context = objecttype (GWPHONECALL)
+		pointId = "contextMenu"
+		position = rank(4010)
+	}
+	command(new_linked_ticket) {
+		context = objecttype (EMAILSTORE)
+		pointId = "contextMenu"
+		position = rank(4010)
+	}
+}

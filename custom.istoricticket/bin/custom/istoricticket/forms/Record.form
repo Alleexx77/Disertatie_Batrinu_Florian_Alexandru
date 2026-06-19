@@ -1,0 +1,88 @@
+namespace custom.istoricticket
+
+form Record {
+
+	context {
+		primary import do = DataObject(ISTORICTICKET)
+		dossierMD = DossierMassData()
+	}
+
+	header = DefaultHeader {
+		title = ISTORICTICKET_SINGULAR
+	}
+
+	state read {
+		VerticalLayout contentLayout {
+			RecordSummary {
+				headline = Headline {
+					title = Field(CAS_USERNAME)
+				}
+				showRecordTypeIcon = true
+				Group {
+					LinkField(ISTORICTICKETE_LINK)
+				}
+			}
+			ZLayout mainLayout {
+				Group {
+					caption = GENERAL
+					HorizontalLayout {
+						LayoutColumn {
+							minWidth = 100
+							Group {
+								Field(CAS_NUMAR_TICKET)
+								Field(CAS_DEPARTAMENT_VECHI)
+								Field(CAS_RESPONSABIL_VECHI)
+							}
+						}
+						LayoutColumn {
+							minWidth = 100
+							Group {
+								Field(CAS_DATA)
+								Field(CAS_DEPARTAMENT_NOU)
+								Field(CAS_RESPONSABIL_NOU)
+							}
+						}
+					}
+				}
+				Permissions permissions {
+				}
+				EmbeddedList dossier {
+					caption = DOSSIER
+					datasource = dossierMD
+				}
+				ExtensionPoint defaultExtension {
+					id = "record.default"
+				}
+				Group additionalInformation {
+					caption = ADDITIONAL_INFORMATION
+					ScriptedField insertInformation {
+						caption = INSERT_INFORMATION_CAPTION
+						expression = `
+							import { getInsertInformation } from "smartdesign.base/additional-information";
+							getInsertInformation($do);
+						`
+					}
+					ScriptedField updateInformation {
+						caption = UPDATE_INFORMATION_CAPTION
+						expression = `
+							import { getUpdateInformation } from "smartdesign.base/additional-information";
+							getUpdateInformation($do);
+						`
+					}
+				}
+			}
+		}
+	}
+
+	state edit {
+		VerticalLayout contentLayout {
+			ZLayout mainLayout {
+				Permissions permissions {
+				}
+				ExtensionPoint defaultExtension {
+					id = "record.default"
+				}
+			}
+		}
+	}
+}

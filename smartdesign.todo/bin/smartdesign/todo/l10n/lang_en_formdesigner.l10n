@@ -1,0 +1,6 @@
+!namespace smartdesign.todo
+!language-extension EN
+
+FIELD_CAPTION_0 = Responsible for execution
+!override
+TODOOWNER = Execution Details

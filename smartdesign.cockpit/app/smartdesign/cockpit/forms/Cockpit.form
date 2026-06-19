@@ -1,0 +1,652 @@
+namespace smartdesign.cockpit
+
+/* IMPORTANT: This is a generated file. Manual changes will disable automatic updates. */
+@Derived(sha1="87e06c23fa621c01301e242df879771722462e8e")
+form Cockpit {
+
+	context {
+		todosMD = DataObjectMassData(TODO) {
+			query {
+				where = WORKINGPERCENT < 100
+				team = $CURRENT_USER$
+			}
+		}
+		callsMD = DataObjectMassData(GWPHONECALL) {
+			query {
+				where = START_DT >= TODAY
+				order = [START_DT -> ASC]
+				team = $CURRENT_USER$
+			}
+		}
+		currentAppointmentsMD = DataObjectMassData(APPOINTMENT) {
+			query {
+				where = START_DT >= TODAY
+				order = [START_DT -> ASC]
+				team = $CURRENT_USER$
+			}
+		}
+		openOpportunitiesMD = DataObjectMassData(GWOPPORTUNITY) {
+			query {
+				where = DISTRIBUTIONPHASE != ''
+			}
+		}
+		openOpportunitiesCountByPhase = Aggregation(openOpportunitiesMD) {
+			function = COUNT
+			groupBy = DISTRIBUTIONPHASE
+		}
+		openTasksMD = DataObjectMassData(TODO) {
+			summary {
+				caption = KEYWORD
+				description = PRIORITY
+				icon = ICON
+			}
+			query {
+				where = PRIORITY != '' AND WORKINGPERCENT < 100
+				order = [PRIORITY -> DESC]
+				team = $CURRENT_USER$
+			}
+		}
+		openTasksCountByPriority = Aggregation(openTasksMD) {
+			function = COUNT
+			groupBy = PRIORITY
+		}
+		chartGwopportunitySource = DataObjectMassData(GWOPPORTUNITY) {
+			query {
+			}
+		}
+		chartGwopportunity = Aggregation(chartGwopportunitySource) {
+			function = COUNT
+			groupBy = DISTRIBUTIONPHASE
+		}
+		chartGwopportunitySource2 = DataObjectMassData(GWOPPORTUNITY) {
+			query {
+			}
+		}
+		chartGwopportunity2 = Aggregation(chartGwopportunitySource2) {
+			function = COUNT
+			groupBy = STATUS
+		}
+		chartGwopportunitySource3 = DataObjectMassData(GWOPPORTUNITY) {
+			query {
+				where = sql:{ GWOPPORTUNITY.END_DT = CURRENT_YEAR -1 AND GWOPPORTUNITY.STATUS = '$EN$Won' }
+			}
+		}
+		chartGwopportunity3 = Aggregation(chartGwopportunitySource3) {
+			function = COUNT
+			groupBy = STATUS
+		}
+		chartGwopportunitySource4 = DataObjectMassData(GWOPPORTUNITY) {
+			query {
+				where = sql:{ GWOPPORTUNITY.STATUS = '$EN$Lost' AND GWOPPORTUNITY.END_DT = CURRENT_FISCAL_YEAR -1 }
+			}
+		}
+		chartGwopportunity4 = Aggregation(chartGwopportunitySource4) {
+			function = COUNT
+			groupBy = STATUS
+		}
+		chartDocumentSource = DataObjectMassData(DOCUMENT) {
+			query {
+				where = sql:{ (DOCUMENT.GWSTYPE = '$EN$Customer Contract' OR DOCUMENT.GWSTYPE = '$EN$Subco/associate Contract') AND DOCUMENT.DOCDATE = CURRENT_FISCAL_YEAR }
+			}
+		}
+		chartDocument = Aggregation(chartDocumentSource) {
+			function = COUNT
+			groupBy = GWSTYPE
+		}
+		listGwsllead = DataObjectMassData(GWSLLEAD) {
+			query {
+			}
+		}
+		listGwsllead2 = DataObjectMassData(GWSLLEAD) {
+			query {
+				where = sql:{ GWSLLEAD.OWNERNAME = $CURRENT_USER$ AND GWSLLEAD.CAS_STATUS = '$EN$Convertit' AND GWSLLEAD.CAS_CONVERSIONDATE = CURRENT_FISCAL_YEAR -1 }
+			}
+		}
+		listTodo = DataObjectMassData(TODO) {
+			query {
+				where = WORKINGPERCENT < 100
+			}
+		}
+		listAppointment = DataObjectMassData(APPOINTMENT) {
+			query {
+				where = START_DT = TODAY
+			}
+		}
+		listGwphonecall = DataObjectMassData(GWPHONECALL) {
+			query {
+				where = START_DT = TODAY
+			}
+		}
+		chartDocumentSource2 = DataObjectMassData(DOCUMENT) {
+			query {
+				where = sql:{ (DOCUMENT.GWSTYPE = '$EN$Customer Contract' OR DOCUMENT.GWSTYPE = '$EN$Subco/associate Contract') AND DOCUMENT.DOCDATE = CURRENT_YEAR AND DOCUMENT.GWSSTATUS = '$EN$Signed' }
+			}
+		}
+		chartDocument2 = Aggregation(chartDocumentSource2) {
+			function = SUM
+			field = TURNOVER
+			groupBy = GWSTYPE
+		}
+		chartDocumentSource3 = DataObjectMassData(DOCUMENT) {
+			query {
+				where = GWVALIDATEENDDATE <= TODAY + 45
+			}
+		}
+		chartDocument3 = Aggregation(chartDocumentSource3) {
+			function = COUNT
+			groupBy = GWSTYPE
+		}
+		listGwsllead3 = DataObjectMassData(GWSLLEAD) {
+			query {
+				where = LEADOWNER = NULL_OR_EMPTY
+			}
+		}
+		chartGwopportunitySource5 = DataObjectMassData(GWOPPORTUNITY) {
+			query {
+				where = STATUS != "$EN$Won" OR STATUS != "$EN$Lost"
+			}
+		}
+		chartGwopportunity5 = Aggregation(chartGwopportunitySource5) {
+			function = COUNT
+			groupBy = PERSONINCHARGE
+		}
+		chartGwopportunitySource6 = DataObjectMassData(GWOPPORTUNITY) {
+			query {
+				where = STATUS = "$EN$Won"
+			}
+		}
+		chartGwopportunity6 = Aggregation(chartGwopportunitySource6) {
+			function = COUNT
+			groupBy = PERSONINCHARGE
+		}
+		chartDocumentSource4 = DataObjectMassData(DOCUMENT) {
+			query {
+				where = GWSSTATUS = "$EN$Signed"
+			}
+		}
+		chartDocument4 = Aggregation(chartDocumentSource4) {
+			function = COUNT
+			groupBy = CAS_SALESRESPONSIBLE
+		}
+		listGwopportunity = DataObjectMassData(GWOPPORTUNITY) {
+			query {
+				order = [OPPTOTALAMOUNT -> DESC]
+			}
+		}
+		listGwopportunity2 = DataObjectMassData(GWOPPORTUNITY) {
+			table {
+				columns = KEYWORD, MARGINALRETURN, START_DT, END_DT
+			}
+			query {
+			}
+		}
+		chartProjectSource = DataObjectMassData(PROJECT) {
+			query {
+			}
+		}
+		chartProject = Aggregation(chartProjectSource) {
+			function = SUM
+			field = CAS_INVOICEDVALUE
+			groupBy = CAS_SALESREPONSABLE
+		}
+		listTaskSource = DataObjectMassData(TASK) {
+			summary {
+				caption = KEYWORD
+				description = END_DT
+				icon = ICON
+			}
+			query {
+				where = GWSTYPE = "$EN$Milestone" AND END_DT >= TODAY - 15 AND GWSSTATUS != "$EN$Completed"
+				order = [END_DT -> ASC]
+			}
+		}
+		listTask = Aggregation(listTaskSource) {
+			function = COUNT
+			groupBy = CAS_PROJECT
+		}
+		listTaskSource2 = DataObjectMassData(TASK) {
+			summary {
+				caption = KEYWORD
+				description = END_DT
+				icon = ICON
+			}
+			query {
+				where = GWSTYPE = "$EN$Milestone" AND GWSSTATUS != "$EN$Completed" AND END_DT < TODAY
+				order = [END_DT -> ASC]
+			}
+		}
+		listTask2 = Aggregation(listTaskSource2) {
+			function = COUNT
+			groupBy = CAS_PROJECT
+		}
+		chartTaskSource = DataObjectMassData(TASK) {
+			summary {
+				caption = KEYWORD
+				description = CAS_PLANNEDFORINVOICE
+				icon = ICON
+			}
+			query {
+				where = sql:{ TASK.GWSTYPE = '$EN$Milestone' AND TASK.START_DT = CURRENT_FISCAL_YEAR }
+			}
+		}
+		chartTask = Aggregation(chartTaskSource) {
+			function = SUM
+			field = CAS_INVOICEDVALUE
+			groupBy = CAS_PROJECT
+		}
+		chartTaskSource2 = DataObjectMassData(TASK) {
+			query {
+				where = sql:{ TASK.GWSTYPE = '$EN$Milestone' AND TASK.START_DT = CURRENT_FISCAL_YEAR }
+			}
+		}
+		chartTask2 = Aggregation(chartTaskSource2) {
+			function = SUM
+			field = CAS_PLANNEDFORINVOICE
+			groupBy = CAS_PROJECT
+		}
+		chartTaskSource3 = DataObjectMassData(PROJECT) {
+			query {
+				order = [CAS_SALESREPONSABLE -> ASC]
+			}
+		}
+		chartTask3 = Aggregation(chartTaskSource3) {
+			function = SUM
+			field = CAS_TOT_PLANNEDFORINVOICE
+			groupBy = CAS_SALESREPONSABLE
+		}
+		listProjectSource = DataObjectMassData(PROJECT) {
+			query {
+			}
+		}
+		listProject = Aggregation(listProjectSource) {
+			function = COUNT
+			groupBy = PROJECTOWNER
+		}
+		listProjectSource2 = DataObjectMassData(PROJECT) {
+			summary {
+				caption = KEYWORD
+				description = PRJNUMBER
+				icon = ICON
+			}
+			query {
+				order = [KEYWORD -> ASC]
+			}
+		}
+		listProject2 = Aggregation(listProjectSource2) {
+			function = COUNT
+			groupBy = GWSSTATUS
+		}
+		chartTaskSource4 = DataObjectMassData(TASK) {
+			table {
+				columns = ITDKUNDE, TSKNUMBER, START_DT, GWSTICKETORIGIN
+			}
+			query {
+				where = GWSTYPE = "$EN$Ticket"
+				order = [GWSTICKETORIGIN -> ASC]
+			}
+		}
+		chartTask4 = Aggregation(chartTaskSource4) {
+			function = COUNT
+			groupBy = GWSTICKETORIGIN
+		}
+		chartTaskSource5 = DataObjectMassData(TASK) {
+			query {
+				where = GWSTYPE = "$EN$Ticket" AND GWSSTATUS != "$EN$Inchis"
+				order = [GWSPRIORITY -> ASC]
+			}
+		}
+		chartTask5 = Aggregation(chartTaskSource5) {
+			function = COUNT
+			groupBy = GWSPRIORITY
+		}
+		listTaskSource3 = DataObjectMassData(TASK) {
+			query {
+				where = GWSTYPE = "$EN$Ticket" AND PLAN_END_DT < TODAY AND GWSSTATUS != "$EN$Inchis"
+				order = [START_DT -> ASC]
+			}
+		}
+		listTask3 = Aggregation(listTaskSource3) {
+			function = COUNT
+			groupBy = GWSPRIORITY
+		}
+		chartTaskSource6 = DataObjectMassData(TASK) {
+			query {
+				where = GWSTYPE = "$EN$Ticket" AND GWSSTATUS != "$EN$Inchis"
+				order = [GWSPRIORITY -> ASC]
+			}
+		}
+		chartTask6 = Aggregation(chartTaskSource6) {
+			function = COUNT
+			groupBy = CAS_DEPARTAMENT
+		}
+		chartTaskSource7 = DataObjectMassData(TASK) {
+			query {
+				where = GWSTYPE = "$EN$Ticket" AND CAS_DEPARTAMENT = "$EN$Level 1" AND CAS_PERSOANA_RESPONSABILA = NULL_OR_EMPTY
+				AND(GWSSTATUS = "$EN$Nou" OR GWSSTATUS = "$EN$In alocare")
+				order = [GWSPRIORITY -> ASC]
+			}
+		}
+		chartTask7 = Aggregation(chartTaskSource7) {
+			function = COUNT
+			groupBy = GWSPRIORITY
+		}
+		listTaskSource4 = DataObjectMassData(TASK) {
+			query {
+				where = GWSTYPE = "$EN$Ticket" AND GWSSTATUS = "$EN$Inchis" AND END_DT = TODAY + 1
+				order = [GWSPRIORITY -> ASC]
+			}
+		}
+		listTask4 = Aggregation(listTaskSource4) {
+			function = COUNT
+			groupBy = GWSPRIORITY
+		}
+		listTaskSource5 = DataObjectMassData(TASK) {
+			query {
+				where = GWSTYPE = "$EN$Ticket" AND GWSSTATUS = "$EN$Inchis" AND END_DT >= TODAY - 7
+			}
+		}
+		listTask5 = Aggregation(listTaskSource5) {
+			function = COUNT
+			groupBy = CAS_DEPARTAMENT
+		}
+		listTaskSource6 = DataObjectMassData(TASK) {
+			query {
+				where = GWSTYPE = "$EN$Ticket" AND GWSTICKETTYPE = "$EN$Preventiva" AND PLAN_START_DT > TODAY + 15
+			}
+		}
+		listTask6 = Aggregation(listTaskSource6) {
+			function = COUNT
+			groupBy = CAS_DEPARTAMENT
+		}
+		listTaskSource7 = DataObjectMassData(TASK) {
+			query {
+				where = GWSTYPE = "$EN$Ticket" AND GWSTICKETTYPE = "$EN$Reclamatie"
+				order = [ITDKUNDE -> ASC]
+			}
+		}
+		listTask7 = Aggregation(listTaskSource7) {
+			function = COUNT
+			groupBy = GWSPRIORITY
+		}
+		listTask8 = DataObjectMassData(TASK) {
+			query {
+				where = GWSTYPE = "$EN$Ticket" AND CAS_DEPARTAMENT = "$EN$Level 1" AND CAS_PERSOANA_RESPONSABILA = NULL_OR_EMPTY
+				AND GWSSTATUS = "$EN$In formulare solutie"
+				order = [TORESPONSETIME -> ASC]
+			}
+		}
+
+	}
+
+	header = DefaultHeader {
+		title = COCKPIT
+		contributionPoints = { }
+	}
+
+	state read {
+		Parts parts {
+			Part mainPart {
+				enableJumpmarks = false
+				VerticalLayout rootLayout {
+					ZLayout contentLayout {
+						minimumColumnWidth = 460
+						EmbeddedList todoObjects {
+							caption = OPEN_TASKS
+							autoHide = DISABLED
+							maxItemsShown = 5
+							datasource = todosMD
+						}
+						EmbeddedList phonecallObjects {
+							caption = PLANNED_CALLS
+							autoHide = DISABLED
+							maxItemsShown = 5
+							datasource = callsMD
+						}
+						CallsOfWeekChart phonecalls {
+							caption = PHONECALLS
+						}
+						EmbeddedList currentAppointments {
+							caption = CURRENT_APPOINTMENTS
+							autoHide = DISABLED
+							datasource = currentAppointmentsMD
+							maxItemsShown = 5
+						}
+						EmbeddedList embeddedListGeneratedId4 {
+							caption = LINK_LIST_CAPTION_4
+							datasource = listAppointment
+							autoHide = DISABLED
+						}
+						Group groupGeneratedId1 {
+							EmbeddedList embeddedListGeneratedId3 {
+								caption = LINK_LIST_CAPTION_3
+								datasource = listTodo
+								autoHide = DISABLED
+							}
+						}
+						EmbeddedList embeddedListGeneratedId5 {
+							caption = LINK_LIST_CAPTION_5
+							datasource = listGwphonecall
+							autoHide = DISABLED
+						}
+					}
+				}
+				caption = PART_CAPTION_0
+			}
+			Part partGeneratedId1 {
+				enableJumpmarks = false
+				caption = PART_CAPTION
+				VerticalLayout verticalLayoutGeneratedId1 {
+					HorizontalLayout horizontalLayoutGeneratedId1 {
+						LayoutColumn layoutColumnGeneratedId1 {
+							GroupedValuesChart groupedValuesChartGeneratedId1 {
+								chartType = FUNNEL
+								datasource = chartGwopportunity
+								caption = CHART_CAPTION
+								showDataLabel = true
+							}
+							GroupedValuesChart groupedValuesChartGeneratedId4 {
+								datasource = chartGwopportunity4
+								caption = GROUPEDVALUESCHART_CAPTION_1
+							}
+							EmbeddedList embeddedListGeneratedId2 {
+								caption = LINK_LIST_CAPTION_2
+								datasource = listGwsllead2
+								autoHide = DISABLED
+							}
+							EmbeddedList embeddedListGeneratedId6 {
+								caption = LINK_LIST_CAPTION_6
+								datasource = listGwsllead3
+								autoHide = DISABLED
+								visibility = `export async function computeVisibility(): Promise<boolean> {\n    if (user?.name?.trim().toLowerCase() === \"Jeanina Bezim\") return true;\n    return false;\n}\n`
+							}
+							GroupedValuesChart groupedValuesChartGeneratedId8 {
+								datasource = chartDocument4
+								caption = CHART_CAPTION_6
+								visibility = `export async function computeVisibility(): Promise<boolean> {\n    if (user?.name?.trim().toLowerCase() === \"Jeanina Bezim\") return true;\n    return false;\n}`
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId2 {
+							GroupedValuesChart groupedValuesChartGeneratedId2 {
+								datasource = chartGwopportunity3
+								caption = GROUPEDVALUESCHART_CAPTION_0
+							}
+							GroupedValuesChart groupedValuesChartGeneratedId5 {
+								datasource = chartDocument
+								caption = GROUPEDVALUESCHART_CAPTION_2
+								chartType = PIE
+								showDataLabel = true
+							}
+							GroupedValuesChart groupedValuesChartGeneratedId6 {
+								chartType = PIE_DONUT
+								datasource = chartDocument2
+								showDataLabel = true
+								caption = GROUPEDVALUESCHART_CAPTION_3
+							}
+							GroupedValuesChart groupedValuesChartGeneratedId9 {
+								datasource = chartGwopportunity5
+								caption = CHART_CAPTION_4
+								showDataLabel = true
+								visibility = `export async function computeVisibility(): Promise<boolean> {\n    if (user?.name?.trim().toLowerCase() === \"Jeanina Bezim\") return true;\n    return false;\n}`
+							}
+							EmbeddedList embeddedListGeneratedId8 {
+								caption = LINK_LIST_CAPTION_8
+								datasource = listGwopportunity2
+								displayMode = TABLE
+								visibility = `export async function computeVisibility(): Promise<boolean> {\n    if (user?.name?.trim().toLowerCase() === \"Jeanina Bezim\") return true;\n    return false;\n}`
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId3 {
+							GroupedValuesChart groupedValuesChartGeneratedId3 {
+								chartType = FUNNEL
+								datasource = chartGwopportunity2
+								caption = CHART_CAPTION_2
+								showDataLabel = true
+							}
+							EmbeddedList embeddedListGeneratedId1 {
+								caption = LINK_LIST_CAPTION
+								datasource = listGwsllead
+								autoHide = DISABLED
+							}
+							GroupedValuesChart groupedValuesChartGeneratedId7 {
+								chartType = PIE
+								datasource = chartDocument3
+								caption = CHART_CAPTION_3
+								showDataLabel = true
+							}
+							GroupedValuesChart groupedValuesChartGeneratedId10 {
+								datasource = chartGwopportunity6
+								caption = CHART_CAPTION_5
+								showDataLabel = true
+								visibility = `export async function computeVisibility(): Promise<boolean> {\n    if (user?.name?.trim().toLowerCase() === \"Jeanina Bezim\") return true;\n    return false;\n}`
+							}
+							EmbeddedList embeddedListGeneratedId7 {
+								caption = LINK_LIST_CAPTION_7
+								datasource = listGwopportunity
+								maxItemsShown = 10
+								extendedListEntryMode = HIDE
+								autoHide = DISABLED
+								visibility = `export async function computeVisibility(): Promise<boolean> {\n    if (user?.name?.trim().toLowerCase() === \"Jeanina Bezim\") return true;\n    return false;\n}`
+							}
+						}
+					}
+				}
+				visibility = `export async function computeVisibility(): Promise<boolean> {\n    if (!user) {\n        return false;\n    }\n\n    const presalesGroup = await Permission.Owner.fromName(\"PreSales\", \"GROUP\");\n    if (!presalesGroup) {\n        return false;\n    }\n\n    return await user.isMemberOf(presalesGroup);\n}\n`
+			}
+			Part partGeneratedId2 {
+				enableJumpmarks = false
+				caption = PART_CAPTION_2
+				VerticalLayout verticalLayoutGeneratedId2 {
+					HorizontalLayout horizontalLayoutGeneratedId2 {
+						LayoutColumn layoutColumnGeneratedId4 {
+							GroupedValuesList groupedValuesListGeneratedId1 {
+								datasource = listTask
+								caption = GROUPED_VALUES_LIST_CAPTION
+								autoHide = DISABLED
+							}
+							GroupedValuesList groupedValuesListGeneratedId2 {
+								datasource = listTask2
+								caption = GROUPED_VALUES_LIST_CAPTION_2
+							}
+							GroupedValuesList groupedValuesListGeneratedId3 {
+								datasource = listProject
+								caption = GROUPED_VALUES_LIST_CAPTION_3
+							}
+							GroupedValuesList groupedValuesListGeneratedId4 {
+								datasource = listProject2
+								caption = GROUPED_VALUES_LIST_CAPTION_4
+								autoHide = DISABLED
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId5 {
+							GroupedValuesChart groupedValuesChartGeneratedId11 {
+								datasource = chartProject
+								caption = CHART_CAPTION_7
+							}
+							GroupedValuesChart groupedValuesChartGeneratedId12 {
+								datasource = chartTask3
+								caption = GROUPEDVALUESCHART_CAPTION_5
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId6 {
+							GroupedValuesChart groupedValuesChartGeneratedId13 {
+								datasource = chartTask2
+								caption = CHART_CAPTION_8
+							}
+							GroupedValuesChart groupedValuesChartGeneratedId14 {
+								datasource = chartTask
+								caption = GROUPEDVALUESCHART_CAPTION_4
+							}
+						}
+					}
+				}
+			}
+			Part partGeneratedId3 {
+				enableJumpmarks = false
+				caption = PART_CAPTION_3
+				VerticalLayout verticalLayoutGeneratedId3 {
+					HorizontalLayout horizontalLayoutGeneratedId3 {
+						LayoutColumn layoutColumnGeneratedId7 {
+							autoHide = DISABLED
+							GroupedValuesChart groupedValuesChartGeneratedId18 {
+								compactLegend = true
+								datasource = chartTask7
+								caption = CHART_CAPTION_11
+								showDataLabel = true
+							}
+							GroupedValuesChart groupedValuesChartGeneratedId15 {
+								compactLegend = true
+								datasource = chartTask4
+								caption = GROUPEDVALUESCHART_CAPTION_6
+								showDataLabel = true
+							}
+							GroupedValuesChart groupedValuesChartGeneratedId16 {
+								compactLegend = true
+								datasource = chartTask6
+								caption = CHART_CAPTION_10
+								showDataLabel = true
+							}
+							EmbeddedList embeddedListGeneratedId9 {
+								caption = LINK_LIST_CAPTION_9
+								datasource = listTask8
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId8 {
+							GroupedValuesChart groupedValuesChartGeneratedId17 {
+								chartType = PIE
+								compactLegend = true
+								datasource = chartTask5
+								caption = CHART_CAPTION_9
+								showDataLabel = true
+							}
+							GroupedValuesList groupedValuesListGeneratedId8 {
+								datasource = listTask4
+								caption = GROUPED_VALUES_LIST_CAPTION_6
+							}
+							GroupedValuesList groupedValuesListGeneratedId6 {
+								datasource = listTask6
+								caption = GROUPED_VALUES_LIST_CAPTION_8
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId9 {
+							GroupedValuesList groupedValuesListGeneratedId7 {
+								datasource = listTask3
+								caption = GROUPED_VALUES_LIST_CAPTION_5
+							}
+							GroupedValuesList groupedValuesListGeneratedId9 {
+								datasource = listTask7
+								caption = GROUPED_VALUES_LIST_CAPTION_9
+							}
+							GroupedValuesList groupedValuesListGeneratedId5 {
+								datasource = listTask5
+								caption = GROUPED_VALUES_LIST_CAPTION_7
+							}
+						}
+					}
+				}
+			}
+			PartExtensionPoint defaultPartExtensionPoint {
+				id = "record.part.default"
+			}
+		}
+	}
+}

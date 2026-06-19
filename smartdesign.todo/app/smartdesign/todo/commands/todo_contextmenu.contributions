@@ -1,0 +1,19 @@
+namespace smartdesign.todo
+
+contributions {
+	command(menuitem_create_and_link_todo) {
+		pointId = "contextMenu"
+		context = objecttype(GWOPPORTUNITY | GWPHONECALL | TASK | PROJECT)
+		position = rank(3050)
+	}
+	command (menuitem_create_and_link_todo) {
+		context = objecttype(GWSLLEAD)
+		pointId = "contextMenu"
+		position = rank(3010)
+	}
+	command (menuitem_create_and_link_todo) {
+		context = objecttype(ADDRESS)
+		pointId = "contextMenu"
+		position = rank(3010)
+	}
+}

@@ -1,0 +1,202 @@
+namespace smartdesign.document
+
+/* IMPORTANT: This is a generated file. Manual changes will disable automatic updates. */
+@Derived(sha1="679eeb2ed158f04eabe7f01af315988cc96c2436")
+form Memo {
+
+	context {
+		primary import do = DataObject(DOCUMENT)
+		dossierMD = DossierMassData()
+		ticketLink = LinkedDataObject(do) {
+			linkedBy = FAQDOC_LINK
+		}
+	}
+
+	events {
+		on edit += `export async function onEdit(): Promise<void> {\n    if ($do.isNew()) {\n        if ($ticketLink) {\n            $do.GWSTYPE.set(\'FAQ\');\n            $do.GWSSTATUS.set(\'Public (displayed in Helpdesk online)\');\n            $do.GWVALIDATESTARTDATE.set(new Date);\n            $do.KEYWORD.set(\'FAQ ticket - \'+$ticketLink.TSKNUMBER.get());\n            $do.GWSPRODUCT.set($ticketLink.GWSPRODUCT.get());\n            $do.ITDPROBLEM.set($ticketLink.ITDPROBLEM.get());\n            $do.ITDSOLUTION.set($ticketLink.ITDSOLUTION.get());\n        }\n    }\n}`
+	}
+
+	header = DefaultHeader {
+		title = MEMO
+	}
+
+	state read {
+		Parts parts {
+			Part mainPart {
+				caption = GENERAL_PART_LABEL
+				enableJumpmarks = false
+				VerticalLayout contentLayout {
+					RecordSummary recordSummary {
+						showRecordTypeIcon = true
+						headline = Headline id:recordSummaryHeadline {
+							title = Field(KEYWORD)
+							subTitle = Field(DOCDATE)
+							FieldBadge fieldBadgeGeneratedId1 {
+								ref = DOCNUMBER
+								color = #666666
+							}
+						}
+					}
+					ZLayout mainLayout {
+						Group number {
+							caption = smartdesign.base.GENERAL
+							HorizontalLayout horizontalLayoutGeneratedId1 {
+								LayoutColumn layoutColumnGeneratedId1 {
+									minWidth = 100
+									Group groupGeneratedId1 {
+										Field(GWSTYPE)
+									}
+								}
+								LayoutColumn layoutColumnGeneratedId2 {
+									minWidth = 100
+									Group groupGeneratedId2 {
+										Field(GWVALIDATESTARTDATE)
+									}
+								}
+							}
+							Field(GWSSTATUS)
+							Field(GWSPRODUCT)
+						}
+						Group groupGeneratedId3 {
+							caption = GROUP_CAPTION_1
+							TextField(ITDPROBLEM)
+							TextField(ITDSOLUTION)
+						}
+						Group additionalInformation {
+							caption = ADDITIONAL_INFORMATION
+							ScriptedField insertInformation {
+								caption = INSERT_INFORMATION_CAPTION
+								expression = `
+									import { getInsertInformation } from "smartdesign.base/additional-information";
+									getInsertInformation($do);
+								`
+							}
+							ScriptedField updateInformation {
+								caption = UPDATE_INFORMATION_CAPTION
+								expression = `
+									import { getUpdateInformation } from "smartdesign.base/additional-information";
+									getUpdateInformation($do);
+								`
+							}
+						}
+						TagSelector tags {
+						}
+						Permissions permissions {
+						}
+						Group catchphrases {
+							caption = CATCHPHRASES
+							Field(NOTES) {
+								showCaption = false
+							}
+						}
+						PrimaryLinkedParentsList primaryLinks()
+						EmbeddedList dossier {
+							caption = DOSSIER
+							datasource = dossierMD
+						}
+						ExtensionPoint defaultExtension {
+							id = "record.default"
+						}
+					}
+					HorizontalLayout wrappingNotesLayout {
+						LayoutColumn notesLayoutColumn {
+							Group notes {
+								caption = MEMO
+								Field(NOTES2) {
+									showCaption = false
+								}
+							}
+						}
+					}
+				}
+			}
+			PartExtensionPoint defaultPartExtensionPoint {
+				id = "record.part.default"
+			}
+		}
+	}
+
+	state edit {
+		Parts parts {
+			Part mainPart {
+				caption = GENERAL_PART_LABEL
+				enableJumpmarks = false
+				VerticalLayout contentLayout {
+					Group keyword {
+						caption = KEYWORD
+						Field(KEYWORD) {
+							showCaption = false
+						}
+					}
+					ZLayout mainLayout {
+						Group number {
+							caption = smartdesign.base.GENERAL
+							HorizontalLayout horizontalLayoutGeneratedId1 {
+								LayoutColumn layoutColumnGeneratedId1 {
+									minWidth = 50
+									Group groupGeneratedId2 {
+										Field(GWSTYPE)
+									}
+								}
+								LayoutColumn layoutColumnGeneratedId2 {
+									minWidth = 50
+									Group groupGeneratedId3 {
+										Field(GWVALIDATESTARTDATE)
+									}
+								}
+							}
+							Field(GWSSTATUS)
+							Field(GWSPRODUCT)
+						}
+						Group groupGeneratedId4 {
+							caption = GROUP_CAPTION_1
+							visibility = `export async function computeVisibility(): Promise<boolean> {\n    if ($do.GWSTYPE.get() === \'FAQ\') {\n        return true;\n    }\n    return false;\n}`
+							TextField(ITDPROBLEM)
+							TextField(ITDSOLUTION)
+						}
+						TagSelector tags {
+						}
+						Group catchphrases {
+							caption = CATCHPHRASES
+							Field(NOTES) {
+								showCaption = false
+							}
+						}
+						Permissions permissions()
+						PrimaryLinkedParentsList primaryLinks()
+						ExtensionPoint defaultExtension {
+							id = "record.default"
+						}
+					}
+					Group notes {
+						caption = NOTES
+						Field(NOTES2) {
+							showCaption = false
+						}
+					}
+				}
+			}
+			Part partGeneratedId1 {
+				enableJumpmarks = false
+				caption = PART_CAPTION
+				VerticalLayout verticalLayoutGeneratedId1 {
+					ZLayout zLayoutGeneratedId1 {
+						Group groupGeneratedId1 {
+							LinkField(FAQDOC_LINK)
+							Field(DOCNUMBER)
+						}
+						Group times {
+							caption = TIMES
+							Field(DOCDATE)
+							Field(GWVALIDATEENDDATE)
+						}
+					}
+				}
+				visibility = `export async function computeVisibility(): Promise<boolean> {\n    if (user.name === \'ADMINISTRATOR\') {\n        return true;\n    }\n    return false;\n}`
+			}
+			PartExtensionPoint defaultPartExtensionPoint {
+				id = "record.part.default"
+			}
+		}
+	}
+}

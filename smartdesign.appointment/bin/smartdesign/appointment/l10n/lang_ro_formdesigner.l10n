@@ -1,0 +1,4 @@
+!namespace smartdesign.appointment
+!language-extension RO
+
+GROUP_CAPTION_0 = Detalii pentru eveniment

@@ -1,0 +1,8 @@
+namespace custom.opportunitylineitem
+
+contributions {
+	command(linkToOpportunitylineitem) {
+		context = DataObject(*, read) or MassData(*)
+		pointId = "linkWithMenu"
+	}
+}

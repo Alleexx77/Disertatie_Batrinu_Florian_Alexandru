@@ -1,0 +1,55 @@
+namespace smartdesign.task
+
+extension smartdesign.task.TASK {
+	string CAS_PROJECT
+	int CAS_INVOICEDVALUE
+	int CAS_PLANNEDFORINVOICE
+	string CAS_SALESRESPONSIBLE
+	string CAS_PROJECTID
+	string CAS_DEPARTAMENT
+	boolean CAS_ECHIPAMENT_GARANTIE
+	string CAS_PERSOANA_RESPONSABILA as user {
+		suggestions =
+		`export async function suggestCasPersonResponsibleLoa() {\n    let group = Permission.Owner.fromName($do.CAS_DEPARTAMENT.get(), \"GROUP\");\n      if (!group || !group.is(\"GROUP\")) {\n        return Permission.Owner.all(\"USER\");\n      } return group.members(\"USER\");\n}`
+	}
+	string CAS_ACCEPTARE_TICKET
+	string CAS_MODALITATE_REZOLVARE
+	string CAS_LOCATIE_INTERVENTIE
+	boolean CAS_NECESAR_INTERVENTIE
+	string CAS_PRODUCT_FAMILY
+	string CAS_NUMAR_TICKET_PROD
+	string CAS_CANAL_RASPUNS
+	decimal CAS_VALOARE_MENTENANTA {
+		unit = "EUR"
+	}
+	string CAS_REZOLUTIE
+	string CAS_DEPARTAMENT_OLD
+	string CAS_RESPONSBIL_OLD
+	string CAS_NR_INTERVENTIE
+	boolean CAS_INCEPUT_INTERVENTIE
+	boolean CAS_FINALIZARE_INTERVENTIE
+	datetime CAS_DATA_INCEPUT_INTERVENTIE
+	datetime CAS_DATA_SFARSIT_INTERVENTIE
+	link REPREZCLIENT_LINK {
+		targetObjectType = ADDRESS
+		linkAttribute = "REPREZCLIENT"
+		fieldsToSave = FULLNAME
+		backingField = CAS_PERSOANA_CONTACT
+	}
+	string CAS_PERSOANA_CONTACT
+	text CAS_CONSTATARI
+	text CAS_ECHIPAMENTE_INLOCUITE
+	text CAS_MATERIALE_FOLOSITE
+	text CAS_OPERATIUNI
+	text CAS_OBSERVATII_CLIENT
+	datetime CAS_START_GARANTIE_PROD
+	datetime CAS_END_GARANTIE_PROD
+	int CAS_NR_TICKET_AUTOMAT
+
+	summary {
+		caption = KEYWORD
+		description =
+		`export async function computeDescription(): Promise<string> {\n    return Arrays.join([\n        $current.GWSTICKETTYPE.get(), $current.GWSSTATUS.get()\n    ], \" - \");\n}`
+		icon = ICON
+	}
+}

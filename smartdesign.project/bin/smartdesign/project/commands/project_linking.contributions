@@ -1,0 +1,13 @@
+namespace smartdesign.project
+
+contributions {
+	command(linkToProject) {
+		context = DataObject(*, read) or MassData(*)
+		pointId = "linkWithMenu"
+	}
+	   command(new_project) {
+		context = objecttype (GWOPPORTUNITY)
+		pointId = "contextMenu"
+		position = rank(4010)
+	}
+}

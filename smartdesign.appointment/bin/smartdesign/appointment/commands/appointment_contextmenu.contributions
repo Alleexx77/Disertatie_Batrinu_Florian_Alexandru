@@ -1,0 +1,20 @@
+namespace smartdesign.appointment
+
+contributions {
+	command(linkToNewAppointment) {
+		pointId = "contextMenu"
+		context = objecttype(ADDRESS | GWOPPORTUNITY)
+		position = rank(3020)
+	}
+	command(menuitem_follow_up_appointment) {
+		pointId = "contextMenu"
+		context = objecttype(APPOINTMENT)
+		position = rank(3010)
+	}
+	command (menuitem_follow_up_appointment) {
+		context = objecttype(GWSLLEAD)
+		pointId = "contextMenu"
+		position = rank(4010)
+	}
+	
+}

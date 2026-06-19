@@ -1,0 +1,591 @@
+namespace smartdesign.lead
+
+/* IMPORTANT: This is a generated file. Manual changes will disable automatic updates. */
+@Derived(sha1="676fd10d21d646ba968682072ee3e28c1c561244")
+overlay form Record {
+	context {
+		linkedCarLink = LinkedDataObject(do) {
+			linkedBy = CAR_LINK_LINK
+		}
+	}
+
+	events {
+		on edit += `export async function onEdit(): Promise<void> {\n    if ($do.isNew()) {\n        $do.CAS_STATUS.set(\"Nou\");\n        $do.CAS_SALES_RESPONSIBLE.set($do.LEADOWNER.get());\n    }\n}`
+	}
+
+	overlay state ^read {
+
+		.fixedContent {
+			.RecordSummary recordSummary {
+				Group groupGeneratedId2 {
+					caption = GROUP_CAPTION_7
+					visibility =
+					`export async function computeVisibility(): Promise<boolean> {\n  if ($do.CAS_STATUS.get() === \"Respins\") {\n    return true;\n  } else {\n    return false;\n  }\n}`
+					Field(CAS_STATUS)
+					Field(CAS_REASON) {
+						autoHide = DISABLED
+					}
+					Field(CAS_ADDITIONAL_DETAILS) {
+						autoHide = DISABLED
+					}
+				} last
+			}
+			.BreadCrumb status {
+				ref = CAS_STATUS
+			}
+		}
+		after .Part mainPart {
+			Part partGeneratedId2 {
+				enableJumpmarks = false
+				caption = PART_CAPTION
+				VerticalLayout verticalLayoutGeneratedId2 {
+					HorizontalLayout horizontalLayoutGeneratedId2 {
+						LayoutColumn layoutColumnGeneratedId3 {
+							minWidth = 0
+							maxWidth = 400
+							Group groupGeneratedId4 {
+								caption = GROUP_CAPTION_0
+								autoHide = DISABLED
+								Field(CAS_BANT_B) {
+									autoHide = DISABLED
+								}
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId4 {
+							maxWidth = 300
+							minWidth = 0
+							Group groupGeneratedId5 {
+								caption = GROUP_CAPTION_1
+								autoHide = DISABLED
+								Field(CAS_BANT_A) {
+									autoHide = DISABLED
+								}
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId5 {
+							minWidth = 0
+							maxWidth = 300
+							Group groupGeneratedId6 {
+								caption = GROUP_CAPTION_2
+								autoHide = DISABLED
+								Field(CAS_BANT_N) {
+									autoHide = DISABLED
+								}
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId6 {
+							minWidth = 0
+							maxWidth = 300
+							Group groupGeneratedId7 {
+								caption = GROUP_CAPTION_3
+								autoHide = DISABLED
+								Field(CAS_BANT_T) {
+									autoHide = DISABLED
+								}
+							}
+						}
+					}
+					Group groupGeneratedId1 {
+						autoHide = DISABLED
+						Field(CAS_LEAD_SCORE) {
+							autoHide = DISABLED
+						}
+						Field(CAS_STRATEGIC_DECISION) {
+							autoHide = DISABLED
+						}
+						Message messageGeneratedId1 {
+							message =
+							`import { FormattedNode, formatted } from \"smartdesign.base/formatted-content\";\nimport { EMPTY_STRING } from \"smartdesign.base/translations\";\n\nexport async function computeMessage(): Promise<string | FormattedNode | undefined> {\n\n    const score = $do.CAS_LEAD_SCORE?.get?.();\n    if (score === undefined || score === null) {\n        return formatted(EMPTY_STRING.get());\n    }\n\n    if (score < 30) {\n        return formatted(\n^`Scor: ${score}\nNivelul de calificare nu este suficient, sunt necesare eforturi suplimentare.^`);\n    }\n\n    if (score < 50) {\n        return formatted(\n^`Scor: ${score}\nNivelul de calificare nu este suficient, sunt necesare eforturi suplimentare.^`);\n    }\n\n    if (score <= 75) {\n        return formatted(\n^`Scor: ${score}\nScor bun.\nExistă potențial de calificare.^`);\n    }\n\n    if (score <= 100) {\n        return formatted(\n^`Scor: ${score}\nScor ridicat.\nLead bine calificat.^`);\n    }\n\n    return formatted(EMPTY_STRING.get());\n}\n`
+							level =
+							`import { Level } from \"smartdesign.base/widget/Message/types\";\n\nexport async function computeLevel(): Promise<Level> {\n\n    const score = $do.CAS_LEAD_SCORE?.get?.();\n\n    if (score === undefined || score === null) {\n        return Level.INFO;\n    }\n\n    // < 30 → roșu (Error)\n    if (score < 50) {\n        return Level.ERROR;\n    }\n\n    // 30 – 50 → portocaliu (Warn)\n    if (score>50 && score < 76) {\n        return Level.WARN;\n    }\n\n    // 51 – 100 → albastru (Info)\n    return Level.INFO;\n}`
+						}
+					}
+				}
+			}
+		}
+		.ZLayout mainLayout {
+			minimumColumnWidth = 300
+			Group groupGeneratedId3() last
+		}
+		.Group gerneralInfo {
+			.Field(ACQUIREDATE) {
+				autoHide = DISABLED
+			}
+			.LinkField(ACCOUNTINFORMATION_LINK) {
+				autoHide = DISABLED
+			}
+			.LinkField(CONTACTPERSON_LINK) {
+				autoHide = DISABLED
+			}
+			delete .Field(LEADSOURCE)
+			delete .Field(ACQUIREUSER)
+			Field(CAS_INDUSTRY) {
+				autoHide = DISABLED
+			} last
+			Field(CAS_TURNOVER) {
+				autoHide = DISABLED
+			} last
+		}
+		.Group customerInfo {
+			delete .LinkField(BCARDFRONT_LINK)
+			delete .LinkField(BCARDBACK_LINK)
+			autoHide = DISABLED
+			Field(CAS_PHONE_NUMBER) last
+			Field(CAS_EMAIL) last
+			Field(ADDRESSINFO) last
+		}
+		.Group acquisition {
+			.Field(PRODUCTNAME) {
+				autoHide = DISABLED
+			}
+			.Field(LEADSOURCE) {
+				autoHide = DISABLED
+			}
+			after .Field(LEADSOURCE) {
+				move .Field(PRODUCTNAME)
+			}
+			.Field(TIMEHORIZON) {
+				autoHide = DISABLED
+			}
+			.Field(FOLLOWUPACTION) {
+				autoHide = DISABLED
+			}
+			delete .Field(GWRATING)
+			delete .Field(VOLUME)
+			autoHide = DISABLED
+			Field(CAS_SOLUTION_OF_INTEREST) {
+				autoHide = DISABLED
+			} last
+			Field(CAS_BUDGET) {
+				autoHide = DISABLED
+			} last
+			Field(CAS_FOLLOWUP_DATE) {
+				autoHide = DISABLED
+			} last
+			Field(CAS_ESTIMATED_CONTRACT_DATE) {
+				autoHide = DISABLED
+			} last
+		}
+		.EmbeddedList dossier {
+			autoHide = DISABLED
+		}
+		after .ScriptedField insertInformation {
+			Field(ACQUIREUSER)
+		}
+		delete .ExtensionPoint defaultExtension
+		>Group groupGeneratedId3 {
+			move .Permissions permissions first
+		}
+	}
+
+	overlay state ^edit {
+		.Parts parts {
+			alignment = VERTICAL
+		}
+		after .Part mainPart {
+			Part partGeneratedId1 {
+				enableJumpmarks = false
+				caption = PART_CAPTION
+				visibility =
+				`export async function computeVisibility(): Promise<boolean> {\n   if($do.CAS_STATUS.get()!=\"Nou\") return true;\n   else return false;\n}`
+				VerticalLayout verticalLayoutGeneratedId1 {
+					HorizontalLayout horizontalLayoutGeneratedId1 {
+						LayoutColumn layoutColumnGeneratedId1 {
+							minWidth = 0
+							maxWidth = 400
+							Group groupGeneratedId1 {
+								caption = GROUP_CAPTION_0
+								SliderField(CAS_BANT_B) {
+									colorScheme = RED_TO_GREEN
+									percent = true
+								}
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId2 {
+							minWidth = 0
+							maxWidth = 400
+							Group groupGeneratedId2 {
+								caption = GROUP_CAPTION_1
+								SliderField(CAS_BANT_A) {
+									colorScheme = RED_TO_GREEN
+									percent = true
+								}
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId3 {
+							minWidth = 0
+							maxWidth = 400
+							Group groupGeneratedId3 {
+								caption = GROUP_CAPTION_2
+								SliderField(CAS_BANT_N) {
+									colorScheme = RED_TO_GREEN
+									percent = true
+								}
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId4 {
+							minWidth = 0
+							maxWidth = 400
+							Group groupGeneratedId4 {
+								caption = GROUP_CAPTION_3
+								SliderField(CAS_BANT_T) {
+									colorScheme = RED_TO_GREEN
+									percent = true
+								}
+							}
+						}
+					}
+					Group groupGeneratedId5 {
+						caption = GROUP_CAPTION_4
+						Field(CAS_STRATEGIC_DECISION)
+						Field(CAS_LEAD_SCORE)
+						Message messageGeneratedId1 {
+							message =
+							`import { FormattedNode, formatted } from \"smartdesign.base/formatted-content\";\nimport { EMPTY_STRING } from \"smartdesign.base/translations\";\n\nexport async function computeMessage(): Promise<string | FormattedNode | undefined> {\n\n    const score = $do.CAS_LEAD_SCORE?.get?.();\n    if (score === undefined || score === null) {\n        return formatted(EMPTY_STRING.get());\n    }\n\n    if (score < 30) {\n        return formatted(\n^`Scor: ${score}\nNivelul de calificare nu este suficient, sunt necesare eforturi suplimentare.^`);\n    }\n\n    if (score < 50) {\n        return formatted(\n^`Scor: ${score}\nNivelul de calificare nu este suficient, sunt necesare eforturi suplimentare.^`);\n    }\n\n    if (score <= 75) {\n        return formatted(\n^`Scor: ${score}\nScor bun.\nExistă potențial de calificare.^`);\n    }\n\n    if (score <= 100) {\n        return formatted(\n^`Scor: ${score}\nScor ridicat.\nLead bine calificat.^`);\n    }\n\n    return formatted(EMPTY_STRING.get());\n}`
+							level =
+							`import { Level } from \"smartdesign.base/widget/Message/types\";\n\nexport async function computeLevel(): Promise<Level> {\n\n    const score = $do.CAS_LEAD_SCORE?.get?.();\n\n    if (score === undefined || score === null) {\n        return Level.INFO;\n    }\n\n    // < 30 → roșu (Error)\n    if (score < 50) {\n        return Level.ERROR;\n    }\n\n    // 30 – 50 → portocaliu (Warn)\n    if (score>50 && score < 76) {\n        return Level.WARN;\n    }\n\n    // 51 – 100 → albastru (Info)\n    return Level.INFO;\n}`
+						}
+					}
+					HorizontalLayout horizontalLayoutGeneratedId2 {
+						LayoutColumn layoutColumnGeneratedId5 {
+							Group groupGeneratedId6 {
+								caption = GROUP_CAPTION_0
+								Field(CURRENCYNAT)
+								Field(CAS_ESTIMATED_BUDGET_RANGE)
+								Field(CAS_BUDGET)
+								Field(CAS_FINANCING_TYPE)
+								Field(CAS_DOWN_PAYMENT) {
+									visibility =
+									`export async function computeVisibility(): Promise<boolean> {\n   if($do.CAS_FINANCING_TYPE.get()===\"Leasing\" || $do.CAS_FINANCING_TYPE.get()===\"Credit\") return true;\n   else return false;\n}`
+								}
+								Field(CAS_MONTYHLY_RATE_ACCEPTED) {
+									visibility =
+									`export async function computeVisibility(): Promise<boolean> {\n   if($do.CAS_FINANCING_TYPE.get()===\"Leasing\" || $do.CAS_FINANCING_TYPE.get()===\"Credit\") return true;\n   else return false;\n}`
+								}
+								Field(CAS_TRADE_IN_INTERESTED)
+								Field(CAS_TRADE_IN_VEHICLE) {
+									visibility =
+									`export async function computeVisibility(): Promise<boolean> {\n   if($do.CAS_TRADE_IN_INTERESTED.get()===\"Yes\") return true;\n   else return false;\n}`
+								}
+								Field(CAS_TRADE_IN_ESTIMATED_VALUE) {
+									visibility =
+									`export async function computeVisibility(): Promise<boolean> {\n   if($do.CAS_TRADE_IN_INTERESTED.get()===\"Yes\") return true;\n   else return false;\n}`
+								}
+							}
+							Group groupGeneratedId9 {
+								caption = GROUP_CAPTION_2
+								Field(CAS_REASON_FOR_PURCHASE)
+								Field(CAS_MAIN_USAGE)
+								Field(CAS_LEAD_TEMPERATURE)
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId6 {
+							Group groupGeneratedId8 {
+								caption = GROUP_CAPTION_1
+								Field(CAS_DECISION_MAKER)
+								Field(CAS_BUYING_FOR)
+								Field(CAS_COMPANY_PURCHASE)
+								Field(CAS_COOWNER_APPROVAL_NEED)
+								Field(CAS_PURCHASE_APPROVED)
+							}
+							Group groupGeneratedId10 {
+								caption = GROUP_CAPTION_3
+								Field(CAS_PURCHASE_TIMELINE)
+								Field(CAS_URGENCY)
+								Field(CAS_ESTIMATED_CONTRACT_DATE)
+								Field(CAS_TEST_DRIVE_INTERESTED)
+							}
+						}
+					}
+					Group groupGeneratedId11 {
+						TextField(NOTES2)
+					}
+				}
+			}
+			Part partGeneratedId2 {
+				enableJumpmarks = false
+				caption = PART_CAPTION_2
+				visibility =
+				`export async function computeVisibility(): Promise<boolean> {\n   if($do.CAS_STATUS.get()!=\"Nou\" && $do.CAS_STATUS.get()!=\"Calificare avansata\" ) return true;\n   else return false;\n}`
+				VerticalLayout verticalLayoutGeneratedId2 {
+					HorizontalLayout horizontalLayoutGeneratedId3 {
+						LayoutColumn layoutColumnGeneratedId7 {
+							Group groupGeneratedId12 {
+								caption = GROUP_CAPTION_9
+								DataObjectReference dataObjectReferenceGeneratedId1(linkedCarLink)
+								Field(CAS_TEST_DRIVE_DATE)
+								Field(CAS_TEST_DRIVE_ASSIGNED_TO)
+								Field(CAS_TEST_DRIVE_CONFIRMED)
+								Field(CAS_TEST_DRIVE_COMPLETED)
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId8 {
+							Group groupGeneratedId13 {
+								caption = NOTES
+								Field(CAS_TEST_DRIVE_NOTES)
+							}
+						}
+					}
+				}
+			}
+			Part partGeneratedId3 {
+				enableJumpmarks = false
+				caption = PART_CAPTION_3
+				visibility =
+				`export async function computeVisibility(): Promise<boolean> {\n   if($do.CAS_STATUS.get()!=\"Nou\" && $do.CAS_STATUS.get()!=\"Calificare avansata\" && $do.CAS_STATUS.get()!=\"Test Drive programat\" ) return true;\n   else return false;\n}`
+				VerticalLayout verticalLayoutGeneratedId3 {
+					HorizontalLayout horizontalLayoutGeneratedId4 {
+						LayoutColumn layoutColumnGeneratedId9 {
+							Group groupGeneratedId14 {
+								caption = GROUP_CAPTION_10
+								Field(CAS_TEST_DRIVE_INTEREST_LEVEL)
+								Field(CAS_TEST_DRIVE_PURCHASE_INT)
+								Field(CAS_TEST_DRIVE_LIKED_MOST)
+								Field(CAS_TEST_DRIVE_DISLIKED_MOST)
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId10 {
+							Group groupGeneratedId15 {
+								caption = GROUP_CAPTION_11
+								SliderField(CAS_TEST_DRIVE_CONVERSION_PROB) {
+									percent = true
+								}
+								Field(CAS_TEST_DRIVE_CUSTOMER_FB)
+							}
+						}
+					}
+				}
+			}
+		}
+		.BreadCrumb status {
+			ref = CAS_STATUS
+		}
+		after .BreadCrumb status {
+			Group groupGeneratedId7 {
+				caption = GROUP_CAPTION_8
+				autoHide = DISABLED
+				visibility =
+				`export async function computeVisibility(): Promise<boolean> {\n  if ($do.CAS_STATUS.get() === \"Respins\") {\n    return true;\n  } else {\n    return false;\n  }\n}`
+				Field(CAS_REASON)
+				Field(CAS_ADDITIONAL_DETAILS)
+			}
+		}
+		.Group gerneralInfo {
+			after .Field(LEADNUMBER) {
+				Field(CAS_SALES_RESPONSIBLE)
+				Field(CAS_STATUS) {
+					autoHide = DISABLED
+				}
+				Field(LEADSOURCE)
+				LinkField(CAR_LINK_LINK) {
+					mandatory = true
+				}
+			}
+			delete .Field(LEADOWNER)
+			delete .Field(ACQUIREUSER)
+			delete .LinkField(ACCOUNTINFORMATION_LINK)
+			delete .LinkField(CONTACTPERSON_LINK)
+			Field(CAS_FOLLOWUP_DATE) last
+			Field(CAS_ESTIMATED_CONTRACT_DATE) last
+		}
+		.Group customerInfo {
+			delete .TextField(ADDRESSINFO)
+			delete .LinkField(BCARDFRONT_LINK)
+			delete .LinkField(BCARDBACK_LINK)
+			LinkField(ACCOUNTINFORMATION_LINK) {
+				mandatory = true
+			} first
+			LinkField(CONTACTPERSON_LINK) first
+		}
+		.Group notes {
+			Field(LEADOWNER) last
+		}
+		delete .Message infoMessage
+		delete .Group acquisition
+	}
+}
+// ORIGINAL FORM GENERATED CONTENT START
+//namespace smartdesign.lead
+//
+//form Record {
+//
+//	context {
+//		primary import do = DataObject(GWSLLEAD)
+//		dossierMD = DossierMassData()
+//		businessCardImagesSearchFilterMD = DataObjectMassData(DOCUMENT) {
+//			query {
+//				where = TYPE LIKE "ARCHIVE" AND(GWFILETYPE LIKE "jpg" OR GWFILETYPE LIKE "jpeg" OR GWFILETYPE LIKE "png")
+//			}
+//		}
+//	}
+//
+//	definitions {
+//		condition hasNoAccountInformationLinkCondition =
+//		builtin:de.cas.smartdesign.app.lead.gw.HasNoAccountInformationLinkCondition
+//	}
+//
+//	header = DefaultHeader {
+//		title = LEAD
+//	}
+//
+//	state read {
+//		fixedContent = RecordSummary id:recordSummary {
+//			showRecordTypeIcon = true
+//			headline = Headline id:recordSummaryHeadline {
+//				title = Field(KEYWORD)
+//				subTitle = Field(LEADNUMBER)
+//			}
+//			BreadCrumb status {
+//				ref = STATUS
+//				^height = "50px"
+//			}
+//		}
+//		Parts parts {
+//			Part mainPart {
+//				caption = GENERAL_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout headerLayout {
+//					ZLayout mainLayout {
+//						Group gerneralInfo {
+//							caption = GENERAL
+//							Field(LEADNUMBER)
+//							Field(LEADOWNER)
+//							Field(LEADSOURCE)
+//							Field(ACQUIREUSER)
+//							Field(ACQUIREDATE)
+//							LinkField(ACCOUNTINFORMATION_LINK)
+//							LinkField(CONTACTPERSON_LINK)
+//						}
+//						Group customerInfo {
+//							caption = CUSTOMERINFORMATION
+//							TextField(ADDRESSINFO) {
+//								showCaption = false
+//								visibleRows = 8
+//							}
+//							LinkField(BCARDFRONT_LINK)
+//							LinkField(BCARDBACK_LINK)
+//						}
+//						Group acquisition {
+//							caption = ACQUISITION
+//							Field(GWRATING)
+//							Field(PRODUCTNAME)
+//							Field(LEADSOURCE)
+//							Field(VOLUME)
+//							Field(TIMEHORIZON)
+//							Field(FOLLOWUPACTION)
+//						}
+//						TagSelector tags {
+//						}
+//						Permissions permissions {
+//						}
+//						EmbeddedList dossier {
+//							caption = DOSSIER
+//							datasource = dossierMD
+//						}
+//						ExtensionPoint defaultExtension {
+//							id = "record.default"
+//						}
+//						Group additionalInformation {
+//							caption = ADDITIONAL_INFORMATION
+//							ScriptedField insertInformation {
+//								caption = INSERT_INFORMATION_CAPTION
+//								expression = `
+//									import { getInsertInformation } from "smartdesign.base/additional-information";
+//									getInsertInformation($do);
+//								`
+//							}
+//							ScriptedField updateInformation {
+//								caption = UPDATE_INFORMATION_CAPTION
+//								expression = `
+//									import { getUpdateInformation } from "smartdesign.base/additional-information";
+//									getUpdateInformation($do);
+//								`
+//							}
+//						}
+//					}
+//					Group notes {
+//						caption = NOTES
+//						Field(NOTES2) {
+//							showCaption = false
+//						}
+//					}
+//				}
+//			}
+//			PartExtensionPoint defaultPartExtensionPoint {
+//				id = "record.part.default"
+//			}
+//		}
+//	}
+//
+//	state edit {
+//		Parts parts {
+//			Part mainPart {
+//				caption = GENERAL_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout headerLayout {
+//					BreadCrumb status {
+//						ref = STATUS
+//						^height = "50px"
+//					}
+//					Group keyword {
+//						caption = KEYWORD
+//						Field(KEYWORD) {
+//							showCaption = false
+//							focus = true
+//						}
+//					}
+//					ZLayout mainLayout {
+//						Group gerneralInfo {
+//							caption = GENERAL
+//							Field(LEADNUMBER)
+//							Field(LEADOWNER)
+//							Field(ACQUIREUSER)
+//							Field(ACQUIREDATE)
+//							LinkField(ACCOUNTINFORMATION_LINK)
+//							LinkField(CONTACTPERSON_LINK)
+//						}
+//						Group customerInfo {
+//							caption = CUSTOMERINFORMATION
+//							Message infoMessage {
+//								level = INFO
+//								message = CUSTOMER_INFORMATION_INFO_EDIT
+//							}
+//							TextField(ADDRESSINFO) {
+//								showCaption = false
+//							}
+//							LinkField(BCARDFRONT_LINK) {
+//								searchFilter = businessCardImagesSearchFilterMD
+//							}
+//							LinkField(BCARDBACK_LINK) {
+//								searchFilter = businessCardImagesSearchFilterMD
+//							}
+//						}
+//						Group acquisition {
+//							caption = ACQUISITION
+//							Field(GWRATING)
+//							Field(PRODUCTNAME)
+//							Field(LEADSOURCE)
+//							Field(VOLUME)
+//							Field(TIMEHORIZON)
+//							Field(FOLLOWUPACTION)
+//						}
+//						TagSelector tags {
+//						}
+//						Permissions permissions {
+//						}
+//					}
+//					Group notes {
+//						caption = NOTES
+//						Field(NOTES2) {
+//							showCaption = false
+//						}
+//					}
+//				}
+//			}
+//			PartExtensionPoint defaultPartExtensionPoint {
+//				id = "record.part.default"
+//			}
+//		}
+//	}
+//}
+// ORIGINAL FORM GENERATED CONTENT END

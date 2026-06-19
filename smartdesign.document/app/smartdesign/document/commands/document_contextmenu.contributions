@@ -1,0 +1,24 @@
+namespace smartdesign.document
+
+contributions {
+	command (menuitem_document_view) {
+		context = objecttype(DOCUMENT)
+		pointId = "contextMenu"
+		position = rank(4010)
+	}
+	command (menuitem_document_edit) {
+		context = objecttype(DOCUMENT)
+		pointId = "contextMenu"
+		position = rank(3010)
+	}
+	command(menuitem_new_offer) {
+		context = objecttype(GWOPPORTUNITY)
+		pointId = "contextMenu"
+		position = rank(3060)
+	}
+	 command(new_doc) {
+		context = objecttype (GWOPPORTUNITY)
+		pointId = "contextMenu"
+		position = rank(2000)
+	}
+}

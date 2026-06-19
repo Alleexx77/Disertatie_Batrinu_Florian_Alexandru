@@ -1,0 +1,10 @@
+namespace custom.istoricticket
+
+commands {
+	command newIstoricticket uses new {
+		typeToCreate = ISTORICTICKET
+	}
+	command newLinkedIstoricticket uses new_linked {
+		newCommand = newIstoricticket
+	}
+}

@@ -1,0 +1,19 @@
+namespace smartdesign.address
+
+extension smartdesign.address.ADDRESS {
+	string TAXNUMBER
+	string CAS_DECISIONCRITERIA
+	string CAS_ORIENTATION
+	string CAS_NEVOIBUSINESS
+	string CAS_ADAPTABILITY
+	string CAS_ACOPERIRE
+	string CAS_STATUT
+	string CAS_STRATEGY
+	string CAS_CLASIFICARECLIENT
+	decimal CAS_CLIENTPOTENTIAL
+	override PREFERREDLANGUAGE =
+	`export async function computePreferredlanguage(): Promise<string | null> {\n    return \'Romania\';\n}`
+	string CAS_ROL
+	string GWHDOACCESSTYPE
+	boolean GWSSERVICEPASSWORDSET
+}

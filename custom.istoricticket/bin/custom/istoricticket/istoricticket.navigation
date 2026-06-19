@@ -1,0 +1,12 @@
+namespace custom.istoricticket
+
+flow {
+	on initialization => ShowSearch
+	external {
+		on OpenRecord => Record
+		on OpenLinkIstoricticketSearch => LinkSearch
+	}
+	internal {
+		on ShowSearch => Search
+	}
+}

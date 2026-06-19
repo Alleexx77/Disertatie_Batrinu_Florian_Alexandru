@@ -1,0 +1,59 @@
+namespace custom.opportunitylineitem
+
+objecttype OPPORTUNITYLINEITEM {
+	int CAS_COMMERCIALRISK
+	decimal CAS_COST
+	datetime CAS_DELIVERYDATE
+	decimal CAS_DISCOUNT
+	string CAS_LINENUMBER
+	decimal CAS_MARGIN =
+	`export async function computeCasMargin(): Promise<BigNumber | null> {\n    const price = await $do.CAS_PRICE.get();\n    const quantity = await $do.CAS_QUANTITY.get();\n    const discount = await $do.CAS_DISCOUNT.get();\n    const cost = await $do.CAS_COST.get();\n\n    if (!price || !quantity) {\n        return null;\n    }\n\n    const priceBN = new BigNumber(price);\n    const quantityBN = new BigNumber(quantity);\n    const discountBN = new BigNumber(discount ?? 0);\n    const costBN = new BigNumber(cost ?? 0);\n\n    // Formula: (Price × Quantity × (1 − Discount/100)) − (Cost × Quantity)\n    const discountFactor = new BigNumber(1).minus(discountBN.div(100));\n    const margin = priceBN\n        .multipliedBy(quantityBN)\n        .multipliedBy(discountFactor)\n        .minus(costBN.multipliedBy(quantityBN));\n\n    return margin;\n}\n`
+	decimal CAS_PRICE
+	string CAS_PRODUCT
+	string CAS_PRODUCTDESCRIPTION
+	int CAS_QUANTITY
+	string CAS_SUPPORT
+	decimal CAS_TOTALPRICE =
+	`export async function computeCasTotalprice(): Promise<BigNumber | null> {\n    const price = await $do.CAS_PRICE.get();\n    const quantity = await $do.CAS_QUANTITY.get();\n    const discount = await $do.CAS_DISCOUNT.get();\n\n    if (!price || !quantity) {\n        return null;\n    }\n\n    // Convertim la BigNumber pentru calcule precise\n    const priceBN = new BigNumber(price);\n    const quantityBN = new BigNumber(quantity);\n    const discountBN = new BigNumber(discount ?? 0);\n\n    // Formula: total = price * quantity * (1 - discount/100)\n    const discountFactor = new BigNumber(1).minus(discountBN.div(100));\n    const total = priceBN.multipliedBy(quantityBN).multipliedBy(discountFactor);\n\n    return total;\n}`
+	string CAS_UNITMEASUREMENT
+	boolean DELETABLE
+	gguid DELGUID
+	int EDITPERMISSION
+	int FOREIGNEDITPERMISSION
+	gguid GGUID
+	gguid GRPGUID
+	int GWNOTESFORMAT
+	string ICON
+	string ICONALTERNATE
+	datetime INSERTTIMESTAMP
+	string INSERTUSER
+	boolean ISSYSTEMDUPLICATABLE
+	boolean ISSYSTEMUNCOMMITTED
+	boolean ISTEMPLATE
+	int OID
+	gguid OWNERGUID
+	string OWNERNAME
+	suggestions PERMISSIONS
+	string SMARTACTIONRESULTS_FAILURE_INFO
+	boolean SMART_DESIGN_INTERNAL_RECORD_EDITABLE
+	gguid SYSOPERATIONGUID
+	suggestions TYPESUGGESTIONS
+	datetime UPDATETIMESTAMP
+	string UPDATEUSER
+	string VIEWICON
+	link CAS_PROD_LINK_LINK {
+		targetObjectType = BSPRODUCT
+		linkAttribute = "CAS_PROD_LINK"
+	}
+	link CAS_OPP_LINK_LINK {
+		targetObjectType = GWOPPORTUNITY
+		linkAttribute = "CAS_OPP_LINK"
+	}
+	string CAS_CURRENCY
+	string CAS_PROJECT_NAME
+	string CAS_PROJECT_NUMBER
+	string CAS_ID_PROJECT
+	string CAS_OPPORTUNITY_NAME
+	string CAS_OPPORTUNITY_NUMBER
+	boolean CAS_INITIATENAVSYNC
+}

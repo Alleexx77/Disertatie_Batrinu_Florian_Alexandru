@@ -1,0 +1,15 @@
+namespace smartdesign.lead
+
+contributions {
+	command(convert_lead_into_opportunity) {
+		target = id(smartdesign.lead)
+		context = DataObject(GWSLLEAD)
+		pointId = "actionMenu"
+	}
+	command (new_linked) {
+		context = objecttype(EMAILSTORE)
+		pointId = "contextMenu"
+		position = rank(4010)
+	}
+	
+}

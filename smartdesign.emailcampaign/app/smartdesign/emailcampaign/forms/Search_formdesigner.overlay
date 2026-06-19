@@ -1,0 +1,58 @@
+namespace smartdesign.emailcampaign
+
+/* IMPORTANT: This is a generated file. Manual changes will disable automatic updates. */
+@Derived(sha1="b1cfce77e40c73f3617f2c06534c4b8c4526dddf")
+overlay form Search {
+
+	overlay state ^read {
+		delete .ViewsList documentViews
+	}
+}
+// ORIGINAL FORM GENERATED CONTENT START
+//namespace smartdesign.emailcampaign
+//
+//form Search {
+//	context {
+//		primary searchMD = DataObjectMassData(DOCUMENT){
+//			query {
+//				where = TYPE = "MAILMERGE"
+//			}
+//		}
+//		lastUsedMD = LastUsedMassData(DOCUMENT){
+//			query {
+//				where = TYPE = "MAILMERGE"
+//			}
+//		}
+//		favoriteMD = DataObjectMassData(DOCUMENT){
+//			query {
+//				where = TYPE = "MAILMERGE"
+//			}
+//		}
+//	}
+//	header = DefaultHeader {
+//		title = EMAIL_CAMPAIGNS
+//		contributionPoints = { }
+//	}
+//	state read {
+//		VerticalLayout contentLayout {
+//			SearchList formEmails {
+//				caption = EMAIL_CAMPAIGN
+//				datasource = searchMD
+//				extendedListEntryAction = ShowEmailCampaignTable
+//			}
+//			FavoritesList favorites {
+//				caption = FAVORITES
+//				datasource = favoriteMD
+//			}
+//			EmbeddedList recentlyUsed {
+//				caption = RECENTLY_USED
+//				datasource = lastUsedMD
+//				extendedListEntryAction = ShowEmailCampaignTable
+//			}
+//			ViewsList documentViews {
+//				objectTypeViews = DOCUMENT
+//			}
+//		}
+//	}
+//}
+// ORIGINAL FORM GENERATED CONTENT END

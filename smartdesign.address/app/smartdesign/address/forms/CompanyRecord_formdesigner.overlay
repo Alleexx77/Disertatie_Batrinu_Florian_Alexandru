@@ -1,0 +1,753 @@
+namespace smartdesign.address
+
+/* IMPORTANT: This is a generated file. Manual changes will disable automatic updates. */
+@Derived(sha1="9469fdbde465be397c142c6351f1458225769e62")
+overlay form CompanyRecord {
+	context {
+		linkListAddress = LinkMassData(ADDRESS => ADDRESS) {
+			attributes = "L2UADRHIERARCHY"
+			query {
+			}
+		}
+		linkListGwopportunity = LinkMassData(ADDRESS => GWOPPORTUNITY) {
+			attributes = "ITDGWOPADR", "PRIMARYLINKPLUS"
+			table {
+				columns = target.KEYWORD, target.OPPORTUNITYNUMBER, target.CAS_PROJECTNAME, target.START_DT, target.END_DT,
+				target.STATUS
+			}
+			query {
+				where = target.END_DT >= TODAY + 0
+			}
+		}
+		linkListProject = LinkMassData(ADDRESS => PROJECT) {
+			attributes = "ITDPRJADR", "PRIMARYLINKPLUS"
+			summary {
+				caption = target.KEYWORD
+				description =
+				`export async function computeDescription(): Promise<string> {\n    return Arrays.join([\n        $current.PRJNUMBER.get(),\n        $current.ENDDATE.get(),\n        $current.GWSSTATUS.get(),\n        $current.CAS_BUDGETEDVALUE.get(),\n        $current.CAS_INVOICEDVALUE.get()\n    ], \", \");\n}\n`
+				icon = target.ICON
+			}
+			table {
+				columns = target.STARTDATE, target.ENDDATE, target.KEYWORD, target.GWSSTATUS, target.CAS_BUDGETEDVALUE,
+				target.CAS_INVOICEDVALUE, target.PROJECTOWNER
+			}
+			query {
+			}
+		}
+		linkListTask = LinkMassData(ADDRESS => TASK) {
+			attributes = "ITDTSKADR", "PRIMARYLINKPLUS"
+			table {
+				columns = target.TSKNUMBER, target.ITDPROBLEM, target.START_DT, target.END_DT, target.GWSTYPE,
+				target.PRODUCTUSAGE, target.CAS_PROJECT, target.ITDSOLUTION
+			}
+			query {
+				where = target.GWSTYPE = "$EN$Ticket"
+			}
+		}
+	}
+
+	overlay state ^read {
+
+		.fixedContent {
+			.LayoutColumn businessMainLayoutFormattedAddressContentColumn {
+				visibility = `export async function computeVisibility(): Promise<boolean> {\n    return true;\n}`
+				autoHide = DISABLED
+			}
+			after .ScriptedField businessMainLayoutFormattedAddressContentField {
+				move .ScriptedField businessCardSubtitle
+			}
+			.StandardPhoneField businessMainLayoutInformationStandardPhoneField1 {
+				autoHide = DISABLED
+			}
+			after .StandardPhoneField businessMainLayoutInformationStandardPhoneField1 {
+				Field(PHONEFIELDSTR2) {
+					autoHide = DISABLED
+				}
+			}
+			.StandardEMailField businessMainLayoutInformationEMailField {
+				autoHide = DISABLED
+			}
+			.ScriptedField businessMainLayoutInformationWebLinkField {
+				autoHide = DISABLED
+			}
+			.Headline businessCardHeadline {
+				unset .subTitle
+			}
+			delete .StandardPhoneField businessMainLayoutInformationStandardPhoneField2
+		}
+		.HorizontalLayout wrappingHorizontalLayout {
+			LayoutColumn layoutColumnGeneratedId1() last
+		}
+		.LayoutColumn wrappingHorizontalLayoutMainLayoutColumn {
+			move .Group companyInformation first
+		}
+		.Group contactInformation {
+			.Field(FIRSTCONTACT) {
+				autoHide = DISABLED
+			}
+			.Field(FIRSTCONTACTDATE) {
+				autoHide = DISABLED
+			}
+			.Field(LASTCONTACTUSER) {
+				autoHide = DISABLED
+			}
+			.Field(LASTCONTACTMEDIUM) {
+				autoHide = DISABLED
+			}
+			delete .Field(ADRNUMBER)
+			delete .Field(EBIDNUMBER)
+			move .Field(LASTCONTACTUSER) first
+			MailField(MAILFIELDSTR5) {
+				autoHide = DISABLED
+			} first
+			Field(CBPHONE1) {
+				autoHide = DISABLED
+			} last
+		}
+		.Group companyInformation {
+			after .Field(GWBRANCH) {
+				Field(GWSTYPE) {
+					autoHide = DISABLED
+				}
+			}
+			.Field(GWTRUSTEE) {
+				autoHide = DISABLED
+			}
+			delete .Field(ITDANZAHLMA)
+			delete .Field(CASWIDNR)
+			Field(CATEGORY) {
+				autoHide = DISABLED
+			} last
+			Field(ITDKLASSIFIZIERUNG) {
+				autoHide = DISABLED
+			} last
+			Field(CAS_CLASIFICARECLIENT) {
+				autoHide = DISABLED
+			} last
+			Field(CAS_CLIENTPOTENTIAL) {
+				autoHide = DISABLED
+			} last
+		}
+		.Group bankAccount {
+			.Field(GWIBAN) {
+				autoHide = DISABLED
+			}
+			after .Field(GWIBAN) {
+				move .Field(BANKACCOUNTNR)
+			}
+			.Field(GWBIC) {
+				autoHide = DISABLED
+			}
+			.Field(BANKACCOUNTHOLDER) {
+				autoHide = DISABLED
+			}
+			.Field(BANKACCOUNTNR) {
+				autoHide = DISABLED
+			}
+			delete .Field(BANKZIPNR)
+			delete .Field(FINANCIALINSTITUTE)
+		}
+		.LayoutColumn wrappingHorizontalLayoutDossierColumn {
+			move .EmbeddedList contactPersonList first
+		}
+		.Group companyAddress {
+			autoHide = DISABLED
+		}
+		.Group deliveryAddress {
+			autoHide = DISABLED
+		}
+		after .Part detailsPart {
+			Part partGeneratedId2 {
+				enableJumpmarks = false
+				caption = PROJECTS
+				autoHide = DISABLED
+				VerticalLayout verticalLayoutGeneratedId2 {
+					EmbeddedList embeddedListGeneratedId1 {
+						datasource = linkListProject
+						caption = PROJECTS
+						displayMode = TABLE
+						extendedListEntryCaption = PROJECTS
+					}
+				}
+			}
+			Part partGeneratedId3 {
+				enableJumpmarks = false
+				autoHide = DISABLED
+				caption = OPPORTUNITIES
+				VerticalLayout verticalLayoutGeneratedId3 {
+					EmbeddedList embeddedListGeneratedId2 {
+						datasource = linkListGwopportunity
+						caption = OPPORTUNITIES
+						extendedListEntryCaption = OPPORTUNITIES
+						displayMode = TABLE
+					}
+				}
+			}
+			Part partGeneratedId4 {
+				enableJumpmarks = false
+				caption = TICKETS
+				autoHide = DISABLED
+				VerticalLayout verticalLayoutGeneratedId4 {
+					EmbeddedList embeddedListGeneratedId3 {
+						extendedListEntryCaption = TICKETS
+						datasource = linkListTask
+						displayMode = RESPONSIVE
+					}
+				}
+			}
+			Part partGeneratedId1 {
+				enableJumpmarks = false
+				caption = PART_CAPTION_3
+				VerticalLayout verticalLayoutGeneratedId1 {
+					Group groupGeneratedId2 {
+						companyStructureWidget companyStructureWidgetGeneratedId1 {
+							gguid = `$do.GGUID.get()`
+							restEnabled = true
+						}
+					}
+				}
+			}
+		}
+		.ZLayout businessCardPopupContent {
+			Group groupGeneratedId1 {
+				Field(GWTRUSTEE)
+			} last
+		}
+		.Group company {
+			delete .Field(COMPNAME)
+			delete .Field(COMPNAME2)
+			delete .Field(EBIDNUMBER)
+			unset .^caption
+			move .Group bankAccount first
+		}
+		.Group phone {
+			delete .PhoneField(PHONEFIELDSTR10)
+			Field(TAXNUMBER) {
+				autoHide = DISABLED
+			} first
+			Field(GWTRADEREGISTER) {
+				autoHide = DISABLED
+			} first
+			Field(ITDANZAHLMA) {
+				autoHide = DISABLED
+			} first
+			Field(TURNOVER) {
+				autoHide = DISABLED
+			} first
+			Field(WWWFIELDSTR3) {
+				autoHide = DISABLED
+			} first
+			Field(CAS_DECISIONCRITERIA) {
+				autoHide = DISABLED
+			} first
+			Field(CATEGORY) {
+				autoHide = DISABLED
+			} first
+		}
+		delete .Group companyRegister
+		delete .Group typeStatus
+		delete .Group catchphrases
+		delete .Group privateAddress
+		.Group additionalInformation {
+			unset .^caption
+		}
+		delete .Group email
+		delete .Group fax
+		delete .Group website
+		>LayoutColumn layoutColumnGeneratedId1 {
+			move .AddressDossierList dossier first
+		}
+		>Group groupGeneratedId1 {
+			move .Permissions permissions last move .Group additionalInformation last
+		}
+	}
+
+	overlay state ^edit {
+		.Group company {
+			after .Field(COMPNAME) {
+				Field(GWBRANCH)
+				Field(ITDANZAHLMA)
+				Field(ITDKLASSIFIZIERUNG) {
+					autoHide = DISABLED
+				}
+			}
+			Field(GWSTYPE) last
+			Field(GWTRADEREGISTER) {
+				autoHide = DISABLED
+			} last
+			Field(TAXNUMBER) {
+				autoHide = DISABLED
+			} last
+			Field(WWWFIELDSTR3) {
+				autoHide = DISABLED
+				suggestions = `export async function suggestWwwfieldstr3(): Promise<string[]> {\n    return [];\n}`
+			} last
+		}
+		.AddressBlock companyAddress {
+			showPostboxFields = false
+		}
+		.Group email {
+			Field(MAILFIELDSTR3) last
+			Field(PHONEFIELDSTR10) last
+			Field(PHONEFIELDSTR2) last
+			Field(WWWFIELDSTR1) last
+		}
+		after .Group contactInformation {
+			LinkListGroupedByRoles linkListGroupedByRolesGeneratedId1 {
+				datasource = linkListAddress
+				caption = LINKLISTGROUPEDBYROLES_CAPTION_0
+			}
+		}
+		.ExtensionPoint defaultExtension {
+			visibility = false
+			enablement = false
+			exclusions = { "smartdesign.distribution.external.InxmailAddressFormExtension" }
+		}
+		.Group contactInformation {
+			delete .Field(LASTCONTACTUSER)
+		}
+		.Group bankAccount {
+			delete .Field(GWBIC)
+			delete .Field(BANKZIPNR)
+			delete .Field(FINANCIALINSTITUTE)
+		}
+		delete .AddressBlock deliveryAddress
+		delete .Group phone
+		delete .Group fax
+		delete .Group website
+		delete .Group companyInformation
+		delete .Group catchphrases
+		delete .Group typeStatus
+	}
+}
+// ORIGINAL FORM GENERATED CONTENT START
+//namespace smartdesign.address
+//
+//form CompanyRecord {
+//
+//	context {
+//		primary import do = DataObject(ADDRESS) {
+//			constraint = GWISCOMPANY == true and GWISCONTACT == false
+//		}
+//		contactPersons = DataObjectMassData(ADDRESS) {
+//			summary {
+//				caption = CAPTION
+//				description = FUNCTION
+//			}
+//			query {
+//				where = PRIMARYORGANISATION = do.GGUID AND GWISCONTACT = 1 AND GWISCOMPANY = 0
+//			}
+//		}
+//		dossierMD = DossierMassData()
+//	}
+//
+//	events {
+//		on change(CASWIDNR) += `
+//			import { onWIDNRChange } from "smartdesign.address/_formevents";
+//			onWIDNRChange($do);
+//		`
+//	}
+//
+//	header = DefaultHeader {
+//		title = COMPANY
+//		actions = { new_contact_person }
+//	}
+//
+//	state read {
+//
+//		fixedContent = ComponentSwitcher id:componentSwitcher {
+//			^content = RecordSummary id:businessCard {
+//				headline = Headline id:businessCardHeadline {
+//					title = ScriptedField id:businessCardTitle {
+//						expression = `
+//							import { getNameForCard } from "smartdesign.address/business-card";
+//							getNameForCard($do);
+//						`
+//					}
+//					subTitle = ScriptedField id:businessCardSubtitle {
+//						expression = `
+//							import { getStandardTownName } from "smartdesign.address/business-card";
+//							getStandardTownName($do);
+//						`
+//					}
+//					Badge businessCardHeadlineXRMBadge {
+//						color = `
+//							import { getColorForXRMType } from "smartdesign.address/business-card";
+//							getColorForXRMType($do, 'Mitarbeiter', 'Lieferant');
+//						`
+//						label = `$do.GWSTYPE.tryGet('')`
+//					}
+//				}
+//				HorizontalLayout businessCardMainLayout {
+//					LayoutColumn businessCardMainLayoutImageColumn {
+//						minWidth = 120
+//						maxWidth = 120
+//						ImageField businessCardImage {
+//							heightInPixels = 160
+//							autoHide = DISABLED
+//						}
+//					}
+//					LayoutColumn businessMainLayoutFormattedAddressContentColumn {
+//						minWidth = 200
+//						maxWidth = 440
+//						Group businessMainLayoutFormattedAddressContentGroup {
+//							ScriptedField businessMainLayoutFormattedAddressContentField {
+//								outputType = FORMATTED
+//								showCaption = false
+//								expression = `
+//									import { getFormattedAddressContent } from "smartdesign.address/business-card";
+//									getFormattedAddressContent($do);
+//								`
+//							}
+//							Field(LASTCONTACTUSER)
+//							Field(LASTCONTACTMEDIUM)
+//						}
+//					}
+//					LayoutColumn businessMainLayoutInformationColumn {
+//						minWidth = 200
+//						Group businessMainLayoutInformationGroup {
+//							StandardPhoneField businessMainLayoutInformationStandardPhoneField1 {
+//								iconName = "platform:field/phone"
+//							}
+//							StandardPhoneField businessMainLayoutInformationStandardPhoneField2 {
+//								kind = STANDARDPHONE2
+//								iconName = "platform:field/phone"
+//							}
+//							StandardEMailField businessMainLayoutInformationEMailField {
+//								iconName = "platform:field/e-mail"
+//							}
+//							ScriptedField businessMainLayoutInformationWebLinkField {
+//								outputType = URL
+//								iconName = "platform:field/www"
+//								caption = WEBSITE
+//								expression = `
+//									import { getWebLink } from "smartdesign.address/business-card";
+//									const link = getWebLink($do);
+//									link ? ScriptedField.url(link) : null;
+//								`
+//							}
+//						}
+//					}
+//				}
+//				AddressActions businessCardAddressActions()
+//			}
+//			smallContent = RecordSummary id:reducedBusinessCard {
+//				headline = Headline id:reducedBusinessCardHeadline {
+//					title = ScriptedField id:reducedBusinessCardTitle {
+//						expression = `
+//							import { getNameForCard } from "smartdesign.address/business-card";
+//							getNameForCard($do);
+//						`
+//					}
+//					Badge reducedBusinessCardHeadlineXRMBadge {
+//						color =	`
+//							import { getColorForXRMType } from "smartdesign.address/business-card";
+//							getColorForXRMType($do, 'Mitarbeiter', 'Lieferant');
+//						`
+//						label = `$do.GWSTYPE.tryGet('')`
+//					}
+//				}
+//				HorizontalLayout reducedBusinessCardMainLayout {
+//					LayoutColumn reducedBusinessCardMainLayoutImageColumn {
+//						minWidth = 120
+//						maxWidth = 120
+//						ImageField reducedBusinessCardImage {
+//							heightInPixels = 80
+//							autoHide = DISABLED
+//						}
+//					}
+//					LayoutColumn reducedBusinessMainLayoutEmailColumn {
+//						minWidth = 200
+//						maxWidth = 440
+//						Group reducedBusinessMainLayoutEmailGroup {
+//							StandardEMailField reducedBusinessMainLayoutInformationEMailField {
+//								iconName = "platform:field/e-mail"
+//							}
+//						}
+//					}
+//					LayoutColumn reducedBusinessMainLayoutInformationColumn {
+//						minWidth = 200
+//						Group reducedBusinessMainLayoutInformationGroup {
+//							StandardPhoneField reducedBusinessMainLayoutInformationStandardPhoneField {
+//								iconName = "platform:field/phone"
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+//		Parts parts {
+//			Part mainPart {
+//				caption = GENERAL_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout contentLayout {
+//					HorizontalLayout wrappingHorizontalLayout {
+//						LayoutColumn wrappingHorizontalLayoutMainLayoutColumn {
+//							ZLayout mainLayout {
+//								EmbeddedList contactPersonList {
+//									caption = CONTACT_PERSONS
+//									datasource = contactPersons
+//									extendedListEntryAction = ShowContactPersonTable
+//									actions = { new_contact_person }
+//								}
+//								Group contactInformation {
+//									caption = CONTACT_INFORMATION
+//									Field(GWSALESACTIVITYTYPEPREFERRED)
+//									Field(GWSALESACTIVITYTYPEALLOWED)
+//									Field(FIRSTCONTACT)
+//									Field(FIRSTCONTACTDATE)
+//									Field(LASTCONTACTUSER)
+//									Field(LASTCONTACTMEDIUM)
+//									Field(ADRNUMBER)
+//									Field(EBIDNUMBER)
+//								}
+//								Group companyInformation {
+//									caption = COMPANY_INFORMATION
+//									Field(GWBRANCH)
+//									Field(ITDANZAHLMA)
+//									Field(GWTRUSTEE)
+//									Field(CASWIDNR)
+//								}
+//								Group companyRegister {
+//									caption = COMPANY_REGISTER
+//									Field(EBINR)
+//								}
+//								TagSelector tags {
+//								}
+//								Group typeStatus {
+//									caption = TYPE_STATUS
+//									Field(GWSTYPE)
+//									Field(GWSSTATUS)
+//								}
+//								CoordinatesChart coordinatesChart() {
+//									caption = FAN_PORTFOLIO
+//									showSurveyButton = false
+//								}
+//								Group bankAccount {
+//									caption = BANK_ACCOUNT
+//									Field(GWIBAN)
+//									Field(GWBIC)
+//									Field(BANKACCOUNTHOLDER)
+//									Field(BANKACCOUNTNR)
+//									Field(BANKZIPNR)
+//									Field(FINANCIALINSTITUTE)
+//								}
+//								Group catchphrases {
+//									caption = CATCHPHRASES
+//									Field(NOTES) {
+//										showCaption = false
+//									}
+//								}
+//								Permissions permissions()
+//								ExtensionPoint defaultExtension {
+//									id = "record.default"
+//								}
+//								Group additionalInformation {
+//									caption = ADDITIONAL_INFORMATION
+//									ScriptedField insertInformation {
+//										caption = INSERT_INFORMATION_CAPTION
+//										expression = `
+//											import { getInsertInformation } from "smartdesign.base/additional-information";
+//											getInsertInformation($do);
+//										`
+//									}
+//									ScriptedField updateInformation {
+//										caption = UPDATE_INFORMATION_CAPTION
+//										expression = `
+//											import { getUpdateInformation } from "smartdesign.base/additional-information";
+//											getUpdateInformation($do);
+//										`
+//									}
+//								}
+//							}
+//							Group notes {
+//								caption = NOTES
+//								Field(NOTES2) {
+//									showCaption = false
+//								}
+//							}
+//						}
+//						LayoutColumn wrappingHorizontalLayoutDossierColumn {
+//							minWidth = 200
+//							maxWidth = 400
+//							AddressDossierList dossier {
+//								caption = DOSSIER
+//								datasource = dossierMD
+//								maxItemsShown = 16
+//							}
+//						}
+//					}
+//				}
+//			}
+//			Part addressesPart {
+//				caption = ADDRESSES_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout wrappingAddressesLayout {
+//					ZLayout addressesLayout {
+//						Group companyAddress {
+//							caption = COMPANY_ADDRESS
+//							Field(STREET1)
+//							Field(ZIP1)
+//							Field(TOWN1)
+//							Field(SUBURB1)
+//							Field(GWSTATE1)
+//							Field(COUNTRY1)
+//							Field(POBOX1)
+//							Field(POBOXZIP1)
+//							Field(POTOWN1)
+//							Field(GWADDITIONALINFO1)
+//						}
+//						Group deliveryAddress {
+//							caption = DELIVERY_ADDRESS
+//							Field(STREET2)
+//							Field(ZIP2)
+//							Field(TOWN2)
+//							Field(SUBURB2)
+//							Field(GWSTATE2)
+//							Field(COUNTRY2)
+//							Field(POBOX2)
+//							Field(POBOXZIP2)
+//							Field(POTOWN2)
+//							Field(GWADDITIONALINFO2)
+//						}
+//						Group privateAddress {
+//							caption = PRIVATE_ADDRESS
+//							Field(STREET3)
+//							Field(ZIP3)
+//							Field(TOWN3)
+//							Field(SUBURB3)
+//							Field(GWSTATE3)
+//							Field(COUNTRY3)
+//							Field(GWADDITIONALINFO3)
+//						}
+//					}
+//				}
+//			}
+//			Part detailsPart {
+//				caption = DETAILS_PART_LABEL
+//				enableJumpmarks = false
+//				ZLayout businessCardPopupContent {
+//					Group company {
+//						caption = COMPANY
+//						Field(COMPNAME)
+//						Field(COMPNAME2)
+//						Field(EBIDNUMBER)
+//					}
+//					Group phone {
+//						caption = PHONE
+//						PhoneField(PHONEFIELDSTR10)
+//					}
+//					Group email {
+//						caption = EMAIL
+//						MailField(MAILFIELDSTR5)
+//					}
+//					Group fax {
+//						caption = FAX
+//						FaxField(FAXFIELDSTR5)
+//					}
+//					Group website {
+//						caption = WEBSITE
+//						UrlField(WWWFIELDSTR1)
+//					}
+//				}
+//			}
+//			PartExtensionPoint defaultPartExtensionPoint {
+//				id = "record.part.default"
+//			}
+//		}
+//	}
+//
+//	state edit {
+//		Parts parts {
+//			Part mainPart {
+//				caption = GENERAL_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout contentLayout {
+//					ZLayout mainLayout {
+//						Group company {
+//							caption = COMPANY
+//							ContactImage contactImage {
+//								caption = CONTACT_IMAGE
+//								actions = new_contact_image
+//							}
+//							Field(COMPNAME)
+//							Field(CBADDRESS)
+//						}
+//						AddressBlock deliveryAddress(DELIVERY) {
+//							caption = DELIVERY_ADDRESS
+//						}
+//						AddressBlock companyAddress(COMPANY) {
+//							caption = COMPANY_ADDRESS
+//						}
+//						Group phone {
+//							caption = PHONE
+//							Field(PHONEFIELDSTR10)
+//						}
+//						Group fax {
+//							caption = FAX
+//							Field(FAXFIELDSTR5)
+//						}
+//						Group email {
+//							caption = EMAIL
+//							Field(MAILFIELDSTR5)
+//						}
+//						Group website {
+//							caption = WEBSITE
+//							Field(WWWFIELDSTR1)
+//						}
+//						Group contactInformation {
+//							caption = CONTACT_INFORMATION
+//							Field(GWSALESACTIVITYTYPEPREFERRED)
+//							Field(GWSALESACTIVITYTYPEALLOWED)
+//							Field(LASTCONTACTUSER)
+//							Field(LASTCONTACTMEDIUM)
+//						}
+//						Group companyInformation {
+//							caption = COMPANY_INFORMATION
+//							Field(GWBRANCH)
+//							Field(ITDANZAHLMA)
+//							Field(GWTRUSTEE)
+//							Field(CASWIDNR)
+//						}
+//						Group bankAccount {
+//							caption = BANK_ACCOUNT
+//							Field(GWIBAN)
+//							Field(GWBIC)
+//							Field(BANKACCOUNTHOLDER)
+//							Field(BANKACCOUNTNR)
+//							Field(BANKZIPNR)
+//							Field(FINANCIALINSTITUTE)
+//						}
+//						TagSelector tags {
+//						}
+//						Group catchphrases {
+//							caption = CATCHPHRASES
+//							Field(NOTES) {
+//								showCaption = false
+//							}
+//						}
+//						Group typeStatus {
+//							caption = TYPE_STATUS
+//							Field(GWSTYPE)
+//							Field(GWSSTATUS)
+//						}
+//						Permissions permissions()
+//						ExtensionPoint defaultExtension {
+//							id = "record.default"
+//						}
+//					}
+//					Group notes {
+//						caption = NOTES
+//						Field(NOTES2) {
+//							showCaption = false
+//						}
+//					}
+//				}
+//			}
+//			PartExtensionPoint defaultPartExtensionPoint {
+//				id = "record.part.default"
+//			}
+//		}
+//	}
+//}
+// ORIGINAL FORM GENERATED CONTENT END

@@ -1,0 +1,4 @@
+!namespace custom.myfirstwebapp
+!default-language DE
+
+APP_NAME = Web App

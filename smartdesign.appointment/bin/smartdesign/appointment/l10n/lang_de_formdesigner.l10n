@@ -1,0 +1,4 @@
+!namespace smartdesign.appointment
+!default-language-extension DE
+
+GROUP_CAPTION_0 = Details for event

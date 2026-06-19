@@ -1,0 +1,344 @@
+namespace smartdesign.document
+
+/* IMPORTANT: This is a generated file. Manual changes will disable automatic updates. */
+@Derived(sha1="92deb3a029b9de6303f4524e947caeb3f7d94734")
+overlay form Record {
+	context {
+		docLink = LinkedDataObject(do) {
+			linkedBy = CAS_DOCOPP_LINK
+		}
+	}
+
+	events {
+		on edit += `export async function onEdit(): Promise<void> {\n    if ($do.isNew()) {\n        if ($docLink) {\n            $do.CAS_PMRESPONSIBLE.set($docLink.CAS_PMRESPONSIBLE.get());\n            const netMargin = $docLink.CAS_OFFERNETMARGIN.get();\n            $do.CAS_NETMARGIN.set(netMargin ? netMargin.toNumber() : 0);\n            const totalPrice = $docLink.CAS_OFFERTOTALPRICE.get();\n            $do.CAS_OFFEREDPRICE.set(totalPrice ? totalPrice.toNumber() : 0);\n        }\n    }\n}\n`
+	}
+
+	overlay state ^read {
+		.Group documentActionGroupMainGroup {
+			delete .Field(DOCDATE)
+			Field(GWSTYPE) {
+				color = #3F2915
+			} first
+			Field(CAS_CONTRACTTYPOLOGY) {
+				color = #6E970A
+			} first
+		}
+		.Group documentActionGroupMainLayoutValidateStartDateGroup {
+			.Field(GWVALIDATESTARTDATE) {
+				color = #D6EEFF
+				autoHide = DISABLED
+			}
+			Field(CAS_SALESRESPONSIBLE) last
+		}
+		.Group documentActionGroupMainLayoutValidateEndDateGroup {
+			.Field(GWVALIDATEENDDATE) {
+				color = #D6EEFF
+				autoHide = DISABLED
+			}
+			Field(CAS_PMRESPONSIBLE) last
+		}
+		.Group general {
+			after .Field(DOCNUMBER) {
+				Field(CAS_CONTRACTOBJECT)
+				Field(CAS_BRIEFOUTCOME) {
+					autoHide = DISABLED
+				}
+				Field(CAS_SPECIALCLAUSES) {
+					autoHide = DISABLED
+				}
+			}
+		}
+		.Group typeStatus {
+			.Field(GWSSTATUS) {
+				autoHide = DISABLED
+			}
+			delete .Field(GWSTYPE)
+			Field(CATEGORY) {
+				autoHide = DISABLED
+			} first
+			Field(CAS_INDIRECTCOSTS) {
+				color = #BF4800
+				autoHide = DISABLED
+			} last
+			Field(CAS_NETMARGIN) {
+				color = #006917
+				autoHide = DISABLED
+			} last
+			Field(CAS_OFFEREDPRICE) {
+				color = #006B8A
+				autoHide = DISABLED
+			} last
+		}
+		after .Group typeStatus {
+			Group groupGeneratedId1 {
+				caption = GROUP_CAPTION_0
+				visibility =
+				`export async function computeVisibility(): Promise<boolean> {\n    if ($do.GWSTYPE.get() === \'Customer Contract\' || $do.GWSTYPE.get() === \'Subco/associate Contract\') return true;\n    else return false;\n}`
+				Field(CAS_CONTRACTOBJECT) {
+					autoHide = DISABLED
+				}
+				Field(CAS_BRIEFOUTCOME) {
+					autoHide = DISABLED
+				}
+				Field(CAS_SALESRESPONSIBLE) {
+					autoHide = DISABLED
+				}
+				Field(CAS_PMRESPONSIBLE) {
+					autoHide = DISABLED
+				}
+				Field(CAS_COMMERCIALTERMS) {
+					autoHide = DISABLED
+				}
+				Field(CAS_SPECIALCLAUSES) {
+					autoHide = DISABLED
+				}
+				Field(CAS_CONTRACTTYPOLOGY) {
+					autoHide = DISABLED
+				}
+				Field(CAS_CONTCLASSIFIIEDINFO) {
+					autoHide = DISABLED
+				}
+			}
+			move .TagSelector tags
+		}
+		.EmbeddedList dossier {
+			datasource = dossierMD
+		}
+		.Group additionalInformation {
+			delete .Field(CATEGORY)
+			move .Permissions permissions first
+		}
+		delete .Group catchphrases
+	}
+
+	overlay state ^edit {
+		.Group keyword {
+			Field(DOCNUMBER) last
+			LinkField(CAS_DOCOPP_LINK) last
+		}
+		.Group general {
+			delete .Field(DOCNUMBER)
+			Field(GWSTYPE) first
+			Field(GWSSTATUS) first
+			Field(CATEGORY) first
+		}
+		after .Group times {
+			Group groupGeneratedId1 {
+				caption = GROUP_CAPTION_0
+				visibility =
+				`export async function computeVisibility(): Promise<boolean> {\n    if ($do.GWSTYPE.get() === \'Customer Contract\' || $do.GWSTYPE.get() === \'Subco/associate Contract\'|| $do.GWSTYPE.get() === \'Contract client\' || $do.GWSTYPE.get() === \'Contract subco/asociat\') return true;\n    else return false;\n}`
+				Field(CAS_CONTRACTCATEGORY)
+				Field(CAS_CONTRACTOBJECT)
+				Field(CAS_CONTRACTTYPOLOGY)
+				Field(CAS_SALESRESPONSIBLE)
+				Field(CAS_PMRESPONSIBLE)
+				Field(CAS_OFFEREDPRICE)
+				Field(CAS_INDIRECTCOSTS)
+				Field(CAS_NETMARGIN)
+				Field(CAS_CONTCLASSIFIIEDINFO)
+			}
+			Group groupGeneratedId2 {
+				caption = GROUP_CAPTION_0
+				visibility =
+				`export async function computeVisibility(): Promise<boolean> {\n    if ($do.GWSTYPE.get() === \'Customer Contract\' || $do.GWSTYPE.get() === \'Subco/associate Contract\'|| $do.GWSTYPE.get() === \'Contract client\'|| $do.GWSTYPE.get() === \'Contract subco/asociat\') return true;\n    else return false;\n}`
+				TextField(CAS_BRIEFOUTCOME)
+				TextField(CAS_COMMERCIALTERMS)
+				TextField(CAS_SPECIALCLAUSES)
+			}
+			move .ExtensionPoint defaultExtension
+			move .Group typeStatus
+		}
+		.Group typeStatus {
+			delete .Field(GWSTYPE)
+			Field(CATEGORY) first
+			Field(CAS_SALESRESPONSIBLE) last
+			Field(CAS_PMRESPONSIBLE) last
+		}
+		delete .Group catchphrases
+	}
+}
+// ORIGINAL FORM GENERATED CONTENT START
+//namespace smartdesign.document
+//
+//form Record {
+//
+//	context {
+//		primary import do = DataObject(DOCUMENT) {
+//			constraint = TYPE == "ARCHIVE"
+//		}
+//		dossierMD = DossierMassData()
+//		recipientsMD = LinkMassData(DOCUMENT => ADDRESS)
+//	}
+//
+//	header = DefaultHeader {
+//		title = DOCUMENT
+//		actions = document_overwrite
+//	}
+//
+//	state read {
+//		Parts parts {
+//			Part mainPart {
+//				caption = GENERAL_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout contentLayout {
+//					RecordSummary documentActionGroup {
+//						showRecordTypeIcon = false
+//						headline = Headline id:headlineDocumentActionGroup {
+//							title = Field(KEYWORD)
+//							subTitle = Field(DOCUMENTTYPEWITHSIZE)
+//						}
+//						Group wrappingDocumentActionGroup {
+//							HorizontalLayout documentActionGroupMainLayout {
+//								LayoutColumn documentActionGroupMainLayoutDocDateColumn {
+//									minWidth = 200
+//									maxWidth = 320
+//									Group documentActionGroupMainGroup {
+//										Field(DOCDATE)
+//									}
+//								}
+//								LayoutColumn documentActionGroupMainLayoutValidateStartDateColumn {
+//									minWidth = 200
+//									maxWidth = 320
+//									Group documentActionGroupMainLayoutValidateStartDateGroup {
+//										Field(GWVALIDATESTARTDATE)
+//									}
+//								}
+//								LayoutColumn documentActionGroupMainLayoutValidateEndDateColumn {
+//									minWidth = 200
+//									Group documentActionGroupMainLayoutValidateEndDateGroup {
+//										Field(GWVALIDATEENDDATE)
+//									}
+//								}
+//							}
+//							DocumentActions documentActions()
+//						}
+//					}
+//					ZLayout mainLayout {
+//						Group general {
+//							caption = GENERAL
+//							Field(GWAUTOVERSION)
+//							Field(DOCNUMBER)
+//							Field(GWDOCUMENTLANGUAGE)
+//						}
+//						TagSelector tags {
+//						}
+//						Permissions permissions()
+//						Group typeStatus {
+//							caption = TYPE_STATUS
+//							Field(GWSTYPE)
+//							Field(GWSSTATUS)
+//						}
+//						Group catchphrases {
+//							caption = CATCHPHRASES
+//							Field(NOTES) {
+//								showCaption = false
+//							}
+//						}
+//						PrimaryLinkedParentsList primaryLinks()
+//						EmbeddedList dossier {
+//							caption = DOSSIER
+//							datasource = dossierMD
+//						}
+//						FormLetterRecipientCount recipients {
+//							caption = RECIPIENTS
+//						}
+//						Group additionalInformation {
+//							caption = ADDITIONAL_INFORMATION
+//							ScriptedField insertInformation {
+//								caption = INSERT_INFORMATION_CAPTION
+//								expression = `
+//									import { getInsertInformation } from "smartdesign.base/additional-information";
+//									getInsertInformation($do);
+//								`
+//							}
+//							ScriptedField updateInformation {
+//								caption = UPDATE_INFORMATION_CAPTION
+//								expression = `
+//									import { getUpdateInformation } from "smartdesign.base/additional-information";
+//									getUpdateInformation($do);
+//								`
+//							}
+//							Field(CATEGORY)
+//						}
+//						DocumentVersionList versionList {
+//						}
+//						ExtensionPoint defaultExtension {
+//							id = "record.default"
+//						}
+//					}
+//					Group notes {
+//						caption = NOTES
+//						Field(NOTES2) {
+//							showCaption = false
+//						}
+//					}
+//				}
+//			}
+//			PartExtensionPoint defaultPartExtensionPoint {
+//				id = "record.part.default"
+//			}
+//		}
+//	}
+//
+//	state edit {
+//		Parts parts {
+//			Part mainPart {
+//				caption = GENERAL_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout contentLayout {
+//					Group keyword {
+//						caption = KEYWORD
+//						Field(KEYWORD) {
+//							showCaption = false
+//						}
+//					}
+//					ZLayout mainLayout {
+//						Group general {
+//							caption = GENERAL
+//							Field(DOCNUMBER)
+//							Field(GWDOCUMENTLANGUAGE)
+//						}
+//						Group times {
+//							caption = TIMES
+//							Field(DOCDATE)
+//							Field(GWVALIDATESTARTDATE)
+//							Field(GWVALIDATEENDDATE)
+//						}
+//						TagSelector tags {
+//						}
+//						Permissions permissions {
+//						}
+//						Group typeStatus {
+//							caption = TYPE_STATUS
+//							Field(GWSTYPE)
+//							Field(GWSSTATUS)
+//						}
+//						Group catchphrases {
+//							caption = CATCHPHRASES
+//							Field(NOTES) {
+//								showCaption = false
+//							}
+//						}
+//						FormLetterRecipientCount recipients {
+//							caption = RECIPIENTS
+//						}
+//						PrimaryLinkedParentsList primaryLinks()
+//						ExtensionPoint defaultExtension {
+//							id = "record.default"
+//						}
+//					}
+//					Group notes {
+//						caption = NOTES
+//						Field(NOTES2) {
+//							showCaption = false
+//						}
+//					}
+//				}
+//			}
+//			PartExtensionPoint defaultPartExtensionPoint {
+//				id = "record.part.default"
+//			}
+//		}
+//	}
+//}
+// ORIGINAL FORM GENERATED CONTENT END

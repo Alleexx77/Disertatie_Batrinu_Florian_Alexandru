@@ -1,0 +1,9 @@
+namespace smartdesign.task
+
+contributions {
+    command(new_linked_task) {
+		context = objecttype(TASK)
+		pointId = "contextMenu"
+		position = rank(3060)
+	}
+}

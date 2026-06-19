@@ -1,0 +1,12 @@
+namespace custom.projectchangehistory
+
+flow {
+	on initialization => ShowSearch
+	external {
+		on OpenRecord => Record
+		on OpenLinkProjectchangehistorySearch => LinkSearch
+	}
+	internal {
+		on ShowSearch => Search
+	}
+}

@@ -1,0 +1,4 @@
+app objecttype.icons {
+	standalone = false
+	name = EMPTY_STRING
+}

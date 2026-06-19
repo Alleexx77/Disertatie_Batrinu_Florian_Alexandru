@@ -1,0 +1,22 @@
+namespace custom.myfirstwebwidget
+
+extension AddressExtension {
+    context {
+        primary import do = DataObject(ADDRESS)
+    }
+    state read {
+        MyFirstWebWidget {
+            ^height = "200px"
+            ref = do.TAXNUMBER
+            ref2 = do.COMPNAME
+            ref3 = do.STREET1
+            ref4 = do.PHONEFIELDSTR10
+            ref5 = do.ZIP1
+            ref6 = do.GWTRADEREGISTER
+            ref7 = do.GWIBAN
+            ref8 = do.TOWN1
+            ref9 = do.GWSTATE1
+            ref10 = do.TURNOVERTAXID
+        }
+    }
+}

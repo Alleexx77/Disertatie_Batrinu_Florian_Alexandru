@@ -1,0 +1,284 @@
+namespace smartdesign.project
+
+/* IMPORTANT: This is a generated file. Manual changes will disable automatic updates. */
+@Derived(sha1="3856b306bd2fcf014ab33706161fa5d3b93ab357")
+form Record {
+
+	context {
+		primary import do = DataObject(PROJECT)
+		dossierMD = DossierMassData()
+		opportunityLink = LinkedDataObject(do) {
+			linkedBy = CAS_PRJOPP_LINK
+		}
+		chartTaskSource3 = LinkMassData(PROJECT => TASK) {
+			attributes = "ITDTSKPRJ", "PRIMARYLINKPLUS"
+			query {
+				where = target.GWSTYPE = "$EN$Milestone"
+			}
+		}
+		chartTask3 = Aggregation(chartTaskSource3) {
+			function = SUM
+			field = CAS_INVOICEDVALUE
+		}
+		chartTaskSource4 = LinkMassData(PROJECT => TASK) {
+			attributes = "ITDTSKPRJ", "PRIMARYLINKPLUS", "Verbindung"
+			query {
+				where = target.GWSTYPE = "$EN$Milestone"
+			}
+		}
+		chartTask4 = Aggregation(chartTaskSource4) {
+			function = SUM
+			field = CAS_PLANNEDFORINVOICE
+		}
+		listProjectchangehistory = DataObjectMassData(custom.projectchangehistory.PROJECTCHANGEHISTORY) {
+			summary {
+				caption = INSERTTIMESTAMP
+				description = CAS_JOBNUMBER
+				icon = ICON
+			}
+			table {
+				columns = INSERTTIMESTAMP, CAS_JOBNUMBER, CAS_FINALINVOICED, CAS_INITIALINVOICED, CAS_INITIALPLANINV,
+				CAS_FINALPLANINV, CAS_FINALSTATUS, CAS_INITIALSTATUS, CAS_FINALENDDATE, CAS_INITIALENDDATE
+			}
+			query {
+				where = CAS_PROJECTNAME = do.KEYWORD
+				order = [CAS_CHANGEDATE -> DESC]
+			}
+		}
+		listTask = DataObjectMassData(TASK) {
+			query {
+				where = GWSTYPE = "Milestone" AND CAS_PROJECT = do.KEYWORD
+			}
+		}
+	}
+
+	events {
+		on edit += `export async function onEdit(): Promise<void> {\n    if ($do.isNew()) {\n        if ($opportunityLink) {\n            $do.PROJECTOWNER.set($opportunityLink.CAS_PMRESPONSIBLE.get());\n            $do.PROJECTDEPUTY.set($opportunityLink.PERSONINCHARGE.get());\n            $do.GWSTYPE.set(\"Implementation\");\n\n            const totalAmount = $opportunityLink.OPPTOTALAMOUNT.get();\n            if (totalAmount) {\n                // Conversie din BigNumber -> number\n                $do.CAS_TOT_PLANNEDFORINVOICE.set(totalAmount.toNumber());\n            }\n        }\n    }\n}`
+	}
+
+	header = DefaultHeader {
+		title = PROJECT
+	}
+
+	state read {
+
+		fixedContent = ComponentSwitcher id:componentSwitcher {
+			^content = RecordSummary id:recordSummary {
+				showRecordTypeIcon = true
+				headline = Headline id:recordSummaryHeadline {
+					title = Field(KEYWORD)
+					subTitle = Field(PRJNUMBER)
+					FieldBadge recordSummaryFieldBadgeForType {
+						ref = GWSTYPE
+						color = #008AB2
+					}
+				}
+				HorizontalLayout recordSummaryMainLayout {
+					LayoutColumn recordSummaryGeneralColumn {
+						minWidth = 200
+						maxWidth = 440
+						Group recordSummaryGeneralGroup {
+							Field(PROJECTOWNER) {
+								caption = FIELD_CAPTION_0
+							}
+							Field(PROJECTDEPUTY) {
+								autoHide = DISABLED
+							}
+						}
+					}
+					LayoutColumn recordSummaryTimeFrameColumn {
+						minWidth = 200
+						maxWidth = 440
+						Group timeFrame {
+							Field(STARTDATE) {
+								iconName = "platform:field/calendar"
+							}
+							Field(ENDDATE) {
+								iconName = "platform:field/calendar"
+							}
+						}
+					}
+					LayoutColumn recordSummaryProjectStatusColumn {
+						minWidth = 200
+						Group projectStatusGroup {
+							Field(GWSTOTALSTATE)
+						}
+					}
+				}
+			}
+			smallContent = RecordSummary id:reducedRecordSummary {
+				showRecordTypeIcon = true
+				headline = Headline id:reducedRecordSummaryHeadline {
+					title = Field(KEYWORD)
+					subTitle = Field(PRJNUMBER)
+				}
+			}
+		}
+		Parts parts {
+			Part mainPart {
+				caption = GENERAL_PART_LABEL
+				enableJumpmarks = false
+				VerticalLayout contentLayout {
+					HorizontalLayout wrappingContentLayout {
+						LayoutColumn wrappingContentLayoutMainLayoutColumn {
+							ZLayout mainLayout {
+								Group general {
+									caption = GENERAL
+									Field(GWSTYPE) {
+										iconName = "platform:field/calendar"
+										autoHide = DISABLED
+									}
+									Field(GWSSTATUS) {
+										iconName = "platform:field/calendar"
+										autoHide = DISABLED
+									}
+									Field(CAS_LINKPROIECTNAV) {
+										autoHide = DISABLED
+									}
+								}
+								TagSelector tags {
+								}
+								PrimaryLinkedParentsList primaryLinks()
+								Group additionalInformation {
+									caption = ADDITIONAL_INFORMATION
+									Permissions permissions()
+									ScriptedField insertInformation {
+										caption = INSERT_INFORMATION_CAPTION
+										expression = `
+											import { getInsertInformation } from "smartdesign.base/additional-information";
+											getInsertInformation($do);
+										`
+									}
+									ScriptedField updateInformation {
+										caption = UPDATE_INFORMATION_CAPTION
+										expression = `
+											import { getUpdateInformation } from "smartdesign.base/additional-information";
+											getUpdateInformation($do);
+										`
+									}
+								}
+								EmbeddedList embeddedListGeneratedId2 {
+									caption = LINK_LIST_CAPTION
+									datasource = listTask
+									autoHide = DISABLED
+								}
+							}
+							Group notes {
+								caption = NOTES
+								Field(NOTES2) {
+									showCaption = false
+								}
+							}
+						}
+						LayoutColumn wrappingContentLayoutDossierLayoutColumn {
+							minWidth = 200
+							maxWidth = 400
+							EmbeddedList dossier {
+								caption = DOSSIER
+								datasource = dossierMD
+							}
+						}
+					}
+				}
+			}
+			Part partGeneratedId1 {
+				enableJumpmarks = false
+				caption = PART_CAPTION
+				autoHide = DISABLED
+				VerticalLayout verticalLayoutGeneratedId1 {
+					HorizontalLayout horizontalLayoutGeneratedId1 {
+						LayoutColumn layoutColumnGeneratedId1 {
+							Metric metricGeneratedId1 {
+								caption = METRIC_CAPTION_0
+								color = #26A642
+								datasource = `import { UngroupedAggregationResult, newUngroupedAggregation } from \"smartdesign.base/aggregation\";\n\nexport async function computeDatasource(): Promise<UngroupedAggregationResult<any>> {\n    return newUngroupedAggregation($chartTask3).build();\n}`
+							}
+						}
+						LayoutColumn layoutColumnGeneratedId2 {
+							Metric metricGeneratedId2 {
+								caption = METRIC_CAPTION
+								color = #FFD97B
+								datasource = chartTask4
+							}
+						}
+					}
+				}
+				visibility = false
+			}
+			Part partGeneratedId2 {
+				enableJumpmarks = false
+				caption = PART_CAPTION_2
+				autoHide = DISABLED
+				VerticalLayout verticalLayoutGeneratedId2 {
+					Group groupGeneratedId1 {
+						EmbeddedList embeddedListGeneratedId1 {
+							datasource = listProjectchangehistory
+							displayMode = RESPONSIVE
+							extendedListEntryCaption = EMBEDDEDLIST_EXTENDEDLISTENTRYCAPTION_0
+							extendedListEntryMode = AUTO
+							caption = EMBEDDEDLIST_CAPTION_0
+						}
+					}
+				}
+				visibility = false
+			}
+			PartExtensionPoint defaultPartExtensionPoint {
+				id = "record.part.default"
+			}
+		}
+	}
+
+	state edit {
+		Parts parts {
+			Part mainPart {
+				caption = GENERAL_PART_LABEL
+				enableJumpmarks = false
+				VerticalLayout contentLayout {
+					Group keyword {
+						caption = KEYWORD
+						Field(KEYWORD) {
+							showCaption = false
+						}
+						Field(STARTDATE)
+						Field(ENDDATE)
+						LinkField(CAS_PRJOPP_LINK) {
+							visibility = false
+						}
+					}
+					ZLayout mainLayout {
+						Group general {
+							caption = GENERAL
+							Field(PRJNUMBER)
+							Field(GWSTOTALSTATE)
+							Field(GWSTYPE)
+							Field(GWSSTATUS)
+							Field(CAS_TOT_PLANNEDFORINVOICE)
+							Field(CAS_INVOICEDVALUE)
+						}
+						Group projectStatus {
+							caption = PROJECT_STATUS
+							Field(PROJECTOWNER)
+							Field(PROJECTDEPUTY)
+							PrimaryLinkedParentsList primaryLinks()
+						}
+						TagSelector tags {
+						}
+						Permissions permissions()
+						ExtensionPoint defaultExtension {
+							id = "record.default"
+						}
+					}
+					Group notes {
+						caption = NOTES
+						Field(NOTES2) {
+							showCaption = false
+						}
+					}
+				}
+			}
+			PartExtensionPoint defaultPartExtensionPoint {
+				id = "record.part.default"
+			}
+		}
+	}
+}

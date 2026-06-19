@@ -1,0 +1,14 @@
+namespace custom.projectchangehistory
+
+contributions {
+	command(newProjectchangehistory) {
+		target = id(custom.projectchangehistory)
+		context = MassData(PROJECTCHANGEHISTORY)
+		pointId = "newMenu"
+	}
+	command(newLinkedProjectchangehistory) {
+		target = id(custom.projectchangehistory)
+		context = MassData(PROJECTCHANGEHISTORY)
+		pointId = "newLinkedMenu"
+	}
+}

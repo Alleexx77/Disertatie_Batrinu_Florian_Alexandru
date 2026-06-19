@@ -1,0 +1,273 @@
+namespace smartdesign.appointment
+
+/* IMPORTANT: This is a generated file. Manual changes will disable automatic updates. */
+@Derived(sha1="09642521558ea9b438295857c5e853fba84a65d2")
+overlay form Record {
+
+	overlay state ^read {
+		.ZLayout mainLayout {
+			move .Group eventDetails first
+		}
+		after .PrimaryLinkedParentsList primaryLinks {
+			move .Permissions permissions
+		}
+		.Group eventDetails {
+			delete .Field(APP_MANDATORY)
+			autoHide = DISABLED
+			Field(CAS_MAIN_OBJECTIVE) {
+				autoHide = DISABLED
+			} last
+			Field(CAS_FOLLOWUP_ACTION) {
+				autoHide = DISABLED
+			} last
+		}
+		.Group typeStatus {
+			Field(APP_MANDATORY) last
+		}
+	}
+
+	overlay state ^edit {
+		.Group eventDetails {
+			after .Field(APP_GROUP) {
+				Field(CAS_MAIN_OBJECTIVE) {
+					autoHide = DISABLED
+				}
+				Field(CAS_FOLLOWUP_ACTION)
+				move .Field(EVENTNAME)
+			}
+			caption = GROUP_CAPTION_0
+			autoHide = DISABLED
+		}
+	}
+}
+// ORIGINAL FORM GENERATED CONTENT START
+//namespace smartdesign.appointment
+//
+//form Record {
+//
+//	context {
+//		primary import do = DataObject(APPOINTMENT)
+//		dossierMD = DossierMassData()
+//		linkedExpensesMD = LinkMassData(APPOINTMENT => ITDSPESEN) {
+//			summary {
+//				caption = target.KEYWORD
+//				description = target.EXPENSES_DESCRIPTION
+//			}
+//		}
+//	}
+//
+//	definitions {
+//		condition isPartOfEvent = builtin:de.cas.smartdesign.app.appointment.gw.conditions.IsPartOfEventCondition
+//		condition isTimeLicense = builtin:de.cas.smartdesign.app.appointment.gw.conditions.IsTimeLicenseCondition
+//		condition isExternalOwnerAndOrganizer =
+//		builtin:de.cas.smartdesign.app.appointment.ExternalOwnerAndOrganizerCondition
+//	}
+//
+//	header = DefaultHeader {
+//		title = APPOINTMENT
+//	}
+//
+//	state read {
+//
+//		fixedContent = ComponentSwitcher id:componentSwitcher {
+//			^content = HorizontalLayout id:componentSwitcherMainContentLayout {
+//				LayoutColumn componentSwitcherMainContentRecordSummaryColumn {
+//					RecordSummary componentSwitcherMainContentRecordSummary {
+//						showRecordTypeIcon = true
+//						headline = Headline id:componentSwitcherMainContentRecordSummaryHeadline {
+//							title = Field(KEYWORD)
+//							subTitle = Field(START_DT)
+//						}
+//						HorizontalLayout componentSwitcherMainContentRecordSummaryMainLayout {
+//							LayoutColumn componentSwitcherMainContentRecordSummaryMainLayoutTimeColumn {
+//								minWidth = 200
+//								maxWidth = 240
+//								Group componentSwitcherMainContentRecordSummaryMainLayoutTimeGroup {
+//									Field(START_DT) {
+//										iconName = "platform:field/time"
+//									}
+//									Field(END_DT) {
+//										iconName = "platform:field/time"
+//									}
+//									Field(DURATION) {
+//										iconName = "platform:field/duration"
+//									}
+//									Field(WHOLEDAY)
+//								}
+//							}
+//							LayoutColumn componentSwitcherMainContentRecordSummaryMainLayoutLocationColumn {
+//								minWidth = 200
+//								maxWidth = 240
+//								Group componentSwitcherMainContentRecordSummaryMainLayoutLocationGroup {
+//									TextField(GISDESCRIPTION) {
+//										iconName = "platform:field/map-pin"
+//									}
+//									Field(CASAWAY)
+//									OnlineMeetingField onlineMeeting {
+//									}
+//									Field(GW_ALARMRELATIVE_EFFECTIVE)
+//								}
+//							}
+//							LayoutColumn componentSwitcherMainContentPermissionColumn {
+//								minWidth = 400
+//								Permissions permissionsShortInfo() {
+//									targetClient = WEB
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
+//			smallContent = RecordSummary id:reducedContentRecordSummary {
+//				headline = Headline id:reducedContentRecordSummaryHeadline {
+//					title = Field(KEYWORD)
+//					subTitle = ScriptedField id:reducedContentRecordSummarySubTitle {
+//						expression =`
+//							const startDate = Dates.format($do.START_DT.get());
+//							const location = $do.GISDESCRIPTION.tryGet();
+//							Arrays.join([startDate, location], ", ");
+//						`
+//					}
+//				}
+//			}
+//		}
+//		Parts parts {
+//			Part mainPart {
+//				caption = GENERAL_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout contentLayout {
+//					Group notes {
+//						caption = NOTES
+//						Field(NOTES2) {
+//							showCaption = false
+//						}
+//					}
+//					ZLayout mainLayout {
+//						Permissions permissions() {
+//							targetClient = MOBILE
+//						}
+//						PrimaryLinkedParentsList primaryLinks()
+//						EmbeddedList dossier {
+//							caption = DOSSIER
+//							datasource = dossierMD
+//						}
+//						Group eventDetails {
+//							caption = EVENT_DETAILS
+//							visibility = isPartOfEvent
+//							Field(EVENTNAME)
+//							Field(APP_GROUP)
+//							Field(APP_MANDATORY)
+//						}
+//						TagSelector tags {
+//						}
+//						Group typeStatus {
+//							caption = TYPE_STATUS
+//							Field(GWSTYPE)
+//							Field(GWSSTATUS)
+//						}
+//						Group resourcePlanning {
+//							caption = RESOURCEPLANNING
+//							visibility = isTimeLicense
+//							Field(IS_INTEND_TIME)
+//						}
+//						EmbeddedList linkedExpenses {
+//							caption = LINKED_EXPENSES
+//							datasource = linkedExpensesMD
+//						}
+//						ExtensionPoint defaultExtension {
+//							id = "record.default"
+//						}
+//						Group additionalInformation {
+//							caption = ADDITIONAL_INFORMATION
+//							ScriptedField insertInformation {
+//								caption = INSERT_INFORMATION_CAPTION
+//								expression = `
+//									import { getInsertInformation } from "smartdesign.base/additional-information";
+//									getInsertInformation($do);
+//								`
+//							}
+//							ScriptedField updateInformation {
+//								caption = UPDATE_INFORMATION_CAPTION
+//								expression = `
+//									import { getUpdateInformation } from "smartdesign.base/additional-information";
+//									getUpdateInformation($do);
+//								`
+//							}
+//						}
+//					}
+//				}
+//			}
+//			PartExtensionPoint defaultPartExtensionPoint {
+//				id = "record.part.default"
+//			}
+//		}
+//	}
+//
+//	state edit {
+//		Parts parts {
+//			Part mainPart {
+//				caption = GENERAL_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout contentLayout {
+//					Group keyword {
+//						caption = KEYWORD_GW
+//						Field(KEYWORD) {
+//							showCaption = false
+//						}
+//					}
+//					ZLayout mainLayout {
+//						Group location {
+//							caption = LOCATION
+//							Field(GISDESCRIPTION)
+//							Field(CASAWAY)
+//							OnlineMeetingField onlineMeeting()
+//						}
+//						Group pointInTime {
+//							caption = POINT_IN_TIME
+//							Field(START_DT)
+//							Field(END_DT)
+//							Field(WHOLEDAY)
+//							Field(GW_ALARMRELATIVE_EFFECTIVE)
+//						}
+//						Group eventDetails {
+//							caption = EVENT_DETAILS
+//							visibility = isPartOfEvent
+//							Field(EVENTNAME) {
+//								readonly = `true`
+//							}
+//							Field(APP_GROUP)
+//							Field(APP_MANDATORY)
+//						}
+//						TagSelector tags {
+//						}
+//						Group typeStatus {
+//							caption = TYPE_STATUS
+//							Field(GWSTYPE)
+//							Field(GWSSTATUS)
+//						}
+//						Permissions permissions()
+//						PrimaryLinkedParentsList primaryLinks()
+//						Group resourcePlanning {
+//							caption = RESOURCEPLANNING
+//							visibility = isTimeLicense
+//							Field(IS_INTEND_TIME)
+//						}
+//						ExtensionPoint defaultExtension {
+//							id = "record.default"
+//						}
+//					}
+//					Group notes {
+//						caption = NOTES
+//						Field(NOTES2) {
+//							showCaption = false
+//						}
+//					}
+//				}
+//			}
+//			PartExtensionPoint defaultPartExtensionPoint {
+//				id = "record.part.default"
+//			}
+//		}
+//	}
+//}
+// ORIGINAL FORM GENERATED CONTENT END

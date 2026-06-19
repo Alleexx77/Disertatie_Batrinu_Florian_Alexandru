@@ -1,0 +1,8 @@
+app custom.istoricticket {
+	name = APP_NAME
+	color = "#105295"
+
+	requirements {
+		objecttypes { ISTORICTICKET }
+	}
+}

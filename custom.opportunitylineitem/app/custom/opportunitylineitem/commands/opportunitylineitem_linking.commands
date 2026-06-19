@@ -1,0 +1,16 @@
+namespace custom.opportunitylineitem
+
+intents {
+	intent OpenLinkOpportunitylineitemSearch {
+		type = overlay
+		pagesToKeep = 0
+	}
+}
+
+commands {
+	command linkToOpportunitylineitem uses linkTo {
+		label = OPPORTUNITYLINEITEM_SINGULAR
+		targetType = OPPORTUNITYLINEITEM
+		searchIntent = OpenLinkOpportunitylineitemSearch
+	}
+}

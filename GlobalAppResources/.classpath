@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="app"/>
+	<classpathentry exported="true" kind="con" path="de.cas.smartdesign.crafty.SMARTDESIGN_CONTAINER/GlobalAppResources/appsdk"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

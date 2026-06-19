@@ -1,0 +1,5 @@
+!namespace smartdesign.emailcampaign
+!language-extension RO
+
+!override
+EMAIL_CAMPAIGNS = E-mail-uri trimise din CAS

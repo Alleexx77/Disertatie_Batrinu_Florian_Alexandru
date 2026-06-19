@@ -1,0 +1,14 @@
+namespace smartdesign.document
+
+contributions {
+    command(new_linked_faq_document) {
+		context = objecttype(TASK)
+		pointId = "actionMenu"
+		position = rank(3060)
+	}
+	command(new_linked_faq_document) {
+		context = objecttype(TASK)
+		pointId = "contextMenu"
+		position = rank(3060)
+	}
+}

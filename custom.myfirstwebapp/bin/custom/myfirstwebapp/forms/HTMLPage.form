@@ -1,0 +1,18 @@
+namespace custom.myfirstwebapp
+
+form HTMLPage {
+
+	header = DefaultHeader {
+		title = APP_NAME
+		contributionPoints = { }
+	}
+
+	state read {
+		padding = none
+		WebAppFrame frame {
+			url = "index.html"
+			openInNewTab = false
+			restEnabled = true
+		}
+	}
+}

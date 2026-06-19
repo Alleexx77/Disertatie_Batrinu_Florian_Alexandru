@@ -1,0 +1,4 @@
+!namespace custom.myfirstwebwidget
+!language EN
+
+APP_NAME = custom.myfirstwebwidget

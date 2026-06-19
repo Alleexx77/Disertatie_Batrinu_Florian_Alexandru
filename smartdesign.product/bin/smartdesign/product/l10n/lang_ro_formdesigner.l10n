@@ -1,0 +1,7 @@
+!namespace smartdesign.product
+!language-extension RO
+
+PART_CAPTION = Imagine
+GROUP_CAPTION_0 = Detalii tehnice
+GROUP_CAPTION_1 = Istoric
+GROUP_CAPTION_2 = Technical Details

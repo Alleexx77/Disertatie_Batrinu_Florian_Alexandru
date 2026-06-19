@@ -1,0 +1,14 @@
+!namespace smartdesign.ticket
+!language-extension RO
+
+PART_CAPTION = ADMIN
+GROUP_CAPTION_0 = Detalii tichet
+PART_CAPTION_2 = Istoric ticket
+SCRIPTEDFIELD_CAPTION_0 = Timp maxim de raspuns
+SCRIPTEDFIELD_CAPTION_1 = Rezolvat in
+GROUP_CAPTION_1 = ATENTIE! Continutul acestui camp este public pentru CLIENT!
+FIELD_CAPTION_0 = MESAJE PUBLICE CLIENT
+FIELD_CAPTION_1 = Note interne (vizibile doar in cadrul organizatiei)
+GROUP_CAPTION_2 = Note
+SCRIPTEDFIELD_CAPTION_2 = Ticket deschis de
+GROUP_CAPTION_3 = Note (VIZIBILE PENTRU CLIENT)

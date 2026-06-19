@@ -1,0 +1,45 @@
+!namespace smartdesign.cockpit
+!language-extension EN
+
+PART_CAPTION = Sales
+PART_CAPTION_0 = Activities Dashboard
+CHART_CAPTION = Opportunity phase
+CHART_CAPTION_2 = Opportunity status
+GROUPEDVALUESCHART_CAPTION_0 = Opportunities won last year
+!override
+OPEN_TASKS = Open tasks by Priority
+GROUPEDVALUESCHART_CAPTION_1 = Opportunities lost last year
+GROUPEDVALUESCHART_CAPTION_2 = Contracts with a signing date in the current year
+LINK_LIST_CAPTION = Assigned open leads
+LINK_LIST_CAPTION_2 = Leads converted in the previous year
+LINK_LIST_CAPTION_3 = Tasks in progress
+LINK_LIST_CAPTION_4 = Meetings scheduled for the current day
+LINK_LIST_CAPTION_5 = Calls scheduled for today
+GROUPEDVALUESCHART_CAPTION_3 = Customer contracts signed in the previous year
+CHART_CAPTION_3 = Contracts with an expiration date in the next 45 days
+LINK_LIST_CAPTION_6 = Leads to be assigned
+CHART_CAPTION_4 = Opportunities in progress by Account Manager
+CHART_CAPTION_5 = Won opportunities by Account Manager
+CHART_CAPTION_6 = Signed contracts by Account Manager
+LINK_LIST_CAPTION_7 = Top 10 opportunities by value
+LINK_LIST_CAPTION_8 = Opportunities with margin, creation date, and closing date
+PART_CAPTION_2 = Projects
+CHART_CAPTION_7 = Invoice Values per Sales Resp
+GROUPED_VALUES_LIST_CAPTION = Milestones with deadline in <15 days
+GROUPED_VALUES_LIST_CAPTION_2 = Milestones with overdue deadline
+GROUPEDVALUESCHART_CAPTION_4 = Invoiced Values for current year Milestones
+CHART_CAPTION_8 = Planned Invoice values for current year milestones
+GROUPEDVALUESCHART_CAPTION_5 = Planned for Invoice Values per Sales Rep
+GROUPED_VALUES_LIST_CAPTION_3 = Projects grouped by Project Owners
+GROUPED_VALUES_LIST_CAPTION_4 = Projects grouped by Status
+PART_CAPTION_3 = Helpdesk
+GROUPEDVALUESCHART_CAPTION_6 = Tickete pe Origine
+CHART_CAPTION_9 = Tickete IN LUCRU pe prioritate
+GROUPED_VALUES_LIST_CAPTION_5 = Tickete CU SLA DEPASIT
+CHART_CAPTION_10 = Tickete deschise pe departament
+CHART_CAPTION_11 = Tickete DE ALOCAT in Level 1  dupa prioritate
+GROUPED_VALUES_LIST_CAPTION_6 = Tickete cu data expirare maine
+GROUPED_VALUES_LIST_CAPTION_7 = Tickete inchise in ultimele 7 zile
+GROUPED_VALUES_LIST_CAPTION_8 = Interventii Preventive  in 15  zile
+GROUPED_VALUES_LIST_CAPTION_9 = Plangeri grupate pe Prioritate
+LINK_LIST_CAPTION_9 = Tickete "In Formulare Solutie" la Level 1

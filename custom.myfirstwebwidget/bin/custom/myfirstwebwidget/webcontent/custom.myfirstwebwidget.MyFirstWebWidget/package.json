@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@cas-smartdesign/web-api": "^5.9.0"
+  }
+}

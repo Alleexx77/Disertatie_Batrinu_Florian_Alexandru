@@ -1,0 +1,6 @@
+!namespace smartdesign.document
+!default-language-extension DE
+
+GROUP_CAPTION_0 = Contract Content
+PART_CAPTION = ADMIN
+GROUP_CAPTION_1 = Request - Solution

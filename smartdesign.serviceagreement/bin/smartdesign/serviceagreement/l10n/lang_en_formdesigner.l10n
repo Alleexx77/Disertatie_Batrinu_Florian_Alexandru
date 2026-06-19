@@ -1,0 +1,5 @@
+!namespace smartdesign.serviceagreement
+!language-extension EN
+
+PART_CAPTION = ADMIN
+GROUP_CAPTION_0 = Other details

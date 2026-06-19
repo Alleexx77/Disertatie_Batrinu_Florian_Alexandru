@@ -1,0 +1,301 @@
+namespace smartdesign.product
+
+/* IMPORTANT: This is a generated file. Manual changes will disable automatic updates. */
+@Derived(sha1="3816d88ba217ed7cce8677c46a08fc68cc77ab4c")
+overlay form Record {
+
+	events {
+		on edit += `export async function onEdit(): Promise<void> {\n    if ($do.isNew()) {\n        $do.GWSECTION.set(\'Online\');\n    } $do.GWSECTION.set(\'Online\');\n}`
+	}
+
+	overlay state ^read {
+		.Group general {
+			delete .Field(PRODMANAGER)
+			delete .Field(PRODMANAGERDEPUTY)
+			Field(CAS_STOCK_ID) first
+			Field(CAS_VIN) first
+			Field(CAS_BRAND) first
+			Field(CAS_MODEL) first
+			Field(CAS_CONDITION) first
+			Field(CAS_EXTERIOR_COLOR) first
+			Field(CAS_INTERIOR_COLOR) first
+			Field(CAS_INTERIOR_MATERIAL) first
+			Field(CAS_DRIVE_TYPE) first
+		}
+		after .Group general {
+			move .Group description
+		}
+		.Group price {
+			.Field(PURCHASEPRICE) {
+				autoHide = DISABLED
+			}
+			after .Field(PURCHASEPRICE) {
+				Field(CAS_MINIMUM_ACCEPTED_PRICE)
+				Field(CAS_WARRANTY_AVAILABLE)
+			}
+			.Field(ITDACTIVE) {
+				autoHide = DISABLED
+			}
+			delete .Field(BILLINGTYPE)
+			Field(PRICE) first
+			LinkField(PRODUCTGROUP_LINK) last
+		}
+		.Group description {
+			delete .TextField(DESCRIPTION)
+			delete .TextField(TECHNICALDESCRIPTION)
+			delete .TextField(CUSTOMERBENEFIT)
+			caption = GROUP_CAPTION_2
+			TextField(CAS_YEAR) first
+			TextField(CAS_MILEAGE) first
+			Field(CAS_TRANSMISSION) first
+			TextField(CAS_FUEL_TYPE) first
+			Field(CAS_ENGINE_CAPACITY) first
+			Field(CAS_HORSEPOWER) first
+			Field(CAS_EMISSION_STANDARD) first
+		}
+		delete .Group product
+	}
+
+	overlay state ^edit {
+		.Group keyword {
+			Field(BPRNUMBER) last
+			Field(ITDACTIVE) last
+			Field(PRODMANAGER) last
+		}
+		.ZLayout mainLayout {
+			Group groupGeneratedId1 {
+				caption = GENERAL
+				Field(CAS_STOCK_ID)
+				Field(CAS_VIN)
+				Field(CAS_BRAND)
+				Field(CAS_MODEL)
+				Field(CAS_EXTERIOR_COLOR)
+				Field(CAS_INTERIOR_COLOR)
+				Field(CAS_INTERIOR_MATERIAL)
+				Field(CAS_GENERATION)
+				Field(CAS_DRIVE_TYPE)
+				Field(CAS_CONDITION)
+			} first
+			Group groupGeneratedId2 {
+				caption = GROUP_CAPTION_0
+				Field(CAS_YEAR)
+				Field(CAS_MILEAGE)
+				Field(CAS_TRANSMISSION)
+				Field(CAS_FUEL_TYPE)
+				Field(CAS_ENGINE_CAPACITY)
+				Field(CAS_HORSEPOWER)
+				Field(CAS_EMISSION_STANDARD)
+			} first
+			move .Group price first
+			Group groupGeneratedId3 {
+				caption = GROUP_CAPTION_1
+				Field(CAS_ACCIDENT_FREE)
+				Field(CAS_HISTORY_AVAILABLE)
+				TextField(DESCRIPTION)
+			} first
+		}
+		.Group general {
+			delete .Field(PRODMANAGER)
+			Field(CAS_RESPDEPARTMENT) first
+			Field(GWSECTION) {
+				visibility = false
+			} last
+		}
+		.Group price {
+			delete .Field(BILLINGTYPE)
+			delete .Field(ITDACTIVE)
+			Field(CURRENCYNAT) first
+			Field(PRICE) first
+			Field(CAS_MINIMUM_ACCEPTED_PRICE) last
+			Field(CAS_WARRANTY_AVAILABLE) last
+			Field(QUANTITYUNIT) last
+		}
+		.Group product {
+			delete .Field(BPRNUMBER)
+			delete .Field(PRICE)
+			delete .Field(CURRENCYNAT)
+			delete .Field(QUANTITYUNIT)
+		}
+		.Group description {
+			delete .TextField(DESCRIPTION)
+		}
+	}
+}
+// ORIGINAL FORM GENERATED CONTENT START
+//namespace smartdesign.product
+//
+//form Record {
+//
+//	context {
+//		primary import do = DataObject(BSPRODUCT)
+//		dossierMD = DossierMassData()
+//	}
+//
+//	header = DefaultHeader {
+//		title = PRODUCT
+//	}
+//
+//	state read {
+//		Parts parts {
+//			Part mainPart {
+//				caption = GENERAL_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout contentLayout {
+//					RecordSummary recordSummary {
+//						showRecordTypeIcon = true
+//						headline = Headline id:recordSummaryHeadline {
+//							title = ScriptedField id:businessCardTitle {
+//								expression = `Arrays.join([$do.BPRNUMBER.tryGet(), $do.KEYWORD.tryGet()], " - ")`
+//							}
+//							subTitle = TextField(DESCRIPTION)
+//						}
+//					}
+//					ZLayout mainLayout {
+//						Group general {
+//							caption = GENERAL
+//							Field(PRODMANAGER)
+//							Field(PRODMANAGERDEPUTY)
+//						}
+//						Group product {
+//							caption = PRODUCT
+//							Field(BPRNUMBER)
+//							LinkField(PRODUCTGROUP_LINK)
+//							Field(PRICE)
+//							Field(QUANTITYUNIT)
+//						}
+//						Group price {
+//							caption = PRICE
+//							Field(PURCHASEPRICE)
+//							Field(BILLINGTYPE)
+//							Field(ITDACTIVE)
+//						}
+//						Group time {
+//							caption = TIME
+//							Field(AVAILABLEFROM)
+//							Field(AVAILABLEUNTIL)
+//						}
+//						TagSelector tagSelector {
+//						}
+//						Group tags {
+//							caption = TAGS
+//							Field(NOTES) {
+//								showCaption = false
+//							}
+//						}
+//						EmbeddedList dossier {
+//							caption = DOSSIER
+//							datasource = dossierMD
+//						}
+//						Group description {
+//							caption = DESCRIPTION
+//							TextField(DESCRIPTION)
+//							TextField(TECHNICALDESCRIPTION)
+//							TextField(CUSTOMERBENEFIT)
+//						}
+//						ExtensionPoint defaultExtension {
+//							id = "record.default"
+//						}
+//						Group additionalInformation {
+//							caption = ADDITIONAL_INFORMATION
+//							ScriptedField insertInformation {
+//								caption = INSERT_INFORMATION_CAPTION
+//								expression = `
+//									import { getInsertInformation } from "smartdesign.base/additional-information";
+//									getInsertInformation($do);
+//								`
+//							}
+//							ScriptedField updateInformation {
+//								caption = UPDATE_INFORMATION_CAPTION
+//								expression = `
+//									import { getUpdateInformation } from "smartdesign.base/additional-information";
+//									getUpdateInformation($do);
+//								`
+//							}
+//						}
+//					}
+//					Group notes {
+//						caption = NOTES
+//						Field(NOTES2) {
+//							showCaption = false
+//						}
+//					}
+//				}
+//			}
+//			PartExtensionPoint defaultPartExtensionPoint {
+//				id = "record.part.default"
+//			}
+//		}
+//	}
+//
+//	state edit {
+//		Parts parts {
+//			Part mainPart {
+//				caption = GENERAL_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout contentLayout {
+//					Group keyword {
+//						caption = KEYWORD
+//						Field(KEYWORD) {
+//							showCaption = false
+//						}
+//					}
+//					ZLayout mainLayout {
+//						Group general {
+//							caption = GENERAL
+//							Field(PRODMANAGER)
+//							Field(PRODMANAGERDEPUTY)
+//						}
+//						Group product {
+//							caption = PRODUCT
+//							Field(BPRNUMBER)
+//							LinkField(PRODUCTGROUP_LINK)
+//							Field(PRICE)
+//							Field(CURRENCYNAT)
+//							Field(QUANTITYUNIT)
+//						}
+//						Group price {
+//							caption = PRICE
+//							Field(PURCHASEPRICE)
+//							Field(BILLINGTYPE)
+//							Field(ITDACTIVE)
+//						}
+//						Group time {
+//							caption = TIME
+//							Field(AVAILABLEFROM)
+//							Field(AVAILABLEUNTIL)
+//						}
+//						TagSelector tagSelector {
+//						}
+//						Group tags {
+//							caption = TAGS
+//							Field(NOTES) {
+//								showCaption = false
+//							}
+//						}
+//						Permissions permissions {
+//						}
+//						Group description {
+//							caption = DESCRIPTION
+//							TextField(DESCRIPTION)
+//							TextField(TECHNICALDESCRIPTION)
+//							TextField(CUSTOMERBENEFIT)
+//						}
+//						ExtensionPoint defaultExtension {
+//							id = "record.default"
+//						}
+//					}
+//					Group notes {
+//						caption = NOTES
+//						Field(NOTES2) {
+//							showCaption = false
+//						}
+//					}
+//				}
+//			}
+//			PartExtensionPoint defaultPartExtensionPoint {
+//				id = "record.part.default"
+//			}
+//		}
+//	}
+//}
+// ORIGINAL FORM GENERATED CONTENT END

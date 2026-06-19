@@ -1,0 +1,243 @@
+namespace smartdesign.todo
+
+/* IMPORTANT: This is a generated file. Manual changes will disable automatic updates. */
+@Derived(sha1="8218ee2bc96cb68b1214b6107a6296c966856f5e")
+overlay form Record {
+
+	overlay state ^read {
+		.Group recordSummaryMainLayoutStatusGroup {
+			Field(WORKINGPERCENT) last
+		}
+		.Group recordSummaryMainLayoutInformationGroup {
+			delete .Field(GWSSTATUS)
+			move .Field(TODOOWNER) last
+			Field(CAS_ASSIGNEDTO) {
+				autoHide = DISABLED
+			} last
+		}
+		.Group additionalInformation {
+			move .Permissions permissions last
+		}
+		.Group status {
+			delete .Field(WORKINGPERCENT)
+		}
+		delete .Group catchphrases
+	}
+
+	overlay state ^edit {
+		.Group todoOwner {
+			.Field(TODOOWNER) {
+				caption = FIELD_CAPTION_0
+				suggestions =
+				`    export async function suggestTechLead(): Promise<string[]> \n    {\n    const group = await Permission.Owner.fromName(\"Technical Lead\", \"GROUP\");\n    if (group) \n        {\n        const members = await group.members(\"USER\");\n        return members.map(m => m.name ?? m.toString());\n        } \n        else \n        {\n        const allUsers = await Permission.Owner.all(\"USER\");\n        return allUsers.map(u => u.name ?? u.toString());\n        }\n    }\n    \n   \n        \n`
+				unset .showCaption
+			}
+			Field(GWSTYPE) first
+			move .Group typeStatus last
+		}
+		.Group typeStatus {
+			delete .Field(GWSTYPE)
+			delete .Field(GWSSTATUS)
+			unset .^caption
+			Field(CAS_ASSIGNEDTO) {
+				autoHide = DISABLED
+				suggestions =
+				`export async function suggestTechnicalTeam(): Promise<string[]> \n    {\n    const group = await Permission.Owner.fromName(\"\", \"GROUP\");\n    if (group) \n        {\n        const members = await group.members(\"USER\");\n        return members.map(m => m.name ?? m.toString());\n        } \n        else \n        {\n        const allUsers = await Permission.Owner.all(\"USER\");\n        return allUsers.map(u => u.name ?? u.toString());\n        }\n    }`
+			} first
+		}
+	}
+}
+// ORIGINAL FORM GENERATED CONTENT START
+//namespace smartdesign.todo
+//
+//form Record {
+//
+//	context {
+//		primary import do = DataObject(TODO)
+//		dossierMD = DossierMassData()
+//	}
+//
+//	header = DefaultHeader {
+//		title = TODO
+//	}
+//
+//	state read {
+//		Parts parts {
+//			Part mainPart {
+//				caption = GENERAL_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout contentLayout {
+//					RecordSummary recordSummary {
+//						showRecordTypeIcon = false
+//						headline = Headline id:recordSummaryHeadline {
+//							title = Field(KEYWORD)
+//							FieldBadge recordSummaryHeadlineStatusFieldBadge {
+//								ref = WORKINGSTATUS
+//								color = #1565C0
+//							}
+//						}
+//						HorizontalLayout recordSummaryMainLayout {
+//							LayoutColumn recordSummaryMainLayoutWorkingPercentColumn {
+//								maxWidth = 112
+//								minWidth = 112
+//								ScriptedProgress scriptedProgressForWorkingPercent {
+//									color = #5B94CF
+//									value = `$do.WORKINGPERCENT.get()`
+//									heightInPixels = 112
+//								}
+//							}
+//							LayoutColumn recordSummaryMainLayoutStatusColumn {
+//								minWidth = 200
+//								maxWidth = 440
+//								Group recordSummaryMainLayoutStatusGroup {
+//									Field(PRIORITY)
+//									Field(WORKINGSTATUS) {
+//										color = #1467BA
+//									}
+//								}
+//							}
+//							LayoutColumn recordSummaryMainLayoutTimeColumn {
+//								minWidth = 200
+//								maxWidth = 440
+//								Group recordSummaryMainLayoutTimeGroup {
+//									Field(START_DT) {
+//										iconName = "platform:field/time"
+//									}
+//									Field(END_DT) {
+//										iconName = "platform:field/time"
+//									}
+//									Field(GW_ALARMRELATIVE_EFFECTIVE)
+//								}
+//							}
+//							LayoutColumn recordSummaryMainLayoutInformationColumn {
+//								minWidth = 200
+//								Group recordSummaryMainLayoutInformationGroup {
+//									Field(TODOOWNER)
+//									Field(GWSTYPE)
+//									Field(GWSSTATUS)
+//								}
+//							}
+//						}
+//					}
+//					Group notes {
+//						caption = NOTES
+//						TextField(NOTES2) {
+//							showCaption = false
+//							visibleRows = 5
+//						}
+//					}
+//					ZLayout mainLayout {
+//						TagSelector tags {
+//						}
+//						PrimaryLinkedParentsList primaryLinks()
+//						EmbeddedList dossier {
+//							caption = DOSSIER
+//							datasource = dossierMD
+//						}
+//						Permissions permissions()
+//						Group status {
+//							caption = STATUS
+//							Field(WORKINGPERCENT)
+//							Field(GWISCONTROLLED)
+//						}
+//						Group catchphrases {
+//							caption = CATCHPHRASES
+//							Field(NOTES) {
+//								showCaption = false
+//							}
+//						}
+//						ExtensionPoint defaultExtension {
+//							id = "record.default"
+//						}
+//						Group additionalInformation {
+//							caption = ADDITIONAL_INFORMATION
+//							ScriptedField insertInformation {
+//								caption = INSERT_INFORMATION_CAPTION
+//								expression = `
+//									import { getInsertInformation } from "smartdesign.base/additional-information";
+//									getInsertInformation($do);
+//								`
+//							}
+//							ScriptedField updateInformation {
+//								caption = UPDATE_INFORMATION_CAPTION
+//								expression = `
+//									import { getUpdateInformation } from "smartdesign.base/additional-information";
+//									getUpdateInformation($do);
+//								`
+//							}
+//						}
+//					}
+//				}
+//			}
+//			PartExtensionPoint defaultPartExtensionPoint {
+//				id = "record.part.default"
+//			}
+//		}
+//	}
+//
+//	state edit {
+//		Parts parts {
+//			Part mainPart {
+//				caption = GENERAL_PART_LABEL
+//				enableJumpmarks = false
+//				VerticalLayout contentLayout {
+//					Group keyword {
+//						caption = KEYWORD_GW
+//						Field(KEYWORD) {
+//							showCaption = false
+//						}
+//					}
+//					ZLayout mainLayout {
+//						Group todoOwner {
+//							caption = TODOOWNER
+//							Field(TODOOWNER) {
+//								showCaption = false
+//							}
+//						}
+//						Permissions permissions()
+//						Group status {
+//							caption = STATUS
+//							Field(WORKINGSTATUS)
+//							SliderField(WORKINGPERCENT) {
+//								percent = true
+//								colorScheme = RED_TO_GREEN
+//							}
+//							Field(PRIORITY)
+//							Field(START_DT)
+//							Field(END_DT)
+//							Field(GWISCONTROLLED)
+//							Field(GW_ALARMRELATIVE_EFFECTIVE)
+//						}
+//						TagSelector tags {
+//						}
+//						Group typeStatus {
+//							caption = TYPE_STATUS
+//							Field(GWSTYPE)
+//							Field(GWSSTATUS)
+//						}
+//						PrimaryLinkedParentsList primaryLinks()
+//						Group catchphrases {
+//							caption = CATCHPHRASES
+//							Field(NOTES) {
+//								showCaption = false
+//							}
+//						}
+//						ExtensionPoint defaultExtension {
+//							id = "record.default"
+//						}
+//					}
+//					Group notes {
+//						caption = NOTES
+//						Field(NOTES2) {
+//							showCaption = false
+//						}
+//					}
+//				}
+//			}
+//			PartExtensionPoint defaultPartExtensionPoint {
+//				id = "record.part.default"
+//			}
+//		}
+//	}
+//}
+// ORIGINAL FORM GENERATED CONTENT END
